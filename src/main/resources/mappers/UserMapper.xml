@@ -4,16 +4,16 @@
     <resultMap id="BaseResultMap" type="com.gdut.pandora.domain.User">
         <constructor>
             <idArg column="id" jdbcType="INTEGER" javaType="java.lang.Integer"/>
-            <arg column="username" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="userName" jdbcType="VARCHAR" javaType="java.lang.String"/>
             <arg column="password" jdbcType="VARCHAR" javaType="java.lang.String"/>
             <arg column="email" jdbcType="VARCHAR" javaType="java.lang.String"/>
             <arg column="phone" jdbcType="VARCHAR" javaType="java.lang.String"/>
-            <arg column="create_time" jdbcType="Integer" javaType="java.lang.Integer"/>
-            <arg column="update_time" jdbcType="Integer" javaType="java.lang.Integer"/>
+            <arg column="create_time" jdbcType="BIGINT" javaType="java.lang.Long"/>
+            <arg column="update_time" jdbcType="BIGINT" javaType="java.lang.Long"/>
         </constructor>
     </resultMap>
     <sql id="Base_Column_List">
-    id, username, password, email, phone, create_time, update_time
+    id, userName, password, email, phone, create_time, update_time
   </sql>
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
         select
@@ -22,12 +22,12 @@
         where id = #{id,jdbcType=INTEGER}
     </select>
     <insert id="insert" parameterType="com.gdut.pandora.domain.User">
-    insert into user (id, username, password, 
+    insert into user (id, userName, password, 
       email, phone, create_time, 
       update_time)
-    values (#{id,jdbcType=INTEGER}, #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
-      #{email,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
-      #{updateTime,jdbcType=TIMESTAMP})
+    values (#{id}, #{userName}, #{password},
+      #{email}, #{phone}, #{createTime},
+      #{updateTime})
   </insert>
     <insert id="insertSelective" parameterType="com.gdut.pandora.domain.User">
         insert into user
@@ -35,8 +35,8 @@
             <if test="id != null">
                 id,
             </if>
-            <if test="username != null">
-                username,
+            <if test="userName != null">
+                userName,
             </if>
             <if test="password != null">
                 password,
@@ -56,60 +56,67 @@
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="id != null">
-                #{id,jdbcType=INTEGER},
+                #{id},
             </if>
-            <if test="username != null">
-                #{username,jdbcType=VARCHAR},
+            <if test="userName != null">
+                #{userName},
             </if>
             <if test="password != null">
-                #{password,jdbcType=VARCHAR},
+                #{password},
             </if>
             <if test="email != null">
-                #{email,jdbcType=VARCHAR},
+                #{email},
             </if>
             <if test="phone != null">
-                #{phone,jdbcType=VARCHAR},
+                #{phone},
             </if>
             <if test="createTime != null">
-                #{createTime,jdbcType=TIMESTAMP},
+                #{createTime},
             </if>
             <if test="updateTime != null">
-                #{updateTime,jdbcType=TIMESTAMP},
+                #{updateTime},
             </if>
         </trim>
     </insert>
     <update id="updateByPrimaryKeySelective" parameterType="com.gdut.pandora.domain.User">
         update user
         <set>
-            <if test="username != null">
-                username = #{username,jdbcType=VARCHAR},
+            <if test="userName != null">
+                userName = #{userName},
             </if>
             <if test="password != null">
-                password = #{password,jdbcType=VARCHAR},
+                password = #{password},
             </if>
             <if test="email != null">
-                email = #{email,jdbcType=VARCHAR},
+                email = #{email},
             </if>
             <if test="phone != null">
-                phone = #{phone,jdbcType=VARCHAR},
+                phone = #{phone},
+            </if>
+            <if test="phone != null">
+                phone = #{phone},
+            </if>
+            <if test="phone != null">
+                phone = #{phone},
             </if>
             <if test="createTime != null">
-                create_time = #{createTime,jdbcType=TIMESTAMP},
+                create_time = #{createTime},
             </if>
             <if test="updateTime != null">
-                update_time = #{updateTime,jdbcType=TIMESTAMP},
+                update_time = #{updateTime},
             </if>
+
         </set>
-        where id = #{id,jdbcType=INTEGER}
+        where id = #{id}
     </update>
     <update id="updateByPrimaryKey" parameterType="com.gdut.pandora.domain.User">
     update user
-    set username = #{username,jdbcType=VARCHAR},
-      password = #{password,jdbcType=VARCHAR},
-      email = #{email,jdbcType=VARCHAR},
-      phone = #{phone,jdbcType=VARCHAR},
-      create_time = #{createTime,jdbcType=TIMESTAMP},
-      update_time = #{updateTime,jdbcType=TIMESTAMP}
-    where id = #{id,jdbcType=INTEGER}
+    set userName = #{userName},
+      password = #{password},
+      email = #{email},
+      phone = #{phone},
+      create_time = #{createTime},
+      update_time = #{updateTime}
+    where id = #{id}
   </update>
 </mapper>

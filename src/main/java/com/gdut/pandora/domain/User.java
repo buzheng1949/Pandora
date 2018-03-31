@@ -20,8 +20,8 @@ public class User {
 
     private String phone;
 
-    private Integer createTime;
+    private Long createTime;
 
-    private Integer updateTime;
+    private Long updateTime;
 
 }
