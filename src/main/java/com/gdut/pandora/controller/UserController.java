@@ -29,8 +29,8 @@ public class UserController {
 
     @RequestMapping("/query")
     public ServerResponse<User> queryUser(User user) {
-        if (user == null || user.getId() == null || user.getUserName() == null) {
-            return ServerResponse.createByErrorMessage("未传入用户ID或者用户昵称");
+        if (user == null || user.getId() == null ) {
+            return ServerResponse.createByErrorMessage("未传入用户ID");
         }
         return userService.queryUserMessage(user);
     }
@@ -38,8 +38,8 @@ public class UserController {
 
     @RequestMapping("/update")
     public ServerResponse<Boolean> update(User user) {
-        if (user == null || user.getId() == null || user.getUserName() == null) {
-            return ServerResponse.createByErrorMessage("未传入用户ID或者用户昵称");
+        if (user == null || user.getId() == null ) {
+            return ServerResponse.createByErrorMessage("未传入用户ID");
         }
         return userService.updateUser(user);
     }

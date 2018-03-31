@@ -55,6 +55,6 @@ public class UserServiceImpl implements UserService {
             return ServerResponse.createByError();
         }
         User res = userMapper.selectByPrimaryKey(user.getId());
-        return ServerResponse.createBySuccessMessage(user);
+        return ServerResponse.createBySuccessMessage(res);
     }
 }
