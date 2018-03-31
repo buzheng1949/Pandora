@@ -13,6 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.nio.charset.Charset;
+import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 
 import static org.junit.Assert.*;
@@ -39,7 +41,9 @@ public class UserServiceImplTest {
         user.setEmail("yupeibiao@gamil.com");
         user.setPassword("test123");
         user.setPhone("17766666");
-        user.setUserName("不正");
+        String name = new String("不正");
+        System.out.print(name.getBytes());
+        user.setUserName(name);
         user.setCreateTime(DateTimeUtils.currentTimeMillis()/1000);
         user.setUpdateTime(DateTimeUtils.currentTimeMillis()/1000);
         ServerResponse<Boolean> response = userService.registerUser(user);
