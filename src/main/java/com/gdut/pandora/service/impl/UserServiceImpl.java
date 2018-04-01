@@ -4,8 +4,10 @@ import com.gdut.pandora.common.ServerResponse;
 import com.gdut.pandora.domain.User;
 import com.gdut.pandora.mapper.UserMapper;
 import com.gdut.pandora.service.UserService;
+import com.gdut.pandora.utils.TimeUtils;
 import com.gdut.pandora.utils.UserUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.tomcat.jni.Time;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,6 +29,8 @@ public class UserServiceImpl implements UserService {
         if (!UserUtils.isValidUser(user)) {
             return ServerResponse.createByErrorMessage("用户信息不全，请检查用户信息");
         }
+        user.setCreateTime(TimeUtils.getCurrentTime());
+        user.setUpdateTime(TimeUtils.getCurrentTime());
         Integer res = userMapper.insert(user);
         if (res > 0) {
             result = true;
@@ -41,6 +45,7 @@ public class UserServiceImpl implements UserService {
         if (user == null || StringUtils.isEmpty(user.getUserName())) {
             return ServerResponse.createByError();
         }
+        user.setUpdateTime(TimeUtils.getCurrentTime());
         int res = userMapper.updateByPrimaryKeySelective(user);
         if (res > 0) {
             result = true;
