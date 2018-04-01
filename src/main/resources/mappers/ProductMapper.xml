@@ -10,12 +10,14 @@
         <result column="sale" jdbcType="VARCHAR" property="sale"/>
         <result column="stock" jdbcType="VARCHAR" property="stock"/>
         <result column="image" jdbcType="VARCHAR" property="image"/>
+        <result column="shopName" jdbcType="VARCHAR" property="shopName"/>
         <result column="price" jdbcType="VARCHAR" property="price"/>
+        <result column="shopId" jdbcType="BIGINT" property="shopId"/>
         <result column="createTime" jdbcType="BIGINT" property="createTime"/>
         <result column="updateTime" jdbcType="BIGINT" property="updateTime"/>
     </resultMap>
     <sql id="Base_Column_List">
-    id, name, title,category, status,sale,stock,image,price,createTime,updateTime
+    id, name, title,category, status,sale,stock,image,price,shopName,shopId,createTime,updateTime
     </sql>
     <sql id="tableName">product</sql>
     <!-- fetch查询 -->
@@ -44,6 +46,12 @@
             </if>
             <if test="stock != null">
                 AND stock = #{stock}
+            </if>
+            <if test="shopName != null">
+                AND shopName = #{shopName}
+            </if>
+            <if test="shopId != null">
+                AND shopId = #{shopId}
             </if>
             <if test="image != null">
                 AND image = #{image}

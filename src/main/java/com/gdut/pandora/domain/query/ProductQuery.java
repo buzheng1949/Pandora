@@ -23,6 +23,10 @@ public class ProductQuery extends BaseQuery {
 
     private String stock;
 
+    private Integer shopId;
+
+    private String shopName;
+
     private String image;
 
     private String price;

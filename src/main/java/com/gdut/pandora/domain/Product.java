@@ -21,6 +21,10 @@ public class Product {
 
     private String stock;
 
+    private String shopName;
+
+    private Integer shopId;
+
     private String image;
 
     private String price;

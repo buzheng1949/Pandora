@@ -59,7 +59,7 @@ public class ProductServiceImpl implements ProductService {
         productActionResult.setPage(currentPage);
         productActionResult.setPageSize(productQuery.getPageSize());
         productActionResult.setTotal(productList == null ? 0 : productList.size());
-        productActionResult.setEnd(CollectionUtils.isEmpty(productList) ? Boolean.TRUE : Boolean.FALSE);
+        productActionResult.setEnd(CollectionUtils.isEmpty(productList) || productList.size() < productQuery.getPageSize() ? Boolean.TRUE : Boolean.FALSE);
         productActionResult.setNextPage(currentPage + 1);
         if (CollectionUtils.isNotEmpty(productList)) {
             for (Product product : productList) {
