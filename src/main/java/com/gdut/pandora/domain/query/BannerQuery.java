@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class BannerQuery {
+public class BannerQuery extends BaseQuery{
     private Integer id;
 
     private String image;
@@ -24,7 +24,4 @@ public class BannerQuery {
 
     private Long updateTime;
 
-    private Integer start;
-
-    private Integer pageSize;
 }

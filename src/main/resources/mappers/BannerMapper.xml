@@ -3,12 +3,11 @@
 <mapper namespace="com.gdut.pandora.mapper.BannerMapper">
     <resultMap id="BaseResultMap" type="com.gdut.pandora.domain.Banner">
         <id column="id" jdbcType="INTEGER" property="id"/>
-        <result column="id" jdbcType="INTEGER" javaType="java.lang.Integer"/>
-        <result column="image" jdbcType="VARCHAR" javaType="java.lang.String"/>
-        <result column="link" jdbcType="VARCHAR" javaType="java.lang.String"/>
-        <result column="category" jdbcType="VARCHAR" javaType="java.lang.String"/>
-        <result column="create_time" jdbcType="BIGINT" javaType="java.lang.Long"/>
-        <result column="update_time" jdbcType="BIGINT" javaType="java.lang.Long"/>
+        <result column="image" jdbcType="VARCHAR" property="image"/>
+        <result column="link" jdbcType="VARCHAR" property="link"/>
+        <result column="category" jdbcType="VARCHAR" property="category"/>
+        <result column="create_time" jdbcType="BIGINT" property="createTime"/>
+        <result column="update_time" jdbcType="BIGINT" property="updateTime"/>
     </resultMap>
     <sql id="Base_Column_List">
     id, image, link, category, create_time, update_time
@@ -29,7 +28,6 @@
     <!-- fetch where子句-->
     <sql id="fetchWhereClause">
         <where>
-            isDeleted = 0
             <if test="id != null">
                 AND id = #{id}
             </if>
@@ -55,7 +53,7 @@
     <sql id="fetchOrderByClause">
         <choose>
             <when test="orderBy != null">
-                order by ${orderBy}
+                order by ${orderBy} DESC
             </when>
             <otherwise>
                 order by id desc

@@ -7,6 +7,6 @@ package com.gdut.pandora.common;
 public interface Constant {
     interface QueryParams {
         Integer START = 0;
-        Integer PAGE_SIZE = 0;
+        Integer PAGE_SIZE = 5;
     }
 }

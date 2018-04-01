@@ -1,6 +1,7 @@
 package com.gdut.pandora.controller;
 
 import com.gdut.pandora.common.Constant;
+import com.gdut.pandora.common.ResponseCode;
 import com.gdut.pandora.common.ServerResponse;
 import com.gdut.pandora.domain.Banner;
 import com.gdut.pandora.domain.query.BannerQuery;
@@ -44,6 +45,6 @@ public class BannerController {
             log.error("query the bannerList error", e);
             return ServerResponse.createByErrorMessage("查询轮播列表异常");
         }
-        return ServerResponse.createBySuccessMessage(bannerList);
+        return ServerResponse.createBySuccess(ResponseCode.SUCCESS.getDesc(),bannerList);
     }
 }
