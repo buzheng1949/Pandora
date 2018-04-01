@@ -52,6 +52,14 @@
             <version>1.2.29</version>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/com.google.guava/guava -->
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>24.1-jre</version>
+        </dependency>
+
+
 
         <dependency>
             <groupId>org.mybatis.spring.boot</groupId>

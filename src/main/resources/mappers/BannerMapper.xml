@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.gdut.pandora.mapper.BannerMapper">
+    <resultMap id="BaseResultMap" type="com.gdut.pandora.domain.Banner">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="id" jdbcType="INTEGER" javaType="java.lang.Integer"/>
+        <result column="image" jdbcType="VARCHAR" javaType="java.lang.String"/>
+        <result column="link" jdbcType="VARCHAR" javaType="java.lang.String"/>
+        <result column="category" jdbcType="VARCHAR" javaType="java.lang.String"/>
+        <result column="create_time" jdbcType="BIGINT" javaType="java.lang.Long"/>
+        <result column="update_time" jdbcType="BIGINT" javaType="java.lang.Long"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, image, link, category, create_time, update_time
+  </sql>
+    <sql id="tableName">banner</sql>
+    <!-- fetch查询 -->
+    <select id="fetch" parameterType="com.gdut.pandora.domain.query.BannerQuery"
+            resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM
+        <include refid="tableName"/>
+        <include refid="fetchWhereClause"/>
+        <include refid="fetchOrderByClause"/>
+        <include refid="fetchLimitClause"/>
+    </select>
+
+    <!-- fetch where子句-->
+    <sql id="fetchWhereClause">
+        <where>
+            isDeleted = 0
+            <if test="id != null">
+                AND id = #{id}
+            </if>
+            <if test="image != null">
+                AND image = #{image}
+            </if>
+            <if test="link != null">
+                AND link = #{link}
+            </if>
+            <if test="category != null">
+                AND category = #{category}
+            </if>
+            <if test="createTime != null">
+                AND create_time > #{createTime}
+            </if>
+            <if test="updateTime != null">
+                AND update_time = #{updateTime}
+            </if>
+        </where>
+    </sql>
+
+    <!-- fetch order子句-->
+    <sql id="fetchOrderByClause">
+        <choose>
+            <when test="orderBy != null">
+                order by ${orderBy}
+            </when>
+            <otherwise>
+                order by id desc
+            </otherwise>
+        </choose>
+    </sql>
+
+    <!-- fetch limit子句-->
+    <sql id="fetchLimitClause">
+        <if test="start != null and start >= 0 and pageSize != null and pageSize > 0">
+            LIMIT #{start}, #{pageSize}
+        </if>
+    </sql>
+
+
+</mapper>
