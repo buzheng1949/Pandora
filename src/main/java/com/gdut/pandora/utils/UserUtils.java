@@ -1,6 +1,7 @@
 package com.gdut.pandora.utils;
 
 import com.gdut.pandora.domain.User;
+import com.gdut.pandora.domain.query.UserQuery;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 
@@ -12,15 +13,15 @@ public class UserUtils {
 
     /**
      * 注册的用户是否是有效用户
-     * @param user
+     * @param userQuery
      * @return
      */
-    public static boolean isValidUser(User user) {
+    public static boolean isValidUser(UserQuery userQuery) {
         boolean result = Boolean.FALSE;
-        if (user == null) {
+        if (userQuery == null) {
             return result;
         }
-        if (StringUtils.isEmpty(user.getPassword()) || StringUtils.isEmpty(user.getPhone()) || StringUtils.isEmpty(user.getUserName())) {
+        if (StringUtils.isEmpty(userQuery.getPassword()) || StringUtils.isEmpty(userQuery.getPhone()) || StringUtils.isEmpty(userQuery.getUserName())) {
             log.error("the user is not valid,the needed message is empty");
             return result;
         }

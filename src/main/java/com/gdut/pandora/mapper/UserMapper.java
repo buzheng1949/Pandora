@@ -1,17 +1,17 @@
 package com.gdut.pandora.mapper;
 
 import com.gdut.pandora.domain.User;
+import com.gdut.pandora.domain.query.UserQuery;
 import org.apache.ibatis.annotations.Mapper;
+
+import java.util.List;
+
 @Mapper
 public interface UserMapper {
 
-    int insert(User record);
+    int insert(UserQuery userQuery);
 
-    int insertSelective(User record);
+    List<User> select(UserQuery userQuery);
 
-    User selectByPrimaryKey(Integer id);
-
-    int updateByPrimaryKeySelective(User record);
-
-    int updateByPrimaryKey(User record);
+    int update(UserQuery userQuery);
 }

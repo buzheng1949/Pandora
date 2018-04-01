@@ -2,6 +2,7 @@ package com.gdut.pandora.service.impl;
 
 import com.gdut.pandora.common.ServerResponse;
 import com.gdut.pandora.domain.User;
+import com.gdut.pandora.domain.query.UserQuery;
 import com.gdut.pandora.mapper.UserMapper;
 import com.gdut.pandora.service.UserService;
 import com.gdut.pandora.utils.TimeUtils;
@@ -12,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * Created by buzheng on 18/3/31.
@@ -24,14 +26,14 @@ public class UserServiceImpl implements UserService {
     private UserMapper userMapper;
 
     @Override
-    public ServerResponse<Boolean> registerUser(User user) {
+    public ServerResponse<Boolean> registerUser(UserQuery userQuery) {
         boolean result = false;
-        if (!UserUtils.isValidUser(user)) {
+        if (!UserUtils.isValidUser(userQuery)) {
             return ServerResponse.createByErrorMessage("用户信息不全，请检查用户信息");
         }
-        user.setCreateTime(TimeUtils.getCurrentTime());
-        user.setUpdateTime(TimeUtils.getCurrentTime());
-        Integer res = userMapper.insert(user);
+        userQuery.setCreateTime(TimeUtils.getCurrentTime());
+        userQuery.setUpdateTime(TimeUtils.getCurrentTime());
+        Integer res = userMapper.insert(userQuery);
         if (res > 0) {
             result = true;
             return ServerResponse.createBySuccess("用户注册成功", result);
@@ -40,13 +42,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ServerResponse<Boolean> updateUser(User user) {
+    public ServerResponse<Boolean> updateUser(UserQuery userQuery) {
         boolean result = false;
-        if (user == null || StringUtils.isEmpty(user.getUserName())) {
+        if (userQuery == null || StringUtils.isEmpty(userQuery.getUserName())) {
             return ServerResponse.createByError();
         }
-        user.setUpdateTime(TimeUtils.getCurrentTime());
-        int res = userMapper.updateByPrimaryKeySelective(user);
+        userQuery.setUpdateTime(TimeUtils.getCurrentTime());
+        int res = userMapper.update(userQuery);
         if (res > 0) {
             result = true;
             return ServerResponse.createBySuccess("用户更新信息成功", result);
@@ -55,11 +57,16 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ServerResponse<User> queryUserMessage(User user) {
-        if (user == null || user.getId() == null) {
+    public ServerResponse<List<User>> queryUserMessage(UserQuery userQuery) {
+        if (userQuery == null) {
             return ServerResponse.createByError();
         }
-        User res = userMapper.selectByPrimaryKey(user.getId());
+        if (StringUtils.isEmpty(userQuery.getUserName()) || StringUtils.isEmpty(userQuery.getPassword())) {
+            return ServerResponse.createByErrorMessage("请输入用户名以及密码");
+        }
+        List<User> res = userMapper.select(userQuery);
         return ServerResponse.createBySuccess("success", res);
     }
+
+
 }

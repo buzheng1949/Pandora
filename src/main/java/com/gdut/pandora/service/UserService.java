@@ -2,6 +2,9 @@ package com.gdut.pandora.service;
 
 import com.gdut.pandora.common.ServerResponse;
 import com.gdut.pandora.domain.User;
+import com.gdut.pandora.domain.query.UserQuery;
+
+import java.util.List;
 
 /**
  * Created by buzheng on 18/3/31.
@@ -12,25 +15,25 @@ public interface UserService {
     /**
      * 用户注册接口
      *
-     * @param user
+     * @param userQuery
      * @return
      */
-    ServerResponse<Boolean> registerUser(User user);
+    ServerResponse<Boolean> registerUser(UserQuery userQuery);
 
     /**
      * 更新用户信息接口
      *
-     * @param user
+     * @param userQuery
      * @return
      */
-    ServerResponse<Boolean> updateUser(User user);
+    ServerResponse<Boolean> updateUser(UserQuery userQuery);
 
     /**
      * 查询用户信息接口
      *
-     * @param user
+     * @param userQuery
      * @return
      */
-    ServerResponse<User> queryUserMessage(User user);
+    ServerResponse<List<User>> queryUserMessage(UserQuery userQuery);
 
 }

@@ -2,84 +2,88 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.gdut.pandora.mapper.UserMapper">
     <resultMap id="BaseResultMap" type="com.gdut.pandora.domain.User">
-        <constructor>
-            <idArg column="id" jdbcType="INTEGER" javaType="java.lang.Integer"/>
-            <arg column="userName" jdbcType="VARCHAR" javaType="java.lang.String"/>
-            <arg column="password" jdbcType="VARCHAR" javaType="java.lang.String"/>
-            <arg column="email" jdbcType="VARCHAR" javaType="java.lang.String"/>
-            <arg column="phone" jdbcType="VARCHAR" javaType="java.lang.String"/>
-            <arg column="create_time" jdbcType="BIGINT" javaType="java.lang.Long"/>
-            <arg column="update_time" jdbcType="BIGINT" javaType="java.lang.Long"/>
-        </constructor>
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="userName" jdbcType="VARCHAR" property="userName"/>
+        <result column="password" jdbcType="VARCHAR" property="password"/>
+        <result column="email" jdbcType="VARCHAR" property="email"/>
+        <result column="userDesc" jdbcType="VARCHAR" property="userDesc"/>
+        <result column="address" jdbcType="VARCHAR" property="address"/>
+        <result column="phone" jdbcType="VARCHAR" property="phone"/>
+        <result column="createTime" jdbcType="BIGINT" property="createTime"/>
+        <result column="updateTime" jdbcType="BIGINT" property="updateTime"/>
     </resultMap>
     <sql id="Base_Column_List">
-    id, userName, password, email, phone, create_time, update_time
-   </sql>
-    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
-        select
-        <include refid="Base_Column_List"/>
-        from user
-        where id = #{id,jdbcType=INTEGER}
-    </select>
-    <insert id="insert" parameterType="com.gdut.pandora.domain.User">
-    insert into user (id, userName, password, 
-      email, phone, create_time, 
-      update_time)
-    values (#{id}, #{userName}, #{password},
-      #{email}, #{phone}, #{createTime},
-      #{updateTime})
-  </insert>
-    <insert id="insertSelective" parameterType="com.gdut.pandora.domain.User">
-        insert into user
-        <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="id != null">
-                id,
-            </if>
-            <if test="userName != null">
-                userName,
-            </if>
-            <if test="password != null">
-                password,
-            </if>
-            <if test="email != null">
-                email,
-            </if>
-            <if test="phone != null">
-                phone,
-            </if>
-            <if test="createTime != null">
-                create_time,
-            </if>
-            <if test="updateTime != null">
-                update_time,
-            </if>
-        </trim>
-        <trim prefix="values (" suffix=")" suffixOverrides=",">
-            <if test="id != null">
-                #{id},
-            </if>
-            <if test="userName != null">
-                #{userName},
-            </if>
-            <if test="password != null">
-                #{password},
-            </if>
-            <if test="email != null">
-                #{email},
-            </if>
-            <if test="phone != null">
-                #{phone},
-            </if>
-            <if test="createTime != null">
-                #{createTime},
-            </if>
-            <if test="updateTime != null">
-                #{updateTime},
-            </if>
-        </trim>
+        id,userName,password,email,userDesc,address,phone,createTime,updateTime
+    </sql>
+    <sql id="tableName">user</sql>
+    <!--insert/update/select -->
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id"
+            parameterType="com.gdut.pandora.domain.query.UserQuery">
+        insert into
+        <include refid="tableName"/>
+        (userName,password,email,userDesc,address,phone,createTime,updateTime)
+        values(
+        #{userName},
+        #{password},
+        #{email},
+        #{userDesc},
+        #{address},
+        #{phone},
+        #{createTime},
+        #{updateTime}
+        )
     </insert>
-    <update id="updateByPrimaryKeySelective" parameterType="com.gdut.pandora.domain.User">
-        update user
+
+    <!-- fetch查询 -->
+    <select id="select" parameterType="com.gdut.pandora.domain.query.UserQuery" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM
+        <include refid="tableName"/>
+        <include refid="fetchWhereClause"/>
+        <include refid="fetchOrderByClause"/>
+        <include refid="fetchLimitClause"/>
+    </select>
+    <!-- fetch where子句-->
+    <sql id="fetchWhereClause">
+        <where>
+            <if test="id != null">
+                AND id = #{id}
+            </if>
+            <if test="userName != null">
+                AND userName = #{userName}
+            </if>
+            <if test="password != null">
+                AND password = #{password}
+            </if>
+        </where>
+    </sql>
+
+    <!-- fetch order子句-->
+    <sql id="fetchOrderByClause">
+        <choose>
+            <when test="orderBy != null">
+                order by ${orderBy}
+            </when>
+            <otherwise>
+                order by id desc
+            </otherwise>
+        </choose>
+    </sql>
+
+    <!-- fetch limit子句-->
+    <sql id="fetchLimitClause">
+        <if test="start != null and start >= 0 and pageSize != null and pageSize > 0">
+            LIMIT #{start}, #{pageSize}
+        </if>
+    </sql>
+
+
+    <!-- 更新记录 -->
+    <update id="update" useGeneratedKeys="true" keyProperty="id"
+            parameterType="com.gdut.pandora.domain.query.UserQuery">
+        UPDATE
+        <include refid="tableName"/>
         <set>
             <if test="userName != null">
                 userName = #{userName},
@@ -90,33 +94,22 @@
             <if test="email != null">
                 email = #{email},
             </if>
-            <if test="phone != null">
-                phone = #{phone},
+            <if test="userDesc != null">
+                userDesc = #{userDesc},
+            </if>
+            <if test="address != null">
+                address = #{address},
             </if>
             <if test="phone != null">
                 phone = #{phone},
             </if>
-            <if test="phone != null">
-                phone = #{phone},
-            </if>
-            <if test="createTime != null">
-                create_time = #{createTime},
-            </if>
+
             <if test="updateTime != null">
-                update_time = #{updateTime},
+                updateTime = #{updateTime},
             </if>
 
         </set>
-        where id = #{id}
+        <include refid="fetchWhereClause"/>
+        LIMIT 1
     </update>
-    <update id="updateByPrimaryKey" parameterType="com.gdut.pandora.domain.User">
-    update user
-    set userName = #{userName},
-      password = #{password},
-      email = #{email},
-      phone = #{phone},
-      create_time = #{createTime},
-      update_time = #{updateTime}
-    where id = #{id}
-  </update>
 </mapper>

@@ -1,16 +1,13 @@
-package com.gdut.pandora.domain;
+package com.gdut.pandora.domain.query;
 
-import com.alibaba.fastjson.annotation.JSONType;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
-import java.util.Date;
-
+/**
+ * Created by buzheng on 18/4/1.
+ */
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
-public class User {
+public class UserQuery extends BaseQuery {
+
     private Integer id;
 
     private String userName;
@@ -28,5 +25,4 @@ public class User {
     private Long createTime;
 
     private Long updateTime;
-
 }
