@@ -49,7 +49,7 @@ public class UserServiceImpl implements UserService {
         int res = userMapper.updateByPrimaryKeySelective(user);
         if (res > 0) {
             result = true;
-            return ServerResponse.createBySuccess("用户注册成功", result);
+            return ServerResponse.createBySuccess("用户更新信息成功", result);
         }
         return ServerResponse.createBySuccess("用户更新信息失败", result);
     }
@@ -60,6 +60,6 @@ public class UserServiceImpl implements UserService {
             return ServerResponse.createByError();
         }
         User res = userMapper.selectByPrimaryKey(user.getId());
-        return ServerResponse.createBySuccessMessage(res);
+        return ServerResponse.createBySuccess("success", res);
     }
 }

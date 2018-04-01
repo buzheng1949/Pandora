@@ -1,5 +1,6 @@
 package com.gdut.pandora.domain;
 
+import com.alibaba.fastjson.annotation.JSONType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
