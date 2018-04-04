@@ -1,5 +1,6 @@
 package com.gdut.pandora.service.impl;
 
+import com.gdut.pandora.common.ResponseCode;
 import com.gdut.pandora.common.ServerResponse;
 import com.gdut.pandora.domain.User;
 import com.gdut.pandora.domain.query.UserQuery;
@@ -7,12 +8,14 @@ import com.gdut.pandora.mapper.UserMapper;
 import com.gdut.pandora.service.UserService;
 import com.gdut.pandora.utils.TimeUtils;
 import com.gdut.pandora.utils.UserUtils;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.tomcat.jni.Time;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -33,6 +36,10 @@ public class UserServiceImpl implements UserService {
         }
         userQuery.setCreateTime(TimeUtils.getCurrentTime());
         userQuery.setUpdateTime(TimeUtils.getCurrentTime());
+        ServerResponse<List<User>> userList = queryUserMessage(userQuery);
+        if (userList.getStatus() == ResponseCode.ERROR.getCode() || CollectionUtils.isNotEmpty(userList.getData())) {
+            ServerResponse.createByErrorMessage("用户已经存在，请直接登陆");
+        }
         Integer res = userMapper.insert(userQuery);
         if (res > 0) {
             result = true;
@@ -44,7 +51,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public ServerResponse<Boolean> updateUser(UserQuery userQuery) {
         boolean result = false;
-        if (userQuery == null || StringUtils.isEmpty(userQuery.getUserName())) {
+        if (userQuery == null || StringUtils.isEmpty(userQuery.getPhone())) {
             return ServerResponse.createByError();
         }
         userQuery.setUpdateTime(TimeUtils.getCurrentTime());
@@ -61,7 +68,7 @@ public class UserServiceImpl implements UserService {
         if (userQuery == null) {
             return ServerResponse.createByError();
         }
-        if (StringUtils.isEmpty(userQuery.getUserName()) || StringUtils.isEmpty(userQuery.getPassword())) {
+        if (StringUtils.isEmpty(userQuery.getPhone()) || StringUtils.isEmpty(userQuery.getPassword())) {
             return ServerResponse.createByErrorMessage("请输入用户名以及密码");
         }
         List<User> res = userMapper.select(userQuery);
