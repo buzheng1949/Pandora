@@ -50,8 +50,8 @@
             <if test="id != null">
                 AND id = #{id}
             </if>
-            <if test="userName != null">
-                AND userName = #{userName}
+            <if test="phone != null">
+                AND phone = #{phone}
             </if>
             <if test="password != null">
                 AND password = #{password}
