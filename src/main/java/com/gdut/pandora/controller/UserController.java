@@ -74,6 +74,19 @@ public class UserController {
         return ServerResponse.createBySuccess(ResponseCode.SUCCESS.getDesc(), userList);
     }
 
+    /**
+     * 用户登出操作
+     *
+     * @param session
+     * @param userQuery
+     * @return
+     */
+    @RequestMapping("/logout")
+    public ServerResponse<List<User>> logout(HttpSession session, UserQuery userQuery) {
+        session.removeAttribute(Constant.SESSION.CURRENT_USER);
+        return ServerResponse.createBySuccessMessage("退出成功");
+    }
+
 
     @RequestMapping("/update")
     @NeedLogin
