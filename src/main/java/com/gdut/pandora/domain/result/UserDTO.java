@@ -1,16 +1,16 @@
-package com.gdut.pandora.domain;
+package com.gdut.pandora.domain.result;
 
-import com.alibaba.fastjson.annotation.JSONType;
-import lombok.AllArgsConstructor;
+import com.gdut.pandora.domain.User;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
-import java.util.Date;
+import java.util.List;
 
+/**
+ * Created by buzheng on 18/4/5.
+ */
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
-public class User {
+public class UserDTO {
+
     private Integer id;
 
     private String userName;
@@ -28,7 +28,8 @@ public class User {
     private Long createTime;
 
     private Long updateTime;
-
-    private String focus;
-
+    /**
+     * 用户关注列表用户的信息
+     */
+    private List<User> focus;
 }

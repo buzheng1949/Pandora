@@ -6,6 +6,7 @@ import com.gdut.pandora.common.ResponseCode;
 import com.gdut.pandora.common.ServerResponse;
 import com.gdut.pandora.domain.User;
 import com.gdut.pandora.domain.query.UserQuery;
+import com.gdut.pandora.domain.result.UserDTO;
 import com.gdut.pandora.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
@@ -45,12 +46,12 @@ public class UserController {
 
 
     @RequestMapping("/query")
-    public ServerResponse<List<User>> queryUser(HttpSession session, UserQuery userQuery) {
+    public ServerResponse<List<UserDTO>> queryUser(HttpSession session, UserQuery userQuery) {
         if (userQuery == null || userQuery.getUserName() == null || userQuery.getPassword() == null) {
             return ServerResponse.createByErrorMessage("未传入用户名或者密码");
         }
         try {
-            ServerResponse<List<User>> res = userService.queryUserMessage(userQuery);
+            ServerResponse<List<UserDTO>> res = userService.queryUserMessage(userQuery);
             if (CollectionUtils.isNotEmpty(res.getData())) {
                 session.setAttribute(Constant.SESSION.CURRENT_USER, res.getData().get(0));
             }
@@ -62,17 +63,17 @@ public class UserController {
     }
 
     @RequestMapping("/login")
-    public ServerResponse<List<User>> login(HttpSession session, UserQuery userQuery) {
+    public ServerResponse<List<UserDTO>> login(HttpSession session, UserQuery userQuery) {
         if (userQuery == null || userQuery.getPhone() == null || userQuery.getPassword() == null) {
             return ServerResponse.createByErrorMessage("请输入合法的用户名以及密码");
         }
-        List<User> userList = userService.queryUserMessage(userQuery).getData();
+        List<UserDTO> userList = userService.queryUserMessage(userQuery).getData();
         if (CollectionUtils.isEmpty(userList)) {
             return ServerResponse.createByErrorMessage("用户名或者密码出错请重试");
         }
 
         //只有一个用户 获取用户并且放入session里面
-        User user = userList.get(0);
+        UserDTO user = userList.get(0);
         session.setAttribute(Constant.SESSION.CURRENT_USER, user);
         return ServerResponse.createBySuccess(ResponseCode.SUCCESS.getDesc(), userList);
     }
@@ -102,6 +103,38 @@ public class UserController {
             return res;
         } catch (Exception e) {
             log.error("update the user error", e);
+        }
+        return ServerResponse.createByErrorMessage("服务端处理出错");
+    }
+
+    @RequestMapping("/focus")
+    @NeedLogin
+    public ServerResponse<Boolean> focus(HttpSession session, UserQuery userQuery) {
+        if (userQuery == null || userQuery.getId() == null || userQuery.getPhone() == null) {
+            return ServerResponse.createByErrorMessage("未传入用户ID或者用户手机号码");
+        }
+        try {
+            UserDTO userDTO = (UserDTO) session.getAttribute(Constant.SESSION.CURRENT_USER);
+            List<User> focusList = userDTO.getFocus();
+            StringBuilder sb = new StringBuilder(userQuery.getId()).append(",");
+            if (CollectionUtils.isNotEmpty(focusList)) {
+                for (int i = 0; i < focusList.size(); i++) {
+                    //遇到的是时候先转吧
+                    User u = (User) focusList.get(i);
+                    if (i != focusList.size() - 1) {
+                        sb.append(u.getId()).append(",");
+                    } else {
+                        sb.append(u.getId());
+                    }
+                }
+            }
+            UserQuery realQuery = new UserQuery();
+            realQuery.setFocus(sb.toString());
+            realQuery.setId(((UserDTO) session.getAttribute(Constant.SESSION.CURRENT_USER)).getId());
+            ServerResponse<Boolean> res = userService.updateUser(userQuery);
+            return res;
+        } catch (Exception e) {
+            log.error("增加用户关注处理逻辑错误", e);
         }
         return ServerResponse.createByErrorMessage("服务端处理出错");
     }

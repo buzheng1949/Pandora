@@ -4,13 +4,17 @@ import com.gdut.pandora.common.ResponseCode;
 import com.gdut.pandora.common.ServerResponse;
 import com.gdut.pandora.domain.User;
 import com.gdut.pandora.domain.query.UserQuery;
+import com.gdut.pandora.domain.result.UserDTO;
 import com.gdut.pandora.mapper.UserMapper;
 import com.gdut.pandora.service.UserService;
 import com.gdut.pandora.utils.TimeUtils;
 import com.gdut.pandora.utils.UserUtils;
+import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.tomcat.jni.Local;
 import org.apache.tomcat.jni.Time;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -36,7 +40,7 @@ public class UserServiceImpl implements UserService {
         }
         userQuery.setCreateTime(TimeUtils.getCurrentTime());
         userQuery.setUpdateTime(TimeUtils.getCurrentTime());
-        ServerResponse<List<User>> userList = queryUserMessage(userQuery);
+        ServerResponse<List<UserDTO>> userList = queryUserMessage(userQuery);
         if (userList.getStatus() == ResponseCode.ERROR.getCode() || CollectionUtils.isNotEmpty(userList.getData())) {
             ServerResponse.createByErrorMessage("用户已经存在，请直接登陆");
         }
@@ -64,7 +68,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ServerResponse<List<User>> queryUserMessage(UserQuery userQuery) {
+    public ServerResponse<List<UserDTO>> queryUserMessage(UserQuery userQuery) {
         if (userQuery == null) {
             return ServerResponse.createByError();
         }
@@ -72,7 +76,35 @@ public class UserServiceImpl implements UserService {
             return ServerResponse.createByErrorMessage("请输入用户名以及密码");
         }
         List<User> res = userMapper.select(userQuery);
-        return ServerResponse.createBySuccess("success", res);
+        List<UserDTO> targetList = assembleUserResult(res);
+        return ServerResponse.createBySuccess("success", targetList);
+    }
+
+    /**
+     * 查询用户关注的用户并进行返回
+     *
+     * @param sourceUserList
+     * @return
+     */
+    private List<UserDTO> assembleUserResult(List<User> sourceUserList) {
+        List<UserDTO> targetUserDTOList = Lists.newArrayList();
+        if (CollectionUtils.isNotEmpty(sourceUserList)) {
+            for (User user : sourceUserList) {
+                List<User> users = Lists.newArrayList();
+                UserDTO userDTO = null;
+                BeanUtils.copyProperties(user, userDTO);
+                String[] focusUserList = user.getFocus().split(",");
+                for (String id : focusUserList) {
+                    UserQuery query = new UserQuery();
+                    query.setId(Integer.valueOf(id));
+                    List<User> list = userMapper.select(query);
+                    users.addAll(list);
+                }
+                userDTO.setFocus(users);
+                targetUserDTOList.add(userDTO);
+            }
+        }
+        return targetUserDTOList;
     }
 
 

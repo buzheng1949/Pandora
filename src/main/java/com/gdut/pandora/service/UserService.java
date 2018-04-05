@@ -3,6 +3,7 @@ package com.gdut.pandora.service;
 import com.gdut.pandora.common.ServerResponse;
 import com.gdut.pandora.domain.User;
 import com.gdut.pandora.domain.query.UserQuery;
+import com.gdut.pandora.domain.result.UserDTO;
 
 import java.util.List;
 
@@ -34,6 +35,6 @@ public interface UserService {
      * @param userQuery
      * @return
      */
-    ServerResponse<List<User>> queryUserMessage(UserQuery userQuery);
+    ServerResponse<List<UserDTO>> queryUserMessage(UserQuery userQuery);
 
 }

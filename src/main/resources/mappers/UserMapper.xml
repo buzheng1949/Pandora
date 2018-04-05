@@ -9,11 +9,12 @@
         <result column="userDesc" jdbcType="VARCHAR" property="userDesc"/>
         <result column="address" jdbcType="VARCHAR" property="address"/>
         <result column="phone" jdbcType="VARCHAR" property="phone"/>
+        <result column="focus" jdbcType="VARCHAR" property="focus"/>
         <result column="createTime" jdbcType="BIGINT" property="createTime"/>
         <result column="updateTime" jdbcType="BIGINT" property="updateTime"/>
     </resultMap>
     <sql id="Base_Column_List">
-        id,userName,password,email,userDesc,address,phone,createTime,updateTime
+        id,userName,password,email,userDesc,address,phone,focus,createTime,updateTime
     </sql>
     <sql id="tableName">user</sql>
     <!--insert/update/select -->
@@ -21,7 +22,7 @@
             parameterType="com.gdut.pandora.domain.query.UserQuery">
         insert into
         <include refid="tableName"/>
-        (userName,password,email,userDesc,address,phone,createTime,updateTime)
+        (userName,password,email,userDesc,address,phone,focus,createTime,updateTime)
         values(
         #{userName},
         #{password},
@@ -29,6 +30,7 @@
         #{userDesc},
         #{address},
         #{phone},
+        #{focus},
         #{createTime},
         #{updateTime}
         )
@@ -103,11 +105,13 @@
             <if test="phone != null">
                 phone = #{phone},
             </if>
+            <if test="focus != null">
+                focus = #{focus},
+            </if>
 
             <if test="updateTime != null">
                 updateTime = #{updateTime},
             </if>
-
         </set>
         <include refid="fetchWhereClause"/>
         LIMIT 1

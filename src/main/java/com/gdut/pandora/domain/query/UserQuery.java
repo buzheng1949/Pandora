@@ -25,4 +25,6 @@ public class UserQuery extends BaseQuery {
     private Long createTime;
 
     private Long updateTime;
+
+    private String focus;
 }
