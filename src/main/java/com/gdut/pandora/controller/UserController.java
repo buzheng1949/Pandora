@@ -60,7 +60,7 @@ public class UserController {
 
     @RequestMapping("/login")
     public ServerResponse<List<User>> login(HttpSession session, UserQuery userQuery) {
-        if (userQuery == null || userQuery.getUserName() == null || userQuery.getPassword() == null) {
+        if (userQuery == null || userQuery.getPhone() == null || userQuery.getPassword() == null) {
             return ServerResponse.createByErrorMessage("请输入合法的用户名以及密码");
         }
         List<User> userList = userService.queryUserMessage(userQuery).getData();
@@ -91,7 +91,7 @@ public class UserController {
     @RequestMapping("/update")
     @NeedLogin
     public ServerResponse<Boolean> update(UserQuery userQuery) {
-        if (userQuery == null || userQuery.getUserName() == null) {
+        if (userQuery == null) {
             return ServerResponse.createByErrorMessage("未传入用户ID");
         }
         try {

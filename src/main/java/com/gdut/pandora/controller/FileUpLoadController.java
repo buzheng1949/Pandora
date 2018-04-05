@@ -39,7 +39,7 @@ public class FileUpLoadController {
     @Autowired
     private FileService fileService;
 
-    @RequestMapping("upload.do")
+    @RequestMapping("/upload")
     @ResponseBody
     @NeedLogin
     public ServerResponse<String> upload(@RequestParam(value = "upload", required = false) MultipartFile file, HttpServletRequest request) {
