@@ -28,7 +28,7 @@ public class LoginAspect {
     public void loginPointCount() {
     }
 
-    @Before("loginPointCount()")
+    @Around("loginPointCount()")
     public Object actionLog(ProceedingJoinPoint joinPoint) {
         Object res = new Object();
         try {

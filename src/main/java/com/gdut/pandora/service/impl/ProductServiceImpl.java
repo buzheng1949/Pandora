@@ -5,6 +5,7 @@ import com.gdut.pandora.domain.query.ProductQuery;
 import com.gdut.pandora.domain.result.ProductActionResult;
 import com.gdut.pandora.domain.result.ProductDTO;
 import com.gdut.pandora.mapper.ProductMapper;
+import com.gdut.pandora.service.ProductService;
 import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.BeanUtils;

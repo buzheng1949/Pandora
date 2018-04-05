@@ -2,18 +2,14 @@ package com.gdut.pandora.controller;
 
 import com.gdut.pandora.common.ResponseCode;
 import com.gdut.pandora.common.ServerResponse;
-import com.gdut.pandora.domain.Product;
 import com.gdut.pandora.domain.query.ProductQuery;
 import com.gdut.pandora.domain.result.ProductActionResult;
-import com.gdut.pandora.service.impl.ProductService;
-import com.google.common.collect.Lists;
+import com.gdut.pandora.service.ProductService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
 
 /**
  * Created by buzheng on 18/4/1.

@@ -1,4 +1,4 @@
-package com.gdut.pandora.service.impl;
+package com.gdut.pandora.service;
 
 import com.gdut.pandora.domain.Product;
 import com.gdut.pandora.domain.query.ProductQuery;
