@@ -139,4 +139,39 @@ public class UserController {
         return ServerResponse.createByErrorMessage("服务端处理出错");
     }
 
+    @RequestMapping("/removefocus")
+    @NeedLogin
+    public ServerResponse<Boolean> remove(HttpSession session, UserQuery userQuery) {
+        if (userQuery == null || userQuery.getId() == null || userQuery.getPhone() == null) {
+            return ServerResponse.createByErrorMessage("未传入用户ID或者用户手机号码");
+        }
+        try {
+            UserDTO userDTO = (UserDTO) session.getAttribute(Constant.SESSION.CURRENT_USER);
+            List<User> focusList = userDTO.getFocus();
+            StringBuilder sb = new StringBuilder(userQuery.getId()).append(",");
+            if (CollectionUtils.isNotEmpty(focusList)) {
+                if (focusList.indexOf(userQuery.getId()) != -1) {
+                    focusList.remove(userQuery.getId());
+                }
+                for (int i = 0; i < focusList.size(); i++) {
+                    //遇到的是时候先转吧
+                    User u = (User) focusList.get(i);
+                    if (i != focusList.size() - 1) {
+                        sb.append(u.getId()).append(",");
+                    } else {
+                        sb.append(u.getId());
+                    }
+                }
+            }
+            UserQuery realQuery = new UserQuery();
+            realQuery.setFocus(sb.toString());
+            realQuery.setId(((UserDTO) session.getAttribute(Constant.SESSION.CURRENT_USER)).getId());
+            ServerResponse<Boolean> res = userService.updateUser(userQuery);
+            return res;
+        } catch (Exception e) {
+            log.error("增加用户关注处理逻辑错误", e);
+        }
+        return ServerResponse.createByErrorMessage("服务端处理出错");
+    }
+
 }
