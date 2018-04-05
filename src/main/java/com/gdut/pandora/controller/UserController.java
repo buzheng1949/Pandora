@@ -45,12 +45,15 @@ public class UserController {
 
 
     @RequestMapping("/query")
-    public ServerResponse<List<User>> queryUser(UserQuery userQuery) {
+    public ServerResponse<List<User>> queryUser(HttpSession session, UserQuery userQuery) {
         if (userQuery == null || userQuery.getUserName() == null || userQuery.getPassword() == null) {
             return ServerResponse.createByErrorMessage("未传入用户名或者密码");
         }
         try {
             ServerResponse<List<User>> res = userService.queryUserMessage(userQuery);
+            if (CollectionUtils.isNotEmpty(res.getData())) {
+                session.setAttribute(Constant.SESSION.CURRENT_USER, res.getData().get(0));
+            }
             return res;
         } catch (Exception e) {
             log.error("query the user error", e);
