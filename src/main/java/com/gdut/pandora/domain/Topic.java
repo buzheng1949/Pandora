@@ -22,9 +22,9 @@ public class Topic {
 
     private String topicImage;
 
-    private String isAnonymous;
+    private Boolean isAnonymous;
 
-    private String likeNum;
+    private Long likeNum;
 
     private Long createTime;
 

@@ -20,9 +20,9 @@ public class TopicDTO {
 
     private String topicImage;
 
-    private String isAnonymous;
+    private boolean isAnonymous;
 
-    private String likeNum;
+    private Long likeNum;
 
     private Long createTime;
 
