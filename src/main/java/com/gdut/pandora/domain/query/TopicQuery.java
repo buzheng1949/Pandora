@@ -7,7 +7,7 @@ import lombok.Data;
  * 秀秀专题查询类
  */
 @Data
-public class TopicQuery {
+public class TopicQuery extends BaseQuery{
 
     private Integer id;
 
@@ -28,4 +28,5 @@ public class TopicQuery {
     private Long createTime;
 
     private Long updateTime;
+
 }

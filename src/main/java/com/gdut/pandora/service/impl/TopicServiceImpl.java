@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Random;
 
 /**
  * Created by buzheng on 18/4/6.
@@ -32,8 +33,10 @@ public class TopicServiceImpl implements TopicService {
             for (Topic topic : topicList) {
                 TopicDTO topicDTO = new TopicDTO();
                 BeanUtils.copyProperties(topic, topicDTO);
-                //伪随机生成100-200之间的点赞数
-                long likeNum = (long) Math.random() * 100 + 200;
+                //伪随机生成0-200之间的点赞数
+                Random random = new Random();
+                Integer res = random.nextInt(200);
+                long likeNum = res.longValue();
                 topicDTO.setLikeNum(likeNum);
                 resultTopicList.add(topicDTO);
             }
