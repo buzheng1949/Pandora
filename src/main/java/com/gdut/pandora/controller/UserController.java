@@ -118,15 +118,7 @@ public class UserController {
             List<User> focusList = userDTO.getFocus();
             StringBuilder sb = new StringBuilder(userQuery.getId()).append(",");
             if (CollectionUtils.isNotEmpty(focusList)) {
-                for (int i = 0; i < focusList.size(); i++) {
-                    //遇到的是时候先转吧
-                    User u = (User) focusList.get(i);
-                    if (i != focusList.size() - 1) {
-                        sb.append(u.getId()).append(",");
-                    } else {
-                        sb.append(u.getId());
-                    }
-                }
+                rebuildFocusStr(focusList, sb);
             }
             UserQuery realQuery = new UserQuery();
             realQuery.setFocus(sb.toString());
@@ -153,15 +145,7 @@ public class UserController {
                 if (focusList.indexOf(userQuery.getId()) != -1) {
                     focusList.remove(userQuery.getId());
                 }
-                for (int i = 0; i < focusList.size(); i++) {
-                    //遇到的是时候先转吧
-                    User u = (User) focusList.get(i);
-                    if (i != focusList.size() - 1) {
-                        sb.append(u.getId()).append(",");
-                    } else {
-                        sb.append(u.getId());
-                    }
-                }
+                rebuildFocusStr(focusList, sb);
             }
             UserQuery realQuery = new UserQuery();
             realQuery.setFocus(sb.toString());
@@ -172,6 +156,23 @@ public class UserController {
             log.error("增加用户关注处理逻辑错误", e);
         }
         return ServerResponse.createByErrorMessage("服务端处理出错");
+    }
+
+    /**
+     * 再次转化
+     * @param focusList
+     * @param sb
+     */
+    private void rebuildFocusStr(List<User> focusList, StringBuilder sb) {
+        for (int i = 0; i < focusList.size(); i++) {
+            //遇到的是时候先转吧
+            User u = (User) focusList.get(i);
+            if (i != focusList.size() - 1) {
+                sb.append(u.getId()).append(",");
+            } else {
+                sb.append(u.getId());
+            }
+        }
     }
 
 }
