@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.gdut.pandora.mapper.TopicMapper">
+    <resultMap id="BaseResultMap" type="com.gdut.pandora.domain.Topic">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="userId" jdbcType="BIGINT" property="userId"/>
+        <result column="userName" jdbcType="VARCHAR" property="userId"/>
+        <result column="userImage" jdbcType="VARCHAR" property="userImage"/>
+        <result column="content" jdbcType="VARCHAR" property="content"/>
+        <result column="topicImage" jdbcType="VARCHAR" property="topicImage"/>
+        <result column="isAnonymous" jdbcType="TINYINT" property="isAnonymous"/>
+        <result column="likeNum" jdbcType="BIGINT" property="likeNum"/>
+        <result column="createTime" jdbcType="BIGINT" property="createTime"/>
+        <result column="updateTime" jdbcType="BIGINT" property="updateTime"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, userId, userName, userImage, content, topicImage, isAnonymous, likeNum, createTime, 
+    updateTime
+  </sql>
+
+    <sql id="tableName">topic</sql>
+    <!--insert/update/select -->
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id"
+            parameterType="com.gdut.pandora.domain.query.TopicQuery">
+        insert into
+        <include refid="tableName"/>
+        (userId,userName,userImage,content,topicImage,isAnonymous,likeNum,createTime,updateTime)
+        values(
+        #{userId},
+        #{userName},
+        #{userImage},
+        #{content},
+        #{topicImage},
+        #{isAnonymous},
+        #{likeNum},
+        #{createTime},
+        #{updateTime}
+        )
+    </insert>
+
+    <!-- fetch查询 -->
+    <select id="select" parameterType="com.gdut.pandora.domain.query.UserQuery" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM
+        <include refid="tableName"/>
+        <include refid="fetchWhereClause"/>
+        <include refid="fetchOrderByClause"/>
+        <include refid="fetchLimitClause"/>
+    </select>
+    <!-- fetch where子句-->
+    <sql id="fetchWhereClause">
+        <where>
+            <if test="id != null">
+                AND id = #{id}
+            </if>
+        </where>
+    </sql>
+
+    <!-- fetch order子句-->
+    <sql id="fetchOrderByClause">
+        <choose>
+            <when test="orderBy != null">
+                order by ${orderBy}
+            </when>
+            <otherwise>
+                order by createTime desc
+            </otherwise>
+        </choose>
+    </sql>
+
+    <!-- fetch limit子句-->
+    <sql id="fetchLimitClause">
+        <if test="start != null and start >= 0 and pageSize != null and pageSize > 0">
+            LIMIT #{start}, #{pageSize}
+        </if>
+    </sql>
+
+
+</mapper>
