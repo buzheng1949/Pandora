@@ -11,7 +11,7 @@ public class TopicQuery {
 
     private Integer id;
 
-    private Long userId;
+    private Integer userId;
 
     private String userName;
 

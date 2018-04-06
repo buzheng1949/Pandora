@@ -31,4 +31,6 @@ public class User {
 
     private String focus;
 
+    private String image;
+
 }

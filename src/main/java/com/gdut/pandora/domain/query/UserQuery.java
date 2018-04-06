@@ -26,5 +26,7 @@ public class UserQuery extends BaseQuery {
 
     private Long updateTime;
 
+    private String image;
+
     private String focus;
 }

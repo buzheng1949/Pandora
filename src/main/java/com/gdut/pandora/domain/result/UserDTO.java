@@ -28,6 +28,8 @@ public class UserDTO {
     private Long createTime;
 
     private Long updateTime;
+
+    private String image;
     /**
      * 用户关注列表用户的信息
      */

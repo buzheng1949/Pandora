@@ -12,7 +12,7 @@ import lombok.Setter;
 public class Topic {
     private Integer id;
 
-    private Long userId;
+    private Integer userId;
 
     private String userName;
 

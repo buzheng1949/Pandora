@@ -1,8 +1,11 @@
 package com.gdut.pandora.controller;
 
+import com.gdut.pandora.anno.NeedLogin;
+import com.gdut.pandora.common.Constant;
 import com.gdut.pandora.common.ServerResponse;
 import com.gdut.pandora.domain.query.TopicQuery;
 import com.gdut.pandora.domain.result.TopicDTO;
+import com.gdut.pandora.domain.result.UserDTO;
 import com.gdut.pandora.service.FileService;
 import com.gdut.pandora.service.TopicService;
 import com.gdut.pandora.utils.PropertiesUtil;
@@ -16,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 /**
@@ -42,12 +46,17 @@ public class TopicController {
 
     @ResponseBody
     @RequestMapping("/public")
-    public ServerResponse<Boolean> publicTopic(TopicQuery topicQuery, @RequestParam(value = "upload", required = false) MultipartFile file, HttpServletRequest request) {
+    @NeedLogin
+    public ServerResponse<Boolean> publicTopic(HttpSession session, TopicQuery topicQuery, @RequestParam(value = "upload", required = false) MultipartFile file, HttpServletRequest request) {
         boolean res = false;
         try {
             String path = request.getSession().getServletContext().getRealPath("upload");
             String targetFileName = fileService.upload(file, path);
             String url = new StringBuilder().append(PropertiesUtil.getProperty("ftp.server.http.prefix")).append(targetFileName).toString();
+            UserDTO userDTO = (UserDTO) session.getAttribute(Constant.SESSION.CURRENT_USER);
+            topicQuery.setUserId(userDTO.getId());
+            topicQuery.setUserImage(userDTO.getImage());
+            topicQuery.setUserName(userDTO.getUserName());
             topicQuery.setTopicImage(url);
             res = topicService.publicTopic(topicQuery);
         } catch (Exception e) {
