@@ -6,7 +6,8 @@
     <groupId>com.gdut</groupId>
     <artifactId>pandora</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <packaging>jar</packaging>
+    <!--<packaging>jar</packaging>-->
+    <packaging>war</packaging>
 
     <name>Pandora</name>
     <description>Demo project for Spring Boot</description>
@@ -32,6 +33,8 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
+
+
 
         <!-- https://mvnrepository.com/artifact/commons-net/commons-net -->
         <dependency>
