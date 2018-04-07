@@ -2,7 +2,6 @@ package com.gdut.pandora.service.impl;
 
 import com.gdut.pandora.service.FileService;
 import com.gdut.pandora.utils.FTPUtil;
-import com.google.common.collect.Lists;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -41,7 +40,7 @@ public class FileServiceImpl implements FileService{
         try {
             file.transferTo(targetFile);
             //文件已经上传成功了
-            FTPUtil.uploadFile(Lists.newArrayList(targetFile));
+//            FTPUtil.uploadFile(Lists.newArrayList(targetFile));
             targetFile.delete();
         } catch (IOException e) {
             logger.error("上传文件异常", e);

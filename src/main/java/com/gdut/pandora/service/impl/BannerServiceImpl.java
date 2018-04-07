@@ -5,11 +5,11 @@ import com.gdut.pandora.domain.Banner;
 import com.gdut.pandora.domain.query.BannerQuery;
 import com.gdut.pandora.mapper.BannerMapper;
 import com.gdut.pandora.service.BannerService;
-import com.google.common.collect.Lists;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -25,7 +25,7 @@ public class BannerServiceImpl implements BannerService {
 
     @Override
     public List<Banner> queryBannerList(BannerQuery bannerQuery) {
-        List<Banner> bannerList = Lists.newArrayList();
+        List<Banner> bannerList = new ArrayList<>();
         try {
             if (bannerQuery == null) {
                 return bannerList;

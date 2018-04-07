@@ -5,13 +5,13 @@ import com.gdut.pandora.domain.query.TopicQuery;
 import com.gdut.pandora.domain.result.TopicDTO;
 import com.gdut.pandora.mapper.TopicMapper;
 import com.gdut.pandora.service.TopicService;
-import com.google.common.collect.Lists;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -27,7 +27,7 @@ public class TopicServiceImpl implements TopicService {
 
     @Override
     public List<TopicDTO> listTopic(TopicQuery topicQuery) {
-        List<TopicDTO> resultTopicList = Lists.newArrayList();
+        List<TopicDTO> resultTopicList = new ArrayList<>();
         List<Topic> topicList = topicMapper.select(topicQuery);
         if (!CollectionUtils.isEmpty(topicList)) {
             for (Topic topic : topicList) {

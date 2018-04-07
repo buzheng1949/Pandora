@@ -6,13 +6,13 @@ import com.gdut.pandora.common.ServerResponse;
 import com.gdut.pandora.domain.Banner;
 import com.gdut.pandora.domain.query.BannerQuery;
 import com.gdut.pandora.service.BannerService;
-import com.google.common.collect.Lists;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -31,7 +31,7 @@ public class BannerController {
 
     @RequestMapping("/query")
     public ServerResponse<List<Banner>> query(BannerQuery bannerQuery) {
-        List<Banner> bannerList = Lists.newArrayList();
+        List<Banner> bannerList = new ArrayList<>();
         BannerQuery query = bannerQuery;
         try {
             if (query == null) {

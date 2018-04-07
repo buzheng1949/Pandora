@@ -9,7 +9,6 @@ import com.gdut.pandora.mapper.UserMapper;
 import com.gdut.pandora.service.UserService;
 import com.gdut.pandora.utils.TimeUtils;
 import com.gdut.pandora.utils.UserUtils;
-import com.google.common.collect.Lists;
 import org.apache.tomcat.jni.Local;
 import org.apache.tomcat.jni.Time;
 import org.springframework.beans.BeanUtils;
@@ -19,6 +18,7 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -87,10 +87,10 @@ public class UserServiceImpl implements UserService {
      * @return
      */
     private List<UserDTO> assembleUserResult(List<User> sourceUserList) {
-        List<UserDTO> targetUserDTOList = Lists.newArrayList();
+        List<UserDTO> targetUserDTOList = new ArrayList<>();
         if (!CollectionUtils.isEmpty(sourceUserList)) {
             for (User user : sourceUserList) {
-                List<User> users = Lists.newArrayList();
+                List<User> users = new ArrayList<>();
                 UserDTO userDTO = null;
                 BeanUtils.copyProperties(user, userDTO);
                 String[] focusUserList = user.getFocus().split(",");

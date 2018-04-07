@@ -6,12 +6,12 @@ import com.gdut.pandora.domain.result.ProductActionResult;
 import com.gdut.pandora.domain.result.ProductDTO;
 import com.gdut.pandora.mapper.ProductMapper;
 import com.gdut.pandora.service.ProductService;
-import com.google.common.collect.Lists;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -54,7 +54,7 @@ public class ProductServiceImpl implements ProductService {
      */
     private ProductActionResult assembleProductActionResult(List<Product> productList, ProductQuery productQuery) {
         ProductActionResult productActionResult = new ProductActionResult();
-        List<ProductDTO> resultDtos = Lists.newArrayList();
+        List<ProductDTO> resultDtos = new ArrayList<>();
         Integer currentPage = productQuery.getPage();
         productActionResult.setCurrentPage(currentPage);
         productActionResult.setPage(currentPage);
