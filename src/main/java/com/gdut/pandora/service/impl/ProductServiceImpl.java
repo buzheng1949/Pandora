@@ -7,10 +7,10 @@ import com.gdut.pandora.domain.result.ProductDTO;
 import com.gdut.pandora.mapper.ProductMapper;
 import com.gdut.pandora.service.ProductService;
 import com.google.common.collect.Lists;
-import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import java.util.List;
 
@@ -62,7 +62,7 @@ public class ProductServiceImpl implements ProductService {
         productActionResult.setTotal(productList == null ? 0 : productList.size());
         productActionResult.setEnd(CollectionUtils.isEmpty(productList) || productList.size() < productQuery.getPageSize() ? Boolean.TRUE : Boolean.FALSE);
         productActionResult.setNextPage(currentPage + 1);
-        if (CollectionUtils.isNotEmpty(productList)) {
+        if (!CollectionUtils.isEmpty(productList)) {
             for (Product product : productList) {
                 ProductDTO productDTO = new ProductDTO();
                 BeanUtils.copyProperties(product, productDTO);

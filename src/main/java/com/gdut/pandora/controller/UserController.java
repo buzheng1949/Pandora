@@ -9,8 +9,8 @@ import com.gdut.pandora.domain.query.UserQuery;
 import com.gdut.pandora.domain.result.UserDTO;
 import com.gdut.pandora.service.UserService;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -52,7 +52,7 @@ public class UserController {
         }
         try {
             ServerResponse<List<UserDTO>> res = userService.queryUserMessage(userQuery);
-            if (CollectionUtils.isNotEmpty(res.getData())) {
+            if (!CollectionUtils.isEmpty(res.getData())) {
                 session.setAttribute(Constant.SESSION.CURRENT_USER, res.getData().get(0));
             }
             return res;
@@ -117,7 +117,7 @@ public class UserController {
             UserDTO userDTO = (UserDTO) session.getAttribute(Constant.SESSION.CURRENT_USER);
             List<User> focusList = userDTO.getFocus();
             StringBuilder sb = new StringBuilder(userQuery.getId()).append(",");
-            if (CollectionUtils.isNotEmpty(focusList)) {
+            if (!CollectionUtils.isEmpty(focusList)) {
                 rebuildFocusStr(focusList, sb);
             }
             UserQuery realQuery = new UserQuery();
@@ -141,7 +141,7 @@ public class UserController {
             UserDTO userDTO = (UserDTO) session.getAttribute(Constant.SESSION.CURRENT_USER);
             List<User> focusList = userDTO.getFocus();
             StringBuilder sb = new StringBuilder(userQuery.getId()).append(",");
-            if (CollectionUtils.isNotEmpty(focusList)) {
+            if (!CollectionUtils.isEmpty(focusList)) {
                 if (focusList.indexOf(userQuery.getId()) != -1) {
                     focusList.remove(userQuery.getId());
                 }

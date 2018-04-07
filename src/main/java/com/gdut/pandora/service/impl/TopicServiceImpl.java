@@ -6,11 +6,11 @@ import com.gdut.pandora.domain.result.TopicDTO;
 import com.gdut.pandora.mapper.TopicMapper;
 import com.gdut.pandora.service.TopicService;
 import com.google.common.collect.Lists;
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
 import java.util.Random;
@@ -29,7 +29,7 @@ public class TopicServiceImpl implements TopicService {
     public List<TopicDTO> listTopic(TopicQuery topicQuery) {
         List<TopicDTO> resultTopicList = Lists.newArrayList();
         List<Topic> topicList = topicMapper.select(topicQuery);
-        if (CollectionUtils.isNotEmpty(topicList)) {
+        if (!CollectionUtils.isEmpty(topicList)) {
             for (Topic topic : topicList) {
                 TopicDTO topicDTO = new TopicDTO();
                 BeanUtils.copyProperties(topic, topicDTO);
@@ -68,8 +68,8 @@ public class TopicServiceImpl implements TopicService {
         boolean result = Boolean.FALSE;
         if (topicQuery != null
                 && topicQuery.getUserId() == null
-                && StringUtils.isNotEmpty(topicQuery.getContent())
-                && StringUtils.isNotEmpty(topicQuery.getTopicImage())
+                && !StringUtils.isEmpty(topicQuery.getContent())
+                && !StringUtils.isEmpty(topicQuery.getTopicImage())
                 ) {
             result = Boolean.TRUE;
         }

@@ -1,8 +1,8 @@
 package com.gdut.pandora.utils;
 
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.util.StringUtils;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -29,7 +29,7 @@ public class PropertiesUtil {
 
     public static String getProperty(String key){
         String value = props.getProperty(key.trim());
-        if(StringUtils.isBlank(value)){
+        if(StringUtils.isEmpty(value)){
             return null;
         }
         return value.trim();
@@ -38,7 +38,7 @@ public class PropertiesUtil {
     public static String getProperty(String key,String defaultValue){
 
         String value = props.getProperty(key.trim());
-        if(StringUtils.isBlank(value)){
+        if(StringUtils.isEmpty(value)){
             value = defaultValue;
         }
         return value.trim();

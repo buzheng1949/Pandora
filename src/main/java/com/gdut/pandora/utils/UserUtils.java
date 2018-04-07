@@ -3,7 +3,8 @@ package com.gdut.pandora.utils;
 import com.gdut.pandora.domain.User;
 import com.gdut.pandora.domain.query.UserQuery;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
+import org.springframework.util.StringUtils;
+
 
 /**
  * Created by buzheng on 18/3/31.

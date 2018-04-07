@@ -10,13 +10,13 @@ import com.gdut.pandora.service.UserService;
 import com.gdut.pandora.utils.TimeUtils;
 import com.gdut.pandora.utils.UserUtils;
 import com.google.common.collect.Lists;
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.tomcat.jni.Local;
 import org.apache.tomcat.jni.Time;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 import java.util.Collection;
@@ -41,7 +41,7 @@ public class UserServiceImpl implements UserService {
         userQuery.setCreateTime(TimeUtils.getCurrentTime());
         userQuery.setUpdateTime(TimeUtils.getCurrentTime());
         ServerResponse<List<UserDTO>> userList = queryUserMessage(userQuery);
-        if (userList.getStatus() == ResponseCode.ERROR.getCode() || CollectionUtils.isNotEmpty(userList.getData())) {
+        if (userList.getStatus() == ResponseCode.ERROR.getCode() || !CollectionUtils.isEmpty(userList.getData())) {
             ServerResponse.createByErrorMessage("用户已经存在，请直接登陆");
         }
         Integer res = userMapper.insert(userQuery);
@@ -88,7 +88,7 @@ public class UserServiceImpl implements UserService {
      */
     private List<UserDTO> assembleUserResult(List<User> sourceUserList) {
         List<UserDTO> targetUserDTOList = Lists.newArrayList();
-        if (CollectionUtils.isNotEmpty(sourceUserList)) {
+        if (!CollectionUtils.isEmpty(sourceUserList)) {
             for (User user : sourceUserList) {
                 List<User> users = Lists.newArrayList();
                 UserDTO userDTO = null;
