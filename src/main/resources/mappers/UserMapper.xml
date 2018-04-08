@@ -49,6 +49,18 @@
         <include refid="fetchLimitClause"/>
     </select>
     <!-- fetch where子句-->
+    <sql id="updateWhereClause">
+        <where>
+            <if test="id != null">
+                AND id = #{id}
+            </if>
+            <if test="phone != null">
+                AND phone = #{phone}
+            </if>
+        </where>
+    </sql>
+
+    <!-- fetch where子句-->
     <sql id="fetchWhereClause">
         <where>
             <if test="id != null">
@@ -56,6 +68,9 @@
             </if>
             <if test="phone != null">
                 AND phone = #{phone}
+            </if>
+            <if test="password != null">
+                AND password = #{password}
             </if>
         </where>
     </sql>
@@ -114,7 +129,7 @@
                 updateTime = #{updateTime},
             </if>
         </set>
-        <include refid="fetchWhereClause"/>
+        <include refid="updateWhereClause"/>
         LIMIT 1
     </update>
 </mapper>
