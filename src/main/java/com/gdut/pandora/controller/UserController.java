@@ -46,15 +46,15 @@ public class UserController {
 
 
     @RequestMapping("/query")
-    public ServerResponse<List<UserDTO>> queryUser(HttpSession session, UserQuery userQuery) {
+    public ServerResponse<List<UserDTO>> queryUser(UserQuery userQuery) {
         if (userQuery == null || userQuery.getPhone() == null ) {
             return ServerResponse.createByErrorMessage("未传入用户的手机号以及密码");
         }
         try {
             ServerResponse<List<UserDTO>> res = userService.queryUserMessage(userQuery);
-            if (!CollectionUtils.isEmpty(res.getData())) {
-                session.setAttribute(Constant.SESSION.CURRENT_USER, res.getData().get(0));
-            }
+//            if (!CollectionUtils.isEmpty(res.getData())) {
+//                session.setAttribute(Constant.SESSION.CURRENT_USER, res.getData().get(0));
+//            }
             return res;
         } catch (Exception e) {
             log.error("query the user error", e);
