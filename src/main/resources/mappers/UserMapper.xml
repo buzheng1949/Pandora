@@ -57,9 +57,6 @@
             <if test="phone != null">
                 AND phone = #{phone}
             </if>
-            <if test="password != null">
-                AND password = #{password}
-            </if>
         </where>
     </sql>
 
