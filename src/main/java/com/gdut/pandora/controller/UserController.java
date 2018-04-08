@@ -43,8 +43,8 @@ public class UserController {
             return res;
         } catch (Exception e) {
             log.error("register the user error", e);
+            return ServerResponse.createByErrorMessage("注册失败，请重新试试~~");
         }
-        return ServerResponse.createByErrorMessage("不允许重复注册");
     }
 
 
