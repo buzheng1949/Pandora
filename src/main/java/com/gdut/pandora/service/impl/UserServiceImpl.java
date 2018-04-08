@@ -38,6 +38,9 @@ public class UserServiceImpl implements UserService {
         if (!UserUtils.isValidUser(userQuery)) {
             return ServerResponse.createByErrorMessage("用户信息不全，请检查用户信息");
         }
+        if (StringUtils.isEmpty(userQuery.getUserName())) {
+            userQuery.setUserName("潘多拉的魔法家");
+        }
         userQuery.setCreateTime(TimeUtils.getCurrentTime());
         userQuery.setUpdateTime(TimeUtils.getCurrentTime());
         ServerResponse<List<UserDTO>> userList = queryUserMessage(userQuery);
@@ -93,7 +96,7 @@ public class UserServiceImpl implements UserService {
                 List<User> users = new ArrayList<>();
                 UserDTO userDTO = new UserDTO();
                 BeanUtils.copyProperties(user, userDTO);
-                if(!StringUtils.isEmpty(user.getFocus())){
+                if (!StringUtils.isEmpty(user.getFocus())) {
                     String[] focusUserList = user.getFocus().split(",");
                     for (String id : focusUserList) {
                         UserQuery query = new UserQuery();
