@@ -22,7 +22,7 @@ public class UserUtils {
         if (userQuery == null) {
             return result;
         }
-        if (StringUtils.isEmpty(userQuery.getPassword()) || StringUtils.isEmpty(userQuery.getPhone()) || StringUtils.isEmpty(userQuery.getUserName())) {
+        if (StringUtils.isEmpty(userQuery.getPassword()) || StringUtils.isEmpty(userQuery.getPhone())) {
             log.error("the user is not valid,the needed message is empty");
             return result;
         }

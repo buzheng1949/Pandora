@@ -41,14 +41,14 @@ public class UserController {
         } catch (Exception e) {
             log.error("register the user error", e);
         }
-        return ServerResponse.createByErrorMessage("服务端处理出错");
+        return ServerResponse.createByErrorMessage("不允许重复注册");
     }
 
 
     @RequestMapping("/query")
     public ServerResponse<List<UserDTO>> queryUser(HttpSession session, UserQuery userQuery) {
-        if (userQuery == null || userQuery.getUserName() == null || userQuery.getPassword() == null) {
-            return ServerResponse.createByErrorMessage("未传入用户名或者密码");
+        if (userQuery == null || userQuery.getPhone() == null || userQuery.getPassword() == null) {
+            return ServerResponse.createByErrorMessage("未传入用户的手机号以及密码");
         }
         try {
             ServerResponse<List<UserDTO>> res = userService.queryUserMessage(userQuery);
@@ -160,6 +160,7 @@ public class UserController {
 
     /**
      * 再次转化
+     *
      * @param focusList
      * @param sb
      */
