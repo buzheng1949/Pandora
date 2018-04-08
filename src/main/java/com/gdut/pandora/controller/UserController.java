@@ -50,7 +50,7 @@ public class UserController {
 
     @RequestMapping("/query")
     public ServerResponse<List<UserDTO>> queryUser(UserQuery userQuery) {
-        if (userQuery == null || userQuery.getPhone() == null ) {
+        if (userQuery == null || userQuery.getPhone() == null) {
             return ServerResponse.createByErrorMessage("未传入用户的手机号以及密码");
         }
         try {
@@ -79,7 +79,7 @@ public class UserController {
         UserDTO user = userList.get(0);
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
         HttpSession session = request.getSession();
-        session.setAttribute(Constant.SESSION.CURRENT_USER, user);
+        session.setAttribute(user.getPhone(), user);
         return ServerResponse.createBySuccess(ResponseCode.SUCCESS.getDesc(), userList);
     }
 
@@ -92,7 +92,7 @@ public class UserController {
      */
     @RequestMapping("/logout")
     public ServerResponse<List<User>> logout(HttpSession session, UserQuery userQuery) {
-        session.removeAttribute(Constant.SESSION.CURRENT_USER);
+        session.removeAttribute(userQuery.getPhone());
         return ServerResponse.createBySuccessMessage("退出成功");
     }
 
@@ -127,7 +127,7 @@ public class UserController {
             }
             UserQuery realQuery = new UserQuery();
             realQuery.setFocus(sb.toString());
-            realQuery.setId(((UserDTO) session.getAttribute(Constant.SESSION.CURRENT_USER)).getId());
+            realQuery.setId(((UserDTO) session.getAttribute(userQuery.getPhone())).getId());
             ServerResponse<Boolean> res = userService.updateUser(userQuery);
             return res;
         } catch (Exception e) {
@@ -154,7 +154,7 @@ public class UserController {
             }
             UserQuery realQuery = new UserQuery();
             realQuery.setFocus(sb.toString());
-            realQuery.setId(((UserDTO) session.getAttribute(Constant.SESSION.CURRENT_USER)).getId());
+            realQuery.setId(((UserDTO) session.getAttribute(userQuery.getPhone())).getId());
             ServerResponse<Boolean> res = userService.updateUser(userQuery);
             return res;
         } catch (Exception e) {

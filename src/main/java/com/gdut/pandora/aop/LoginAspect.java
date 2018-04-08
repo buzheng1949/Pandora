@@ -3,6 +3,8 @@ package com.gdut.pandora.aop;
 import com.gdut.pandora.common.Constant;
 import com.gdut.pandora.common.ServerResponse;
 import com.gdut.pandora.domain.User;
+import com.gdut.pandora.domain.query.UserQuery;
+import com.gdut.pandora.domain.result.UserDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -32,7 +34,14 @@ public class LoginAspect {
     public Object actionLog(ProceedingJoinPoint joinPoint) {
         Object res = new Object();
         try {
-            boolean flag = isLoginSuccess();
+            boolean flag = false;
+            for (int i = 0; i < joinPoint.getArgs().length; i++) {
+                if (joinPoint.getArgs()[i] instanceof UserQuery) {
+                    UserQuery userQuery = (UserQuery) joinPoint.getArgs()[i];
+                    flag = isLoginSuccess(userQuery);
+                    break;
+                }
+            }
             if (!flag) {
                 return ServerResponse.createByErrorMessage("请进行用户登陆");
             }
@@ -49,10 +58,10 @@ public class LoginAspect {
      *
      * @return
      */
-    private boolean isLoginSuccess() {
+    private boolean isLoginSuccess(UserQuery userQuery) {
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
         HttpSession session = request.getSession();
-        User user = (User) session.getAttribute(Constant.SESSION.CURRENT_USER);
+        UserDTO user = (UserDTO) session.getAttribute(userQuery.getPhone());
         boolean result = user == null ? Boolean.FALSE : Boolean.TRUE;
         return result;
     }
