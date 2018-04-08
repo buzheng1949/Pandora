@@ -47,7 +47,7 @@ public class UserController {
 
     @RequestMapping("/query")
     public ServerResponse<List<UserDTO>> queryUser(HttpSession session, UserQuery userQuery) {
-        if (userQuery == null || userQuery.getPhone() == null || userQuery.getPassword() == null) {
+        if (userQuery == null || userQuery.getPhone() == null ) {
             return ServerResponse.createByErrorMessage("未传入用户的手机号以及密码");
         }
         try {
