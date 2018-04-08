@@ -91,7 +91,7 @@ public class UserServiceImpl implements UserService {
         if (!CollectionUtils.isEmpty(sourceUserList)) {
             for (User user : sourceUserList) {
                 List<User> users = new ArrayList<>();
-                UserDTO userDTO = null;
+                UserDTO userDTO = new UserDTO();
                 BeanUtils.copyProperties(user, userDTO);
                 String[] focusUserList = user.getFocus().split(",");
                 for (String id : focusUserList) {
