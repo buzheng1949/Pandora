@@ -80,7 +80,11 @@ public class UserServiceImpl implements UserService {
         }
         List<User> res = userMapper.selectWhthoutPassword(userQuery);
         List<UserDTO> targetList = assembleUserResult(res);
-        return ServerResponse.createBySuccess("success", targetList);
+        if (!CollectionUtils.isEmpty(targetList)) {
+            return ServerResponse.createBySuccess("success", targetList);
+        } else {
+            return ServerResponse.createByErrorMessage("当前用户不存在");
+        }
     }
 
     /**
