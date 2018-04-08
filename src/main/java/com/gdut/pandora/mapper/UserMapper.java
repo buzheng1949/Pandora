@@ -13,5 +13,7 @@ public interface UserMapper {
 
     List<User> select(UserQuery userQuery);
 
+    List<User> selectWhthoutPassword(UserQuery userQuery);
+
     int update(UserQuery userQuery);
 }

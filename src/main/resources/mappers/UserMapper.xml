@@ -48,6 +48,17 @@
         <include refid="fetchOrderByClause"/>
         <include refid="fetchLimitClause"/>
     </select>
+
+    <!-- fetch查询 -->
+    <select id="selectWhthoutPassword" parameterType="com.gdut.pandora.domain.query.UserQuery" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM
+        <include refid="tableName"/>
+        <include refid="fetchWhereClauseOnlyPhone"/>
+        <include refid="fetchOrderByClause"/>
+        <include refid="fetchLimitClause"/>
+    </select>
     <!-- fetch where子句-->
     <sql id="updateWhereClause">
         <where>
@@ -75,6 +86,17 @@
         </where>
     </sql>
 
+    <!-- fetch where子句-->
+    <sql id="fetchWhereClauseOnlyPhone">
+        <where>
+            <if test="id != null">
+                AND id = #{id}
+            </if>
+            <if test="phone != null">
+                AND phone = #{phone}
+            </if>
+        </where>
+    </sql>
     <!-- fetch order子句-->
     <sql id="fetchOrderByClause">
         <choose>

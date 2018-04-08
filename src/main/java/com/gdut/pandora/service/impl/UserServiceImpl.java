@@ -78,7 +78,7 @@ public class UserServiceImpl implements UserService {
         if (StringUtils.isEmpty(userQuery.getPhone())) {
             return ServerResponse.createByErrorMessage("请输入用户手机号码");
         }
-        List<User> res = userMapper.select(userQuery);
+        List<User> res = userMapper.selectWhthoutPassword(userQuery);
         List<UserDTO> targetList = assembleUserResult(res);
         return ServerResponse.createBySuccess("success", targetList);
     }
