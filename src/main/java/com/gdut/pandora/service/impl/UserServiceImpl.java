@@ -45,7 +45,7 @@ public class UserServiceImpl implements UserService {
         userQuery.setUpdateTime(TimeUtils.getCurrentTime());
         ServerResponse<List<UserDTO>> userList = queryUserMessage(userQuery);
         if (userList.getData() != null && userList.getData().size() > 0) {
-            ServerResponse.createByErrorMessage("用户已经存在，请直接登陆");
+            return ServerResponse.createByErrorMessage("用户已经存在，请直接登陆");
         }
         Integer res = userMapper.insert(userQuery);
         if (res > 0) {
