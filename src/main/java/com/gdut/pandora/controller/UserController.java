@@ -14,7 +14,10 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
@@ -63,7 +66,7 @@ public class UserController {
     }
 
     @RequestMapping("/login")
-    public ServerResponse<List<UserDTO>> login(HttpSession session, UserQuery userQuery) {
+    public ServerResponse<List<UserDTO>> login(UserQuery userQuery) {
         if (userQuery == null || userQuery.getPhone() == null || userQuery.getPassword() == null) {
             return ServerResponse.createByErrorMessage("请输入合法的用户名以及密码");
         }
@@ -74,6 +77,8 @@ public class UserController {
 
         //只有一个用户 获取用户并且放入session里面
         UserDTO user = userList.get(0);
+        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+        HttpSession session = request.getSession();
         session.setAttribute(Constant.SESSION.CURRENT_USER, user);
         return ServerResponse.createBySuccess(ResponseCode.SUCCESS.getDesc(), userList);
     }

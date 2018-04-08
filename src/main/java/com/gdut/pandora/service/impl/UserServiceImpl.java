@@ -93,14 +93,16 @@ public class UserServiceImpl implements UserService {
                 List<User> users = new ArrayList<>();
                 UserDTO userDTO = new UserDTO();
                 BeanUtils.copyProperties(user, userDTO);
-                String[] focusUserList = user.getFocus().split(",");
-                for (String id : focusUserList) {
-                    UserQuery query = new UserQuery();
-                    query.setId(Integer.valueOf(id));
-                    List<User> list = userMapper.select(query);
-                    users.addAll(list);
+                if(!StringUtils.isEmpty(user.getFocus())){
+                    String[] focusUserList = user.getFocus().split(",");
+                    for (String id : focusUserList) {
+                        UserQuery query = new UserQuery();
+                        query.setId(Integer.valueOf(id));
+                        List<User> list = userMapper.select(query);
+                        users.addAll(list);
+                    }
+                    userDTO.setFocus(users);
                 }
-                userDTO.setFocus(users);
                 targetUserDTOList.add(userDTO);
             }
         }
