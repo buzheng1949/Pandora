@@ -47,17 +47,13 @@ public class TopicController {
     @ResponseBody
     @RequestMapping("/public")
     @NeedLogin
-    public ServerResponse<Boolean> publicTopic(HttpSession session, TopicQuery topicQuery, @RequestParam(value = "upload", required = false) MultipartFile file, HttpServletRequest request) {
+    public ServerResponse<Boolean> publicTopic(HttpSession session, TopicQuery topicQuery) {
         boolean res = false;
         try {
-            String path = request.getSession().getServletContext().getRealPath("upload");
-            String targetFileName = fileService.upload(file, path);
-            String url = new StringBuilder().append(PropertiesUtil.getProperty("ftp.server.http.prefix")).append(targetFileName).toString();
             UserDTO userDTO = (UserDTO) session.getAttribute(Constant.SESSION.CURRENT_USER);
             topicQuery.setUserId(userDTO.getId());
             topicQuery.setUserImage(userDTO.getImage());
             topicQuery.setUserName(userDTO.getUserName());
-            topicQuery.setTopicImage(url);
             res = topicService.publicTopic(topicQuery);
         } catch (Exception e) {
             log.error("public topic error", e);
