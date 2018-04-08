@@ -52,7 +52,7 @@ public class UserServiceImpl implements UserService {
             result = true;
             return ServerResponse.createBySuccess("用户注册成功", result);
         }
-        return ServerResponse.createBySuccess("用户注册失败，服务端出错了", result);
+        return ServerResponse.createByErrorMessage("用户注册失败");
     }
 
     @Override
