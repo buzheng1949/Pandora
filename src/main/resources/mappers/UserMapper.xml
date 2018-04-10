@@ -11,11 +11,12 @@
         <result column="phone" jdbcType="VARCHAR" property="phone"/>
         <result column="focus" jdbcType="VARCHAR" property="focus"/>
         <result column="image" jdbcType="VARCHAR" property="image"/>
+        <result column="collection" jdbcType="BIGINT" property="collection"/>
         <result column="createTime" jdbcType="BIGINT" property="createTime"/>
         <result column="updateTime" jdbcType="BIGINT" property="updateTime"/>
     </resultMap>
     <sql id="Base_Column_List">
-        id,userName,password,email,userDesc,address,phone,focus,image,createTime,updateTime
+        id,userName,password,email,userDesc,address,phone,focus,image,collection,createTime,updateTime
     </sql>
     <sql id="tableName">user</sql>
     <!--insert/update/select -->
@@ -23,7 +24,7 @@
             parameterType="com.gdut.pandora.domain.query.UserQuery">
         insert into
         <include refid="tableName"/>
-        (userName,password,email,userDesc,address,phone,focus,image,createTime,updateTime)
+        (userName,password,email,userDesc,address,phone,focus,image,collection,createTime,updateTime)
         values(
         #{userName},
         #{password},
@@ -33,6 +34,7 @@
         #{phone},
         #{focus},
         #{image},
+        #{collection},
         #{createTime},
         #{updateTime}
         )
@@ -146,6 +148,9 @@
             </if>
             <if test="image != null">
                 image = #{image},
+            </if>
+            <if test="collection != null">
+                collection = #{collection},
             </if>
             <if test="updateTime != null">
                 updateTime = #{updateTime},

@@ -25,6 +25,8 @@ public class UserDTO {
 
     private String phone;
 
+    private Long collection;
+
     private Long createTime;
 
     private Long updateTime;

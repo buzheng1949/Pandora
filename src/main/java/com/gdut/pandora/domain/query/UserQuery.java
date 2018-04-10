@@ -20,6 +20,8 @@ public class UserQuery extends BaseQuery {
 
     private String email;
 
+    private Long collection;
+
     private String phone;
 
     private Long createTime;
