@@ -73,7 +73,7 @@ public class AddressServiceImpl implements AddressService {
         }
         query.setCreateTime(TimeUtils.getCurrentTime());
         query.setUpdateTime(TimeUtils.getCurrentTime());
-        if (query.getHasCreated() == 1) {
+        if (query.getHasCreated()!=null && query.getHasCreated() == 1) {
             query.setDefaultAddress((byte) (0));
         } else {
             query.setDefaultAddress((byte) (1));
