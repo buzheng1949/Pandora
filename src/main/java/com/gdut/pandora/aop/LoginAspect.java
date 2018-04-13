@@ -46,7 +46,7 @@ public class LoginAspect {
                 if (joinPoint.getArgs()[i] instanceof AddressQuery) {
                     AddressQuery addressQuery = (AddressQuery) joinPoint.getArgs()[i];
                     flag = isLoginSuccess(String.valueOf(addressQuery.getPhone()));
-                    if(addressQuery.getUserId()!= null){
+                    if(addressQuery.getUid()!= null){
                         flag = true;
                     }
                     break;

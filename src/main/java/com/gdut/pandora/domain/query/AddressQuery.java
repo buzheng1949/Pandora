@@ -11,7 +11,9 @@ public class AddressQuery {
 
     private Long phone;
 
-    private Long userId;
+    private String uname;
+
+    private Long uid;
 
     private String address;
 

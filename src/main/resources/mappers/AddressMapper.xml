@@ -4,14 +4,14 @@
   <resultMap id="BaseResultMap" type="com.gdut.pandora.domain.Address">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="phone" jdbcType="BIGINT" property="phone" />
-    <result column="userId" jdbcType="BIGINT" property="userId" />
+    <result column="uid" jdbcType="BIGINT" property="uid" />
     <result column="address" jdbcType="VARCHAR" property="address" />
     <result column="create_time" jdbcType="BIGINT" property="createTime" />
     <result column="update_time" jdbcType="BIGINT" property="updateTime" />
     <result column="defaultAddress" jdbcType="INTEGER" property="defaultAddress" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, phone, userId, address, create_time, update_time, defaultAddress
+    id, phone, uid, address, create_time, update_time, defaultAddress
   </sql>
   <sql id="tableName">address</sql>
   <delete id="delete" parameterType="java.lang.Integer">
@@ -23,7 +23,7 @@
     <include refid="tableName"/>
     (
     phone,
-    userId,
+    uid,
     address,
     create_time,
     update_time,
@@ -31,7 +31,7 @@
       )
     values (
     #{phone},
-    #{userId},
+    #{uid},
     #{address},
     #{createTime},
     #{updateTime},
@@ -57,8 +57,8 @@
       <if test="phone != null">
         phone = #{phone},
       </if>
-      <if test="userId != null">
-        userId = #{userId},
+      <if test="uid != null">
+        uid = #{uid},
       </if>
       <if test="address != null">
         address = #{address},
@@ -90,10 +90,10 @@
   <!-- fetch where子句-->
   <sql id="fetchWhereClause">
     <where>
-      <!--<if test="userId != null">-->
-        <!--AND userId = #{userId}-->
+      <!--<if test="uid != null">-->
+        <!--AND uid = #{uid}-->
       <!--</if>-->
-      userId = #{userId}
+      uid = #{uid}
     </where>
   </sql>
 

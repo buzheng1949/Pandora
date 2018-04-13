@@ -10,7 +10,9 @@ public class Address {
 
     private Long phone;
 
-    private Long userId;
+    private Long uid;
+
+    private String uname;
 
     private String address;
 

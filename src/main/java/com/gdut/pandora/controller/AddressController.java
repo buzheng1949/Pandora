@@ -43,7 +43,7 @@ public class AddressController {
     @RequestMapping("/add")
     public ServerResponse<List<AddressDTO>> add(Address address) {
         List<AddressDTO> addressDTOs = new ArrayList<>();
-        if(address.getUserId() == null){
+        if(address.getUid() == null){
             return ServerResponse.createByErrorMessage("请传入用户ID");
         }
         try {
@@ -58,7 +58,7 @@ public class AddressController {
     public ServerResponse<List<AddressDTO>> update(AddressQuery address) {
         List<AddressDTO> addressDTOs = new ArrayList<>();
         try {
-            if (address.getId() == null || address.getUserId() == null) {
+            if (address.getId() == null || address.getUid() == null) {
                 return ServerResponse.createByErrorMessage("必须传入地址ID以及用户ID");
             }
             addressDTOs = addressService.updateAddress(address);

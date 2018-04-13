@@ -39,16 +39,16 @@ public class AddressServiceImpl implements AddressService {
         if (query == null) {
             throw new RuntimeException("请登陆进行查询或者传入当前登陆用户手机号");
         }
-        if (query.getUserId() == null) {
+        if (query.getUid() == null) {
             UserDTO userDTO = getLoginUserMessage(String.valueOf(query.getPhone()));
             if (userDTO != null) {
-                query.setUserId(Long.valueOf(userDTO.getId()));
+                query.setUid(Long.valueOf(userDTO.getId()));
             } else {
                 throw new RuntimeException("请用户进行登陆后查询");
             }
         }
         AddressQuery realQuery = new AddressQuery();
-        realQuery.setUserId(query.getUserId());
+        realQuery.setUid(query.getUid());
         List<Address> addressesResult = addressMapper.list(realQuery);
         if (CollectionUtils.isEmpty(addressesResult)) {
             return res;
@@ -68,14 +68,14 @@ public class AddressServiceImpl implements AddressService {
         if (StringUtils.isEmpty(query.getAddress())) {
             throw new RuntimeException("用户的地址不能为空");
         }
-        if (query.getUserId() == null) {
+        if (query.getUid() == null) {
             UserDTO userDTO = getLoginUserMessage(String.valueOf(query.getPhone()));
             if (userDTO != null) {
-                query.setUserId(Long.valueOf(userDTO.getId()));
+                query.setUid(Long.valueOf(userDTO.getId()));
             }
         }
         AddressQuery selectQuery = new AddressQuery();
-        selectQuery.setUserId(query.getUserId());
+        selectQuery.setUid(query.getUid());
         List<Address> addressDTOs = addressMapper.list(selectQuery);
         //等于空列表的情况下 把插入的设置为默认地址
         if (CollectionUtils.isEmpty(addressDTOs)) {
@@ -92,7 +92,7 @@ public class AddressServiceImpl implements AddressService {
         }
         AddressQuery addressQuery = new AddressQuery();
         addressQuery.setPhone(query.getPhone());
-        addressQuery.setUserId(query.getUserId());
+        addressQuery.setUid(query.getUid());
         addressQuery.setId(query.getId());
         List<AddressDTO> addressList = getAddressList(addressQuery);
 
@@ -116,7 +116,7 @@ public class AddressServiceImpl implements AddressService {
     public List<AddressDTO> updateAddress(AddressQuery query) {
         if (query.getDefaultAddress().byteValue() == 1) {
             AddressQuery addressQuery = new AddressQuery();
-            addressQuery.setUserId(query.getUserId());
+            addressQuery.setUid(query.getUid());
             addressQuery.setDefaultAddress((byte) 1);
             List<Address> addresses = addressMapper.list(addressQuery);
             if (!CollectionUtils.isEmpty(addresses)) {
