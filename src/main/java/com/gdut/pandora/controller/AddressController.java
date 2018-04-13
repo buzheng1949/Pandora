@@ -63,7 +63,7 @@ public class AddressController {
             }
             addressDTOs = addressService.updateAddress(address);
         } catch (Exception e) {
-            return ServerResponse.createByErrorMessage("更新用户信息失败，请排查");
+            return ServerResponse.createByErrorMessage(e.getMessage());
         }
         return ServerResponse.createBySuccess("更新成功", addressDTOs);
     }

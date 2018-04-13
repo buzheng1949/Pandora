@@ -75,12 +75,14 @@ public class AddressServiceImpl implements AddressService {
             }
         }
         AddressQuery selectQuery = new AddressQuery();
+        selectQuery.setUserId(query.getUserId());
         List<Address> addressDTOs = addressMapper.list(selectQuery);
         //等于空列表的情况下 把插入的设置为默认地址
         if (CollectionUtils.isEmpty(addressDTOs)) {
-            if (query.getDefaultAddress() == null) {
-                query.setDefaultAddress((byte) 0);
-            }
+            query.setDefaultAddress((byte) 1);
+
+        } else {
+            query.setDefaultAddress((byte) (0));
         }
         query.setCreateTime(TimeUtils.getCurrentTime());
         query.setUpdateTime(TimeUtils.getCurrentTime());
