@@ -115,8 +115,8 @@ public class UserController {
     @RequestMapping("/focus")
     @NeedLogin
     public ServerResponse<List<UserDTO>> focus(HttpSession session, UserQuery userQuery) {
-        if (userQuery == null || userQuery.getId() == null || userQuery.getPhone() == null) {
-            return ServerResponse.createByErrorMessage("未传入用户ID或者用户手机号码");
+        if (userQuery == null || userQuery.getPhone() == null) {
+            return ServerResponse.createByErrorMessage("未传入者用户手机号码");
         }
         try {
             UserDTO userDTO = (UserDTO) session.getAttribute(Constant.SESSION.CURRENT_USER);

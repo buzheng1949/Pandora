@@ -52,7 +52,8 @@
     </select>
 
     <!-- fetch查询 -->
-    <select id="selectWhthoutPassword" parameterType="com.gdut.pandora.domain.query.UserQuery" resultMap="BaseResultMap">
+    <select id="selectWhthoutPassword" parameterType="com.gdut.pandora.domain.query.UserQuery"
+            resultMap="BaseResultMap">
         SELECT
         <include refid="Base_Column_List"/>
         FROM
@@ -82,9 +83,7 @@
             <if test="phone != null">
                 AND phone = #{phone}
             </if>
-            <if test="password != null">
-                AND password = #{password}
-            </if>
+            AND password = #{password}
         </where>
     </sql>
 

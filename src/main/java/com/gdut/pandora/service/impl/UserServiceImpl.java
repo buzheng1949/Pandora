@@ -87,7 +87,7 @@ public class UserServiceImpl implements UserService {
         if (StringUtils.isEmpty(userQuery.getPhone())) {
             return ServerResponse.createByErrorMessage("请输入用户手机号码");
         }
-        List<User> res = userMapper.selectWhthoutPassword(userQuery);
+        List<User> res = userMapper.select(userQuery);
         List<UserDTO> targetList = assembleUserResult(res);
         if (!CollectionUtils.isEmpty(targetList)) {
             return ServerResponse.createBySuccess("success", targetList);
@@ -115,7 +115,7 @@ public class UserServiceImpl implements UserService {
                     for (String id : focusUserList) {
                         UserQuery query = new UserQuery();
                         query.setId(Integer.valueOf(id));
-                        List<User> list = userMapper.select(query);
+                        List<User> list = userMapper.selectWhthoutPassword(query);
                         users.addAll(list);
                     }
                     userDTO.setFocus(users);
