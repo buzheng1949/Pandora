@@ -56,7 +56,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ServerResponse<Boolean> updateUser(UserQuery userQuery) {
+    public ServerResponse<List<UserDTO>> updateUser(UserQuery userQuery) {
         boolean result = false;
         if (userQuery == null || StringUtils.isEmpty(userQuery.getPhone())) {
             return ServerResponse.createByError();
@@ -65,9 +65,11 @@ public class UserServiceImpl implements UserService {
         int res = userMapper.update(userQuery);
         if (res > 0) {
             result = true;
-            return ServerResponse.createBySuccess("用户更新信息成功", result);
+            List<User> userMessageAfterUpdate = userMapper.selectWhthoutPassword(userQuery);
+            List<UserDTO> targetList = assembleUserResult(userMessageAfterUpdate);
+            return ServerResponse.createBySuccess("success", targetList);
         }
-        return ServerResponse.createBySuccess("用户更新信息失败", result);
+        return ServerResponse.createByErrorMessage("用户更新信息失败");
     }
 
     @Override

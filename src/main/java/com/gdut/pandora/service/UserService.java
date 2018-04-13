@@ -27,7 +27,7 @@ public interface UserService {
      * @param userQuery
      * @return
      */
-    ServerResponse<Boolean> updateUser(UserQuery userQuery);
+    ServerResponse<List<UserDTO>> updateUser(UserQuery userQuery);
 
     /**
      * 查询用户信息接口

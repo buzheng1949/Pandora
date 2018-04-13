@@ -50,7 +50,7 @@ public class UserController {
 
     @RequestMapping("/query")
     public ServerResponse<List<UserDTO>> queryUser(UserQuery userQuery) {
-        if (userQuery == null || userQuery.getPhone() == null ) {
+        if (userQuery == null || userQuery.getPhone() == null) {
             return ServerResponse.createByErrorMessage("未传入用户的手机号以及密码");
         }
         try {
@@ -99,12 +99,12 @@ public class UserController {
 
     @RequestMapping("/update")
     @NeedLogin
-    public ServerResponse<Boolean> update(UserQuery userQuery) {
+    public ServerResponse<List<UserDTO>> update(UserQuery userQuery) {
         if (userQuery == null) {
             return ServerResponse.createByErrorMessage("未传入用户ID");
         }
         try {
-            ServerResponse<Boolean> res = userService.updateUser(userQuery);
+            ServerResponse<List<UserDTO>> res = userService.updateUser(userQuery);
             return res;
         } catch (Exception e) {
             log.error("update the user error", e);
@@ -114,7 +114,7 @@ public class UserController {
 
     @RequestMapping("/focus")
     @NeedLogin
-    public ServerResponse<Boolean> focus(HttpSession session, UserQuery userQuery) {
+    public ServerResponse<List<UserDTO>> focus(HttpSession session, UserQuery userQuery) {
         if (userQuery == null || userQuery.getId() == null || userQuery.getPhone() == null) {
             return ServerResponse.createByErrorMessage("未传入用户ID或者用户手机号码");
         }
@@ -128,7 +128,7 @@ public class UserController {
             UserQuery realQuery = new UserQuery();
             realQuery.setFocus(sb.toString());
             realQuery.setId(((UserDTO) session.getAttribute(userQuery.getPhone())).getId());
-            ServerResponse<Boolean> res = userService.updateUser(userQuery);
+            ServerResponse<List<UserDTO>> res = userService.updateUser(userQuery);
             return res;
         } catch (Exception e) {
             log.error("增加用户关注处理逻辑错误", e);
@@ -138,7 +138,7 @@ public class UserController {
 
     @RequestMapping("/removefocus")
     @NeedLogin
-    public ServerResponse<Boolean> remove(HttpSession session, UserQuery userQuery) {
+    public ServerResponse<List<UserDTO>> remove(HttpSession session, UserQuery userQuery) {
         if (userQuery == null || userQuery.getId() == null || userQuery.getPhone() == null) {
             return ServerResponse.createByErrorMessage("未传入用户ID或者用户手机号码");
         }
@@ -155,7 +155,7 @@ public class UserController {
             UserQuery realQuery = new UserQuery();
             realQuery.setFocus(sb.toString());
             realQuery.setId(((UserDTO) session.getAttribute(userQuery.getPhone())).getId());
-            ServerResponse<Boolean> res = userService.updateUser(userQuery);
+            ServerResponse<List<UserDTO>> res = userService.updateUser(userQuery);
             return res;
         } catch (Exception e) {
             log.error("增加用户关注处理逻辑错误", e);
