@@ -41,9 +41,11 @@ public class AddressController {
     }
 
     @RequestMapping("/add")
-    @NeedLogin
     public ServerResponse<List<AddressDTO>> add(Address address) {
         List<AddressDTO> addressDTOs = new ArrayList<>();
+        if(address.getUserId() == null){
+            return ServerResponse.createByErrorMessage("请传入用户ID");
+        }
         try {
             addressDTOs = addressService.addAddress(address);
         } catch (Exception e) {
@@ -53,12 +55,11 @@ public class AddressController {
     }
 
     @RequestMapping("/update")
-    @NeedLogin
     public ServerResponse<List<AddressDTO>> update(AddressQuery address) {
         List<AddressDTO> addressDTOs = new ArrayList<>();
         try {
-            if (address.getId() == null) {
-                return ServerResponse.createByErrorMessage("必须传入地址ID");
+            if (address.getId() == null || address.getUserId() == null) {
+                return ServerResponse.createByErrorMessage("必须传入地址ID以及用户ID");
             }
             addressDTOs = addressService.updateAddress(address);
         } catch (Exception e) {
@@ -68,7 +69,6 @@ public class AddressController {
     }
 
     @RequestMapping("/delete")
-    @NeedLogin
     public ServerResponse<List<AddressDTO>> delete(AddressQuery address) {
         List<AddressDTO> addressDTOs = new ArrayList<>();
         try {

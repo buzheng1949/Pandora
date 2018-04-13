@@ -36,16 +36,20 @@ public class AddressServiceImpl implements AddressService {
     @NeedLogin
     public List<AddressDTO> getAddressList(AddressQuery query) {
         List<AddressDTO> res = new ArrayList<>();
-        if (query == null || (query.getUserId() == null && query.getPhone() == null)) {
-            throw new RuntimeException("请传入查询用户ID");
+        if (query == null) {
+            throw new RuntimeException("请登陆进行查询或者传入当前登陆用户手机号");
         }
-        if(query.getUserId() == null){
+        if (query.getUserId() == null) {
             UserDTO userDTO = getLoginUserMessage(String.valueOf(query.getPhone()));
-            if(userDTO != null){
+            if (userDTO != null) {
                 query.setUserId(Long.valueOf(userDTO.getId()));
+            } else {
+                throw new RuntimeException("请用户进行登陆后查询");
             }
         }
-        List<Address> addressesResult = addressMapper.list(query);
+        AddressQuery realQuery = new AddressQuery();
+        realQuery.setUserId(query.getUserId());
+        List<Address> addressesResult = addressMapper.list(realQuery);
         if (CollectionUtils.isEmpty(addressesResult)) {
             return res;
         }
@@ -64,17 +68,22 @@ public class AddressServiceImpl implements AddressService {
         if (StringUtils.isEmpty(query.getAddress())) {
             throw new RuntimeException("用户的地址不能为空");
         }
-        if(query.getUserId() == null){
+        if (query.getUserId() == null) {
             UserDTO userDTO = getLoginUserMessage(String.valueOf(query.getPhone()));
-            if(userDTO != null){
+            if (userDTO != null) {
                 query.setUserId(Long.valueOf(userDTO.getId()));
+            }
+        }
+        AddressQuery selectQuery = new AddressQuery();
+        List<Address> addressDTOs = addressMapper.list(selectQuery);
+        //等于空列表的情况下 把插入的设置为默认地址
+        if (CollectionUtils.isEmpty(addressDTOs)) {
+            if (query.getDefaultAddress() == null) {
+                query.setDefaultAddress((byte) 0);
             }
         }
         query.setCreateTime(TimeUtils.getCurrentTime());
         query.setUpdateTime(TimeUtils.getCurrentTime());
-        if (query.getDefaultAddress() == null) {
-            query.setDefaultAddress((byte) 0);
-        }
         int res = addressMapper.insert(query);
         if (res <= 0) {
             throw new RuntimeException("插入用户地址失败，请重试");
@@ -84,6 +93,7 @@ public class AddressServiceImpl implements AddressService {
         addressQuery.setUserId(query.getUserId());
         addressQuery.setId(query.getId());
         List<AddressDTO> addressList = getAddressList(addressQuery);
+
         return addressList;
     }
 
@@ -101,9 +111,24 @@ public class AddressServiceImpl implements AddressService {
     }
 
     @Override
-    public List<AddressDTO> updateAddress(AddressQuery address) {
-        int res = addressMapper.update(address);
-        List<AddressDTO> addressList = getAddressList(address);
+    public List<AddressDTO> updateAddress(AddressQuery query) {
+        if (query.getDefaultAddress().byteValue() == 1) {
+            AddressQuery addressQuery = new AddressQuery();
+            addressQuery.setUserId(query.getUserId());
+            addressQuery.setDefaultAddress((byte) 1);
+            List<Address> addresses = addressMapper.list(addressQuery);
+            if (!CollectionUtils.isEmpty(addresses)) {
+                for (Address address : addresses) {
+                    AddressQuery updateQuery = new AddressQuery();
+                    updateQuery.setId(address.getId());
+                    updateQuery.setDefaultAddress((byte) 0);
+                    addressMapper.update(updateQuery);
+                }
+            }
+        }
+
+        int res = addressMapper.update(query);
+        List<AddressDTO> addressList = getAddressList(query);
         return addressList;
     }
 

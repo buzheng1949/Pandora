@@ -3,6 +3,7 @@ package com.gdut.pandora.aop;
 import com.gdut.pandora.common.Constant;
 import com.gdut.pandora.common.ServerResponse;
 import com.gdut.pandora.domain.User;
+import com.gdut.pandora.domain.query.AddressQuery;
 import com.gdut.pandora.domain.query.UserQuery;
 import com.gdut.pandora.domain.result.UserDTO;
 import lombok.extern.slf4j.Slf4j;
@@ -12,6 +13,7 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
@@ -38,7 +40,15 @@ public class LoginAspect {
             for (int i = 0; i < joinPoint.getArgs().length; i++) {
                 if (joinPoint.getArgs()[i] instanceof UserQuery) {
                     UserQuery userQuery = (UserQuery) joinPoint.getArgs()[i];
-                    flag = isLoginSuccess(userQuery);
+                    flag = isLoginSuccess(userQuery.getPhone());
+                    break;
+                }
+                if (joinPoint.getArgs()[i] instanceof AddressQuery) {
+                    AddressQuery addressQuery = (AddressQuery) joinPoint.getArgs()[i];
+                    flag = isLoginSuccess(String.valueOf(addressQuery.getPhone()));
+                    if(addressQuery.getUserId()!= null){
+                        flag = true;
+                    }
                     break;
                 }
             }
@@ -58,10 +68,10 @@ public class LoginAspect {
      *
      * @return
      */
-    private boolean isLoginSuccess(UserQuery userQuery) {
+    private boolean isLoginSuccess(String phone) {
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
         HttpSession session = request.getSession();
-        UserDTO user = (UserDTO) session.getAttribute(userQuery.getPhone());
+        UserDTO user = (UserDTO) session.getAttribute(phone);
         boolean result = user == null ? Boolean.FALSE : Boolean.TRUE;
         return result;
     }

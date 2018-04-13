@@ -2,6 +2,8 @@ package com.gdut.pandora.domain;
 
 import lombok.Data;
 
+import java.util.Comparator;
+
 @Data
 public class Address {
     private Integer id;
@@ -17,7 +19,5 @@ public class Address {
     private Long updateTime;
 
     private Byte defaultAddress;
-
-
 
 }

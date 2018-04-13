@@ -22,7 +22,6 @@ public class UserDTO {
 
     private String userDesc;
 
-    private String email;
 
     private String phone;
 

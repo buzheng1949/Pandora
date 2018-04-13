@@ -23,7 +23,6 @@ public class User {
 
     private String collection;
 
-    private String email;
 
     private String phone;
 

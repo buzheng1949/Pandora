@@ -90,9 +90,10 @@
   <!-- fetch where子句-->
   <sql id="fetchWhereClause">
     <where>
-      <if test="userId != null">
-        AND userId = #{userId}
-      </if>
+      <!--<if test="userId != null">-->
+        <!--AND userId = #{userId}-->
+      <!--</if>-->
+      userId = #{userId}
     </where>
   </sql>
 

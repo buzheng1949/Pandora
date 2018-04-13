@@ -39,6 +39,8 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private ProductService productService;
 
+    public static final String DEFAULT_AVATAR = "https://s3.mogucdn.com/mlcdn/c024f5/180413_8a59h26ka3dkfdbi6698cg8j409kd_651x656.png";
+
     @Override
     public ServerResponse<Boolean> registerUser(UserQuery userQuery) {
         boolean result = false;
@@ -48,6 +50,11 @@ public class UserServiceImpl implements UserService {
         if (StringUtils.isEmpty(userQuery.getUserName())) {
             userQuery.setUserName("潘多拉的魔法家");
         }
+        if (StringUtils.isEmpty(userQuery.getImage())) {
+            userQuery.setImage(DEFAULT_AVATAR);
+        }
+        userQuery.setFocus("1");
+        userQuery.setCollection("1");
         userQuery.setCreateTime(TimeUtils.getCurrentTime());
         userQuery.setUpdateTime(TimeUtils.getCurrentTime());
         ServerResponse<List<UserDTO>> userList = queryUserMessage(userQuery);

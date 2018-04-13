@@ -5,7 +5,6 @@
         <id column="id" jdbcType="INTEGER" property="id"/>
         <result column="userName" jdbcType="VARCHAR" property="userName"/>
         <result column="password" jdbcType="VARCHAR" property="password"/>
-        <result column="email" jdbcType="VARCHAR" property="email"/>
         <result column="userDesc" jdbcType="VARCHAR" property="userDesc"/>
         <result column="address" jdbcType="VARCHAR" property="address"/>
         <result column="phone" jdbcType="VARCHAR" property="phone"/>
@@ -16,7 +15,7 @@
         <result column="updateTime" jdbcType="BIGINT" property="updateTime"/>
     </resultMap>
     <sql id="Base_Column_List">
-        id,userName,password,email,userDesc,address,phone,focus,image,collection,createTime,updateTime
+        id,userName,password,userDesc,address,phone,focus,image,collection,createTime,updateTime
     </sql>
     <sql id="tableName">user</sql>
     <!--insert/update/select -->
@@ -24,11 +23,10 @@
             parameterType="com.gdut.pandora.domain.query.UserQuery">
         insert into
         <include refid="tableName"/>
-        (userName,password,email,userDesc,address,phone,focus,image,collection,createTime,updateTime)
+        (userName,password,userDesc,address,phone,focus,image,collection,createTime,updateTime)
         values(
         #{userName},
         #{password},
-        #{email},
         #{userDesc},
         #{address},
         #{phone},
@@ -130,9 +128,7 @@
             <if test="password != null">
                 password = #{password},
             </if>
-            <if test="email != null">
-                email = #{email},
-            </if>
+
             <if test="userDesc != null">
                 userDesc = #{userDesc},
             </if>

@@ -18,8 +18,6 @@ public class UserQuery extends BaseQuery {
 
     private String userDesc;
 
-    private String email;
-
     private String collection;
 
     private String phone;
