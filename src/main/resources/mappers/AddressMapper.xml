@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gdut.pandora.mapper.AddressMapper">
+  <resultMap id="BaseResultMap" type="com.gdut.pandora.domain.Address">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="phone" jdbcType="BIGINT" property="phone" />
+    <result column="userId" jdbcType="BIGINT" property="userId" />
+    <result column="address" jdbcType="VARCHAR" property="address" />
+    <result column="create_time" jdbcType="BIGINT" property="createTime" />
+    <result column="update_time" jdbcType="BIGINT" property="updateTime" />
+    <result column="defaultAddress" jdbcType="INTEGER" property="defaultAddress" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, phone, userId, address, create_time, update_time, defaultAddress
+  </sql>
+  <sql id="tableName">address</sql>
+  <delete id="delete" parameterType="java.lang.Integer">
+    delete from address
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.gdut.pandora.domain.Address" useGeneratedKeys="true" keyProperty="id">
+    insert into
+    <include refid="tableName"/>
+    (
+    phone,
+    userId,
+    address,
+    create_time,
+    update_time,
+    defaultAddress
+      )
+    values (
+    #{phone},
+    #{userId},
+    #{address},
+    #{createTime},
+    #{updateTime},
+    #{defaultAddress}
+    )
+  </insert>
+
+  <!-- fetch查询 -->
+  <select id="list" parameterType="com.gdut.pandora.domain.query.AddressQuery" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM
+    <include refid="tableName" />
+    <include refid="fetchWhereClause" />
+  </select>
+
+
+  <!-- 更新记录 -->
+  <update id="update" keyProperty="id" parameterType="com.gdut.pandora.domain.query.AddressQuery" >
+    UPDATE
+    <include refid="tableName" />
+    <set>
+      <if test="phone != null">
+        phone = #{phone},
+      </if>
+      <if test="userId != null">
+        userId = #{userId},
+      </if>
+      <if test="address != null">
+        address = #{address},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime},
+      </if>
+      <if test="address != null">
+        address = #{address},
+      </if>
+      <if test="defaultAddress != null">
+        defaultAddress = #{defaultAddress},
+      </if>
+    </set>
+    <include refid="updateWhere" />
+    LIMIT 1
+  </update>
+
+  <!-- fetch where子句-->
+  <sql id="updateWhere">
+    <where>
+      <if test="id != null">
+        AND id = #{id}
+      </if>
+
+    </where>
+  </sql>
+
+  <!-- fetch where子句-->
+  <sql id="fetchWhereClause">
+    <where>
+      <if test="userId != null">
+        AND userId = #{userId}
+      </if>
+    </where>
+  </sql>
+
+
+</mapper>
