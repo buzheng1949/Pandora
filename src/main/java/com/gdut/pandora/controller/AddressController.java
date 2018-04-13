@@ -49,7 +49,7 @@ public class AddressController {
         try {
             addressDTOs = addressService.addAddress(address);
         } catch (Exception e) {
-            return ServerResponse.createByErrorMessage("插入失败，请重试");
+            return ServerResponse.createByErrorMessage(e.getMessage());
         }
         return ServerResponse.createBySuccess("新增用户地址成功", addressDTOs);
     }

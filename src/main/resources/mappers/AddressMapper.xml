@@ -6,12 +6,13 @@
     <result column="phone" jdbcType="BIGINT" property="phone" />
     <result column="uid" jdbcType="BIGINT" property="uid" />
     <result column="address" jdbcType="VARCHAR" property="address" />
+    <result column="uname" jdbcType="VARCHAR" property="uname" />
     <result column="create_time" jdbcType="BIGINT" property="createTime" />
     <result column="update_time" jdbcType="BIGINT" property="updateTime" />
     <result column="defaultAddress" jdbcType="INTEGER" property="defaultAddress" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, phone, uid, address, create_time, update_time, defaultAddress
+    id, phone, uid, address,uname, create_time, update_time, defaultAddress
   </sql>
   <sql id="tableName">address</sql>
   <delete id="delete" parameterType="java.lang.Integer">
@@ -25,6 +26,7 @@
     phone,
     uid,
     address,
+    uname,
     create_time,
     update_time,
     defaultAddress
@@ -33,6 +35,7 @@
     #{phone},
     #{uid},
     #{address},
+    #{uname},
     #{createTime},
     #{updateTime},
     #{defaultAddress}
@@ -63,11 +66,15 @@
       <if test="address != null">
         address = #{address},
       </if>
-      <if test="updateTime != null">
-        update_time = #{updateTime},
+      <if test="uname != null">
+        uname = #{uname},
       </if>
+
       <if test="address != null">
         address = #{address},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime},
       </if>
       <if test="defaultAddress != null">
         defaultAddress = #{defaultAddress},

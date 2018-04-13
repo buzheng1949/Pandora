@@ -7,6 +7,7 @@ import lombok.Data;
  */
 @Data
 public class AddressQuery {
+
     private Integer id;
 
     private Long phone;
@@ -22,4 +23,6 @@ public class AddressQuery {
     private Long updateTime;
 
     private Byte defaultAddress;
+
+    private Integer hasCreated;
 }

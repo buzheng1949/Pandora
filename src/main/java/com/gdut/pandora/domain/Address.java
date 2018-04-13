@@ -22,4 +22,6 @@ public class Address {
 
     private Byte defaultAddress;
 
+    private Integer hasCreated;
+
 }

@@ -63,29 +63,21 @@ public class AddressServiceImpl implements AddressService {
 
     public List<AddressDTO> addAddress(Address query) {
         if (query == null || query.getPhone() == null) {
-            throw new RuntimeException("不能传入无信息的地址");
+            throw new RuntimeException("传入的电话为空");
+        }
+        if(query.getUname() == null){
+            throw new RuntimeException("收件人姓名不能为空");
         }
         if (StringUtils.isEmpty(query.getAddress())) {
             throw new RuntimeException("用户的地址不能为空");
         }
-        if (query.getUid() == null) {
-            UserDTO userDTO = getLoginUserMessage(String.valueOf(query.getPhone()));
-            if (userDTO != null) {
-                query.setUid(Long.valueOf(userDTO.getId()));
-            }
-        }
-        AddressQuery selectQuery = new AddressQuery();
-        selectQuery.setUid(query.getUid());
-        List<Address> addressDTOs = addressMapper.list(selectQuery);
-        //等于空列表的情况下 把插入的设置为默认地址
-        if (CollectionUtils.isEmpty(addressDTOs)) {
-            query.setDefaultAddress((byte) 1);
-
-        } else {
-            query.setDefaultAddress((byte) (0));
-        }
         query.setCreateTime(TimeUtils.getCurrentTime());
         query.setUpdateTime(TimeUtils.getCurrentTime());
+        if (query.getHasCreated() == 1) {
+            query.setDefaultAddress((byte) (0));
+        } else {
+            query.setDefaultAddress((byte) (1));
+        }
         int res = addressMapper.insert(query);
         if (res <= 0) {
             throw new RuntimeException("插入用户地址失败，请重试");
@@ -114,7 +106,7 @@ public class AddressServiceImpl implements AddressService {
 
     @Override
     public List<AddressDTO> updateAddress(AddressQuery query) {
-        if (query.getDefaultAddress().byteValue() == 1) {
+        if (query.getDefaultAddress()!= null &&query.getDefaultAddress().byteValue() == 1) {
             AddressQuery addressQuery = new AddressQuery();
             addressQuery.setUid(query.getUid());
             addressQuery.setDefaultAddress((byte) 1);
