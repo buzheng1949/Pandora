@@ -49,12 +49,12 @@ public class UserController {
 
 
     @RequestMapping("/query")
-    public ServerResponse<List<UserDTO>> queryUser(UserQuery userQuery) {
+    public ServerResponse<List<User>> queryUser(UserQuery userQuery) {
         if (userQuery == null || userQuery.getPhone() == null) {
             return ServerResponse.createByErrorMessage("未传入用户的手机号以及密码");
         }
         try {
-            ServerResponse<List<UserDTO>> res = userService.queryUserMessage(userQuery);
+            ServerResponse<List<User>> res = userService.queryUserMessage(userQuery);
 //            if (!CollectionUtils.isEmpty(res.getData())) {
 //                session.setAttribute(Constant.SESSION.CURRENT_USER, res.getData().get(0));
 //            }
@@ -66,17 +66,17 @@ public class UserController {
     }
 
     @RequestMapping("/login")
-    public ServerResponse<List<UserDTO>> login(UserQuery userQuery) {
+    public ServerResponse<List<User>> login(UserQuery userQuery) {
         if (userQuery == null || userQuery.getPhone() == null || userQuery.getPassword() == null) {
             return ServerResponse.createByErrorMessage("请输入合法的用户名以及密码");
         }
-        List<UserDTO> userList = userService.queryUserMessage(userQuery).getData();
+        List<User> userList = userService.queryUserMessage(userQuery).getData();
         if (CollectionUtils.isEmpty(userList)) {
             return ServerResponse.createByErrorMessage("用户名或者密码出错请重试");
         }
 
         //只有一个用户 获取用户并且放入session里面
-        UserDTO user = userList.get(0);
+        User user = userList.get(0);
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
         HttpSession session = request.getSession();
         session.setAttribute(user.getPhone(), user);
@@ -99,12 +99,12 @@ public class UserController {
 
     @RequestMapping("/update")
     @NeedLogin
-    public ServerResponse<List<UserDTO>> update(UserQuery userQuery) {
+    public ServerResponse<List<User>> update(UserQuery userQuery) {
         if (userQuery == null) {
             return ServerResponse.createByErrorMessage("未传入用户ID");
         }
         try {
-            ServerResponse<List<UserDTO>> res = userService.updateUser(userQuery);
+            ServerResponse<List<User>> res = userService.updateUser(userQuery);
             return res;
         } catch (Exception e) {
             log.error("update the user error", e);
@@ -114,7 +114,7 @@ public class UserController {
 
     @RequestMapping("/focus")
     @NeedLogin
-    public ServerResponse<List<UserDTO>> focus(HttpSession session, UserQuery userQuery) {
+    public ServerResponse<List<User>> focus(HttpSession session, UserQuery userQuery) {
         if (userQuery == null || userQuery.getPhone() == null) {
             return ServerResponse.createByErrorMessage("未传入者用户手机号码");
         }
@@ -128,7 +128,7 @@ public class UserController {
             UserQuery realQuery = new UserQuery();
             realQuery.setFocus(sb.toString());
             realQuery.setId(((UserDTO) session.getAttribute(userQuery.getPhone())).getId());
-            ServerResponse<List<UserDTO>> res = userService.updateUser(userQuery);
+            ServerResponse<List<User>> res = userService.updateUser(userQuery);
             return res;
         } catch (Exception e) {
             log.error("增加用户关注处理逻辑错误", e);
@@ -138,7 +138,7 @@ public class UserController {
 
     @RequestMapping("/removefocus")
     @NeedLogin
-    public ServerResponse<List<UserDTO>> remove(HttpSession session, UserQuery userQuery) {
+    public ServerResponse<List<User>> remove(HttpSession session, UserQuery userQuery) {
         if (userQuery == null || userQuery.getId() == null || userQuery.getPhone() == null) {
             return ServerResponse.createByErrorMessage("未传入用户ID或者用户手机号码");
         }
@@ -155,7 +155,7 @@ public class UserController {
             UserQuery realQuery = new UserQuery();
             realQuery.setFocus(sb.toString());
             realQuery.setId(((UserDTO) session.getAttribute(userQuery.getPhone())).getId());
-            ServerResponse<List<UserDTO>> res = userService.updateUser(userQuery);
+            ServerResponse<List<User>> res = userService.updateUser(userQuery);
             return res;
         } catch (Exception e) {
             log.error("增加用户关注处理逻辑错误", e);

@@ -71,7 +71,7 @@ public class LoginAspect {
     private boolean isLoginSuccess(String phone) {
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
         HttpSession session = request.getSession();
-        UserDTO user = (UserDTO) session.getAttribute(phone);
+        User user = (User) session.getAttribute(phone);
         boolean result = user == null ? Boolean.FALSE : Boolean.TRUE;
         return result;
     }
