@@ -19,4 +19,12 @@ public interface ProductService {
      * @return
      */
     ProductActionResult fetchProductList(ProductQuery productQuery);
+
+    /**
+     * 仅获取商品数据
+     *
+     * @param productQuery
+     * @return
+     */
+    List<Product> selectProductList(ProductQuery productQuery);
 }

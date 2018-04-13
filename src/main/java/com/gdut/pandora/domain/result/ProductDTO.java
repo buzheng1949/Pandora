@@ -9,7 +9,7 @@ import lombok.Data;
 @Data
 public class ProductDTO {
 
-    private Integer tradeItemId;
+    private Integer id;
 
     private String name;
 

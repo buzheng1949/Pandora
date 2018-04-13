@@ -21,7 +21,7 @@ public class User {
 
     private String userDesc;
 
-    private Long collection;
+    private String collection;
 
     private String email;
 

@@ -2,10 +2,14 @@ package com.gdut.pandora.service.impl;
 
 import com.gdut.pandora.common.ResponseCode;
 import com.gdut.pandora.common.ServerResponse;
+import com.gdut.pandora.domain.Product;
 import com.gdut.pandora.domain.User;
+import com.gdut.pandora.domain.query.ProductQuery;
 import com.gdut.pandora.domain.query.UserQuery;
+import com.gdut.pandora.domain.result.ProductDTO;
 import com.gdut.pandora.domain.result.UserDTO;
 import com.gdut.pandora.mapper.UserMapper;
+import com.gdut.pandora.service.ProductService;
 import com.gdut.pandora.service.UserService;
 import com.gdut.pandora.utils.TimeUtils;
 import com.gdut.pandora.utils.UserUtils;
@@ -31,6 +35,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserMapper userMapper;
+
+    @Autowired
+    private ProductService productService;
 
     @Override
     public ServerResponse<Boolean> registerUser(UserQuery userQuery) {
@@ -100,6 +107,7 @@ public class UserServiceImpl implements UserService {
         if (!CollectionUtils.isEmpty(sourceUserList)) {
             for (User user : sourceUserList) {
                 List<User> users = new ArrayList<>();
+                List<Product> products = new ArrayList<>();
                 UserDTO userDTO = new UserDTO();
                 BeanUtils.copyProperties(user, userDTO);
                 if (!StringUtils.isEmpty(user.getFocus())) {
@@ -112,6 +120,18 @@ public class UserServiceImpl implements UserService {
                     }
                     userDTO.setFocus(users);
                 }
+                if (!StringUtils.isEmpty(user.getCollection())) {
+                    String[] collectionItems = user.getFocus().split(",");
+                    for (String id : collectionItems) {
+                        ProductQuery query = new ProductQuery();
+                        query.setId(Integer.valueOf(id));
+                        List<Product> list = productService.selectProductList(query);
+                        products.addAll(list);
+                    }
+                    userDTO.setCollection(products);
+                    userDTO.setFocus(users);
+                }
+
                 targetUserDTOList.add(userDTO);
             }
         }

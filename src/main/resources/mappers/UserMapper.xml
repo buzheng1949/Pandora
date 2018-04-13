@@ -11,7 +11,7 @@
         <result column="phone" jdbcType="VARCHAR" property="phone"/>
         <result column="focus" jdbcType="VARCHAR" property="focus"/>
         <result column="image" jdbcType="VARCHAR" property="image"/>
-        <result column="collection" jdbcType="BIGINT" property="collection"/>
+        <result column="collection" jdbcType="VARCHAR" property="collection"/>
         <result column="createTime" jdbcType="BIGINT" property="createTime"/>
         <result column="updateTime" jdbcType="BIGINT" property="updateTime"/>
     </resultMap>

@@ -36,7 +36,7 @@ public class ProductServiceImpl implements ProductService {
      * @param productQuery
      * @return
      */
-    private List<Product> selectProductList(ProductQuery productQuery) {
+    public List<Product> selectProductList(ProductQuery productQuery) {
         ProductQuery query = productQuery;
         if (productQuery == null) {
             query = new ProductQuery();
@@ -66,7 +66,6 @@ public class ProductServiceImpl implements ProductService {
             for (Product product : productList) {
                 ProductDTO productDTO = new ProductDTO();
                 BeanUtils.copyProperties(product, productDTO);
-                productDTO.setTradeItemId(product.getId());
                 resultDtos.add(productDTO);
             }
         }

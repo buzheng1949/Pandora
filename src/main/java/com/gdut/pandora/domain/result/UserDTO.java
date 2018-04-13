@@ -1,5 +1,6 @@
 package com.gdut.pandora.domain.result;
 
+import com.gdut.pandora.domain.Product;
 import com.gdut.pandora.domain.User;
 import lombok.Data;
 
@@ -25,8 +26,6 @@ public class UserDTO {
 
     private String phone;
 
-    private Long collection;
-
     private Long createTime;
 
     private Long updateTime;
@@ -36,4 +35,6 @@ public class UserDTO {
      * 用户关注列表用户的信息
      */
     private List<User> focus;
+
+    private List<Product> collection;
 }
