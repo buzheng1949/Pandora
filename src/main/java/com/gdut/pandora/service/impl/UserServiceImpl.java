@@ -53,11 +53,11 @@ public class UserServiceImpl implements UserService {
         if (StringUtils.isEmpty(userQuery.getImage())) {
             userQuery.setImage(DEFAULT_AVATAR);
         }
-        userQuery.setFocus("1");
-        userQuery.setCollection("1");
+        userQuery.setFocus("0");
+        userQuery.setCollection("0");
         userQuery.setCreateTime(TimeUtils.getCurrentTime());
         userQuery.setUpdateTime(TimeUtils.getCurrentTime());
-        ServerResponse<List<UserDTO>> userList = queryUserMessage(userQuery);
+        ServerResponse<List<User>> userList = queryUserMessage(userQuery);
         if (userList.getData() != null && userList.getData().size() > 0) {
             return ServerResponse.createByErrorMessage("用户已经存在，请直接登陆");
         }
@@ -70,7 +70,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ServerResponse<List<UserDTO>> updateUser(UserQuery userQuery) {
+    public ServerResponse<List<User>> updateUser(UserQuery userQuery) {
         boolean result = false;
         if (userQuery == null || StringUtils.isEmpty(userQuery.getPhone())) {
             return ServerResponse.createByError();
@@ -80,14 +80,20 @@ public class UserServiceImpl implements UserService {
         if (res > 0) {
             result = true;
             List<User> userMessageAfterUpdate = userMapper.selectWhthoutPassword(userQuery);
-            List<UserDTO> targetList = assembleUserResult(userMessageAfterUpdate);
-            return ServerResponse.createBySuccess("success", targetList);
+            if(!CollectionUtils.isEmpty(userMessageAfterUpdate)){
+                User user = userMessageAfterUpdate.get(0);
+                String[] focusUserList = user.getFocus().split(",");
+                String[] collectionItems = user.getCollection().split(",");
+                user.setFocus(String.valueOf(focusUserList.length));
+                user.setCollection(String.valueOf(collectionItems.length));
+            }
+            return ServerResponse.createBySuccess("success", userMessageAfterUpdate);
         }
         return ServerResponse.createByErrorMessage("用户更新信息失败");
     }
 
     @Override
-    public ServerResponse<List<UserDTO>> queryUserMessage(UserQuery userQuery) {
+    public ServerResponse<List<User>> queryUserMessage(UserQuery userQuery) {
         if (userQuery == null) {
             return ServerResponse.createByError();
         }
@@ -95,9 +101,16 @@ public class UserServiceImpl implements UserService {
             return ServerResponse.createByErrorMessage("请输入用户手机号码");
         }
         List<User> res = userMapper.select(userQuery);
-        List<UserDTO> targetList = assembleUserResult(res);
-        if (!CollectionUtils.isEmpty(targetList)) {
-            return ServerResponse.createBySuccess("success", targetList);
+        if(!CollectionUtils.isEmpty(res)){
+            User user = res.get(0);
+            String[] focusUserList = user.getFocus().split(",");
+            String[] collectionItems = user.getCollection().split(",");
+            user.setFocus(String.valueOf(focusUserList.length));
+            user.setCollection(String.valueOf(collectionItems.length));
+        }
+//        List<UserDTO> targetList = assembleUserResult(res);
+        if (!CollectionUtils.isEmpty(res)) {
+            return ServerResponse.createBySuccess("success", res);
         } else {
             return ServerResponse.createByErrorMessage("当前用户不存在");
         }
@@ -144,6 +157,7 @@ public class UserServiceImpl implements UserService {
         }
         return targetUserDTOList;
     }
+
 
 
 }
