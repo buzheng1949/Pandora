@@ -136,7 +136,7 @@ public class UserServiceImpl implements UserService {
         if (!CollectionUtils.isEmpty(sourceUserList)) {
             for (User user : sourceUserList) {
                 List<User> users = new ArrayList<>();
-                List<Product> products = new ArrayList<>();
+                List<ProductDTO> products = new ArrayList<>();
                 UserDTO userDTO = new UserDTO();
                 BeanUtils.copyProperties(user, userDTO);
                 if (!StringUtils.isEmpty(user.getFocus())) {
@@ -154,7 +154,7 @@ public class UserServiceImpl implements UserService {
                     for (String id : collectionItems) {
                         ProductQuery query = new ProductQuery();
                         query.setId(Integer.valueOf(id));
-                        List<Product> list = productService.selectProductList(query);
+                        List<ProductDTO> list = productService.selectProductList(query);
                         products.addAll(list);
                     }
                     userDTO.setCollection(products);

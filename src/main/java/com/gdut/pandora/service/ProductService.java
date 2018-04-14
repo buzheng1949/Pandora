@@ -3,6 +3,7 @@ package com.gdut.pandora.service;
 import com.gdut.pandora.domain.Product;
 import com.gdut.pandora.domain.query.ProductQuery;
 import com.gdut.pandora.domain.result.ProductActionResult;
+import com.gdut.pandora.domain.result.ProductDTO;
 
 import java.util.List;
 
@@ -26,5 +27,5 @@ public interface ProductService {
      * @param productQuery
      * @return
      */
-    List<Product> selectProductList(ProductQuery productQuery);
+    List<ProductDTO> selectProductList(ProductQuery productQuery);
 }

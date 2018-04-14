@@ -29,6 +29,8 @@ public class ProductQuery extends BaseQuery {
 
     private String image;
 
+    private String images;
+
     private String price;
 
     private Long createTime;

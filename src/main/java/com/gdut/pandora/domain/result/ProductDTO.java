@@ -2,9 +2,10 @@ package com.gdut.pandora.domain.result;
 
 import lombok.Data;
 
+import java.util.List;
+
 /**
  * Created by buzheng on 18/4/1.
- *
  */
 @Data
 public class ProductDTO {
@@ -34,4 +35,6 @@ public class ProductDTO {
     private Long createTime;
 
     private Long updateTime;
+
+    private String[] subImages = new String[]{};
 }

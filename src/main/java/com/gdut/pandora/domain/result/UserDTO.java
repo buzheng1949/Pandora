@@ -35,5 +35,5 @@ public class UserDTO {
      */
     private List<User> focus;
 
-    private List<Product> collection;
+    private List<ProductDTO> collection;
 }

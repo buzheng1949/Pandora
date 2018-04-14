@@ -33,6 +33,6 @@ public class Product {
 
     private Long updateTime;
 
-
+    private String images;
 
 }
