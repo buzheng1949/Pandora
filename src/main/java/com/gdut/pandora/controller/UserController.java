@@ -1,5 +1,7 @@
 package com.gdut.pandora.controller;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.gdut.pandora.anno.NeedLogin;
 import com.gdut.pandora.anno.ReturnType;
 import com.gdut.pandora.common.Constant;
@@ -7,13 +9,17 @@ import com.gdut.pandora.common.ResponseCode;
 import com.gdut.pandora.common.ReturnTypeEnum;
 import com.gdut.pandora.common.ServerResponse;
 import com.gdut.pandora.domain.User;
+import com.gdut.pandora.domain.query.ProductQuery;
 import com.gdut.pandora.domain.query.UserQuery;
+import com.gdut.pandora.domain.result.ProductDTO;
 import com.gdut.pandora.domain.result.UserDTO;
 import com.gdut.pandora.mapper.UserMapper;
+import com.gdut.pandora.service.ProductService;
 import com.gdut.pandora.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -39,6 +45,9 @@ public class UserController {
 
     @Autowired
     private UserMapper userMapper;
+
+    @Autowired
+    private ProductService productService;
 
     @RequestMapping("/register")
     public ServerResponse<Boolean> register(UserQuery userQuery) {
@@ -72,9 +81,6 @@ public class UserController {
         }
         try {
             ServerResponse<List<User>> res = userService.queryUserMessage(userQuery, true);
-//            if (!CollectionUtils.isEmpty(res.getData())) {
-//                session.setAttribute(Constant.SESSION.CURRENT_USER, res.getData().get(0));
-//            }
             return res;
         } catch (Exception e) {
             log.error("query the user error", e);
@@ -142,10 +148,9 @@ public class UserController {
      * @return
      */
     @RequestMapping("/message/update")
-    @ReturnType(type = ReturnTypeEnum.DEFAULT)
-    public ServerResponse queryUserCenter(@RequestParam(value = "id", required = true) Integer id,
-                                          @RequestParam(value = "isFocus", required = true) Integer isFocus,
-                                          @RequestParam(value = "phone", required = true) String phone) {
+    public ServerResponse focus(@RequestParam(value = "uid", required = true) Integer id,
+                                @RequestParam(value = "isFocus", required = true) Integer isFocus,
+                                @RequestParam(value = "phone", required = true) String phone) {
         if (id == null) {
             return ServerResponse.createByErrorMessage("请传入需要移除用户的ID", new ArrayList<>());
         }
@@ -169,7 +174,7 @@ public class UserController {
         User user = res.get(0);
         String[] resultFocus = user.getFocus().split(",");
         List<String> sourceList = new ArrayList<>();
-        for (String s : resultFocus){
+        for (String s : resultFocus) {
             sourceList.add(s);
         }
         Iterator<String> iterator = sourceList.iterator();
@@ -218,81 +223,117 @@ public class UserController {
             hash.put("data", new ArrayList<>());
             return ServerResponse.createBySuccess("更新成功", hash);
         }
-
-
     }
 
-    @RequestMapping("/focus")
-    @NeedLogin
-    @ReturnType(type = ReturnTypeEnum.DEFAULT)
-    public ServerResponse<List<User>> focus(HttpSession session, UserQuery userQuery) {
-        List<User> users = new ArrayList<>();
-        if (userQuery == null || userQuery.getPhone() == null) {
-            return ServerResponse.createByErrorMessage("未传入者用户手机号码", users);
-        }
-        try {
-            UserDTO userDTO = (UserDTO) session.getAttribute(Constant.SESSION.CURRENT_USER);
-            List<User> focusList = userDTO.getFocus();
-            StringBuilder sb = new StringBuilder(userQuery.getId()).append(",");
-            if (!CollectionUtils.isEmpty(focusList)) {
-                rebuildFocusStr(focusList, sb);
-            }
-            UserQuery realQuery = new UserQuery();
-            realQuery.setFocus(sb.toString());
-            realQuery.setId(((UserDTO) session.getAttribute(userQuery.getPhone())).getId());
-            ServerResponse<List<User>> res = userService.updateUser(userQuery);
-            return res;
-        } catch (Exception e) {
-            log.error("增加用户关注处理逻辑错误", e);
-        }
-        return ServerResponse.createByErrorMessage("服务端处理出错", users);
-    }
-
-    @RequestMapping("/removefocus")
-    @NeedLogin
-    @ReturnType(type = ReturnTypeEnum.DEFAULT)
-    public ServerResponse<List<User>> remove(HttpSession session, UserQuery userQuery) {
-        List<User> users = new ArrayList<>();
-        if (userQuery == null || userQuery.getId() == null || userQuery.getPhone() == null) {
-            return ServerResponse.createByErrorMessage("未传入用户ID或者用户手机号码", users);
-        }
-        try {
-            UserDTO userDTO = (UserDTO) session.getAttribute(Constant.SESSION.CURRENT_USER);
-            List<User> focusList = userDTO.getFocus();
-            StringBuilder sb = new StringBuilder(userQuery.getId()).append(",");
-            if (!CollectionUtils.isEmpty(focusList)) {
-                if (focusList.indexOf(userQuery.getId()) != -1) {
-                    focusList.remove(userQuery.getId());
-                }
-                rebuildFocusStr(focusList, sb);
-            }
-            UserQuery realQuery = new UserQuery();
-            realQuery.setFocus(sb.toString());
-            realQuery.setId(((UserDTO) session.getAttribute(userQuery.getPhone())).getId());
-            ServerResponse<List<User>> res = userService.updateUser(userQuery);
-            return res;
-        } catch (Exception e) {
-            log.error("增加用户关注处理逻辑错误", e);
-        }
-        return ServerResponse.createByErrorMessage("服务端处理出错", users);
-    }
 
     /**
-     * 再次转化
+     * 查看用户具体信息的接口 通过phone判断是否是当前用户
      *
-     * @param focusList
-     * @param sb
+     * @param id
+     * @param phone
+     * @return
      */
-    private void rebuildFocusStr(List<User> focusList, StringBuilder sb) {
-        for (int i = 0; i < focusList.size(); i++) {
-            //遇到的是时候先转吧
-            User u = (User) focusList.get(i);
-            if (i != focusList.size() - 1) {
-                sb.append(u.getId()).append(",");
-            } else {
-                sb.append(u.getId());
-            }
+    @RequestMapping("/message/query")
+    public ServerResponse queryUserCenter(@RequestParam(value = "uid", required = true) Integer id,
+                                          @RequestParam(value = "phone", required = true) String phone) {
+        if (id == null || id <= 0) {
+            return ServerResponse.createByErrorMessage("请传入有效的用户ID", new ArrayList<>());
         }
+        if (phone == null) {
+            return ServerResponse.createByErrorMessage("请传入有效的手机号码", new ArrayList<>());
+        }
+        UserQuery userQuery = new UserQuery();
+        userQuery.setId(id);
+        List<User> res = userMapper.selectWhthoutPassword(userQuery);
+        userQuery.setId(null);
+        userQuery.setPhone(phone);
+        List<User> self = userMapper.selectWhthoutPassword(userQuery);
+        if (CollectionUtils.isEmpty(res) || res.get(0) == null) {
+            //当前查询用户不存在
+            return ServerResponse.createByErrorMessage("传入的ID用户不存在，请重新检查", new ArrayList<>());
+        }
+        try {
+            User user = res.get(0);
+            boolean isSelf = false;
+            if (user.getPhone().equals(phone)) {
+                isSelf = true;
+            }
+            JSONObject result = JSONObject.parseObject(JSON.toJSONString(user));
+            String focus = user.getFocus();
+            String collections = user.getCollection();
+            List<String> focusList = covertString2List(focus, ",");
+            List<String> collectionList = covertString2List(collections, ",");
+            List<Map> focusResult = new ArrayList<>();
+            for (String fs : focusList) {
+                UserQuery uQ = new UserQuery();
+                uQ.setId(Integer.valueOf(fs));
+                List<User> focusSingleUser = userMapper.selectWhthoutPassword(uQ);
+                if (CollectionUtils.isEmpty(focusSingleUser)) {
+                    continue;
+                }
+                HashMap h = new HashMap();
+                User one = focusSingleUser.get(0);
+                h.put("id", one.getId());
+                h.put("image", one.getImage());
+                h.put("userName", one.getUserName());
+                h.put("userDesc", one.getUserDesc());
+                focusResult.add(h);
+            }
+            List<Map> collectionResult = new ArrayList<>();
+            for (String c : collectionList) {
+                ProductQuery p = new ProductQuery();
+                p.setId(Integer.valueOf(c));
+                List<ProductDTO> productDtos = productService.selectProductList(p);
+                if (CollectionUtils.isEmpty(productDtos)) {
+                    continue;
+                }
+                HashMap h = new HashMap();
+                ProductDTO one = productDtos.get(0);
+                h.put("id", one.getId());
+                h.put("image", one.getImage());
+                h.put("name", one.getName());
+                h.put("title", one.getTitle());
+                collectionResult.add(h);
+            }
+            result.put("focus", focusResult);
+            result.put("collection", collectionResult);
+            result.remove("password");
+            if (isSelf) {
+                result.put("isFocus", -1);
+            } else {
+                if (self != null && self.size() > 0) {
+                    User u = self.get(0);
+                    List<String> selfFocus = covertString2List(u.getFocus(), ",");
+                    if (selfFocus.contains(String.valueOf(id))) {
+                        result.put("isFocus", 1);
+                    } else {
+                        result.put("isFocus", 0);
+                    }
+                } else {
+                    result.put("isFocus", -1);
+                }
+
+            }
+            return ServerResponse.createBySuccess("success", result);
+        } catch (Exception e) {
+            log.error("query the user detail error", e);
+            return ServerResponse.createByErrorMessage("查询失败", new ArrayList<>());
+        }
+
+
     }
+
+    public List<String> covertString2List(String s, String split) {
+        List<String> result = new ArrayList<>();
+        if (StringUtils.isEmpty(s) && s.split(split) == null) {
+            return result;
+        }
+        String[] resultStr = s.split(split);
+        for (String so : resultStr) {
+            result.add(so);
+        }
+        return result;
+    }
+
 
 }
