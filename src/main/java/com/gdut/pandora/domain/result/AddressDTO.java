@@ -1,5 +1,6 @@
 package com.gdut.pandora.domain.result;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.gdut.pandora.domain.Address;
 import lombok.Data;
 
@@ -24,5 +25,6 @@ public class AddressDTO {
     private Long updateTime;
 
     private Byte defaultAddress;
+
 
 }

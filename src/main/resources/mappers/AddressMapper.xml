@@ -97,9 +97,9 @@
   <!-- fetch where子句-->
   <sql id="fetchWhereClause">
     <where>
-      <!--<if test="uid != null">-->
-        <!--AND uid = #{uid}-->
-      <!--</if>-->
+      <if test="defaultAddress != null">
+        AND defaultAddress = #{defaultAddress}
+      </if>
       uid = #{uid}
     </where>
   </sql>

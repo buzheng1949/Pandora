@@ -39,6 +39,9 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private ProductService productService;
 
+    @Autowired
+    private UserUtils userUtils;
+
     public static final String DEFAULT_AVATAR = "https://s3.mogucdn.com/mlcdn/c024f5/180413_8a59h26ka3dkfdbi6698cg8j409kd_651x656.png";
 
     @Override
@@ -85,6 +88,7 @@ public class UserServiceImpl implements UserService {
                 String[] collectionItems = user.getCollection().split(",");
                 user.setFocus(String.valueOf(focusUserList.length));
                 user.setCollection(String.valueOf(collectionItems.length));
+                userUtils.addAddressMessageToUser(user);
             }
             return ServerResponse.createBySuccess("success", result);
         }
@@ -111,6 +115,7 @@ public class UserServiceImpl implements UserService {
             String[] collectionItems = user.getCollection().split(",");
             user.setFocus(String.valueOf(focusUserList.length));
             user.setCollection(String.valueOf(collectionItems.length));
+            userUtils.addAddressMessageToUser(user);
         }
 //        List<UserDTO> targetList = assembleUserResult(res);
         if (!CollectionUtils.isEmpty(res)) {

@@ -1,6 +1,7 @@
 package com.gdut.pandora.domain;
 
 import com.alibaba.fastjson.annotation.JSONType;
+import com.gdut.pandora.domain.result.AddressDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -19,9 +20,12 @@ public class User {
 
     private String password;
 
-    private String address="";
+    /**
+     * todo 这里为空返回一个空的类 有点难呀
+     */
+    private AddressDTO address;
 
-    private String userDesc="";
+    private String userDesc = "";
 
     private String collection;
 
@@ -31,8 +35,8 @@ public class User {
 
     private Long updateTime;
 
-    private String focus="";
+    private String focus = "";
 
-    private String image="";
+    private String image = "";
 
 }
