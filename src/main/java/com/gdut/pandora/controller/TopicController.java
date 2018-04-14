@@ -1,7 +1,9 @@
 package com.gdut.pandora.controller;
 
 import com.gdut.pandora.anno.NeedLogin;
+import com.gdut.pandora.anno.ReturnType;
 import com.gdut.pandora.common.Constant;
+import com.gdut.pandora.common.ReturnTypeEnum;
 import com.gdut.pandora.common.ServerResponse;
 import com.gdut.pandora.domain.query.TopicQuery;
 import com.gdut.pandora.domain.result.TopicDTO;
@@ -47,6 +49,7 @@ public class TopicController {
     @ResponseBody
     @RequestMapping("/public")
     @NeedLogin
+    @ReturnType(type = ReturnTypeEnum.BOOLEAN_TYPE)
     public ServerResponse<Boolean> publicTopic(HttpSession session, TopicQuery topicQuery) {
         boolean res = false;
         try {
@@ -57,7 +60,7 @@ public class TopicController {
             res = topicService.publicTopic(topicQuery);
         } catch (Exception e) {
             log.error("public topic error", e);
-            return ServerResponse.createByErrorMessage("发布失败，请检查传入参数是否齐全");
+            return ServerResponse.createByErrorMessage("发布失败，请检查传入参数是否齐全", Boolean.FALSE);
         }
         return ServerResponse.createBySuccessMessage(res);
     }

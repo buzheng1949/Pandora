@@ -8,7 +8,7 @@ public enum ResponseCode {
 
     SUCCESS(1, "success"),
     ERROR(0, "error"),
-    NEED_LOGIN(10, "need_login"),
+    NEED_LOGIN(0, "请进行用户注册或者登陆再进行相关操作"),
     ILLEGAL_ARGUMENT(2, "illegal_argument");
 
     private final int code;

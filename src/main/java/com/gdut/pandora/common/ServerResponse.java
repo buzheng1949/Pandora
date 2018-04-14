@@ -64,12 +64,12 @@ public class ServerResponse<T> implements Serializable {
 
 
     public static <T> ServerResponse<T> createByError() {
-        return new ServerResponse<T>(ResponseCode.ERROR.getCode(), ResponseCode.ERROR.getDesc());
+        return new ServerResponse<T>(ResponseCode.ERROR.getCode(), ResponseCode.NEED_LOGIN.getDesc());
     }
 
 
-    public static <T> ServerResponse<T> createByErrorMessage(String errorMessage) {
-        return new ServerResponse<T>(ResponseCode.ERROR.getCode(), errorMessage);
+    public static <T> ServerResponse<T> createByErrorMessage(String errorMessage,T data) {
+        return new ServerResponse<T>(ResponseCode.ERROR.getCode(), errorMessage,data);
     }
 
     public static <T> ServerResponse<T> createByErrorCodeMessage(int errorCode, String errorMessage) {

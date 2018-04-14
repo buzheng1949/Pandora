@@ -45,7 +45,7 @@ public class UserServiceImpl implements UserService {
     public ServerResponse<Boolean> registerUser(UserQuery userQuery) {
         boolean result = false;
         if (!UserUtils.isValidUser(userQuery)) {
-            return ServerResponse.createByErrorMessage("用户信息不全，请检查用户信息");
+            return ServerResponse.createByErrorMessage("用户信息不全，请检查用户信息",false);
         }
         if (StringUtils.isEmpty(userQuery.getUserName())) {
             userQuery.setUserName("潘多拉的魔法家");
@@ -57,50 +57,54 @@ public class UserServiceImpl implements UserService {
         userQuery.setCollection("0");
         userQuery.setCreateTime(TimeUtils.getCurrentTime());
         userQuery.setUpdateTime(TimeUtils.getCurrentTime());
-        ServerResponse<List<User>> userList = queryUserMessage(userQuery);
+        ServerResponse<List<User>> userList = queryUserMessage(userQuery,false);
         if (userList.getData() != null && userList.getData().size() > 0) {
-            return ServerResponse.createByErrorMessage("用户已经存在，请直接登陆");
+            return ServerResponse.createByErrorMessage("用户已经存在，请直接登陆",false);
         }
         Integer res = userMapper.insert(userQuery);
         if (res > 0) {
             result = true;
             return ServerResponse.createBySuccess("用户注册成功", result);
         }
-        return ServerResponse.createByErrorMessage("用户注册失败");
+        return ServerResponse.createByErrorMessage("用户注册失败",false);
     }
 
     @Override
     public ServerResponse<List<User>> updateUser(UserQuery userQuery) {
-        boolean result = false;
+        List<User> result  = new ArrayList<>();
         if (userQuery == null || StringUtils.isEmpty(userQuery.getPhone())) {
-            return ServerResponse.createByError();
+            return ServerResponse.createByErrorMessage("更新用户信息时请带上手机号码",result);
         }
         userQuery.setUpdateTime(TimeUtils.getCurrentTime());
         int res = userMapper.update(userQuery);
         if (res > 0) {
-            result = true;
-            List<User> userMessageAfterUpdate = userMapper.selectWhthoutPassword(userQuery);
-            if(!CollectionUtils.isEmpty(userMessageAfterUpdate)){
-                User user = userMessageAfterUpdate.get(0);
+            result = userMapper.selectWhthoutPassword(userQuery);
+            if(!CollectionUtils.isEmpty(result)){
+                User user = result.get(0);
                 String[] focusUserList = user.getFocus().split(",");
                 String[] collectionItems = user.getCollection().split(",");
                 user.setFocus(String.valueOf(focusUserList.length));
                 user.setCollection(String.valueOf(collectionItems.length));
             }
-            return ServerResponse.createBySuccess("success", userMessageAfterUpdate);
+            return ServerResponse.createBySuccess("success", result);
         }
-        return ServerResponse.createByErrorMessage("用户更新信息失败");
+        return ServerResponse.createByErrorMessage("用户更新信息失败",result);
     }
 
     @Override
-    public ServerResponse<List<User>> queryUserMessage(UserQuery userQuery) {
+    public ServerResponse<List<User>> queryUserMessage(UserQuery userQuery,boolean login) {
+        List<User> res = new ArrayList<>();
         if (userQuery == null) {
-            return ServerResponse.createByError();
+            return ServerResponse.createByErrorMessage("请传入有效查询参数",res);
         }
         if (StringUtils.isEmpty(userQuery.getPhone())) {
-            return ServerResponse.createByErrorMessage("请输入用户手机号码");
+            return ServerResponse.createByErrorMessage("请输入用户手机号码",res);
         }
-        List<User> res = userMapper.select(userQuery);
+        if(login){
+            res = userMapper.selectWhthoutPassword(userQuery);
+        }else{
+            res = userMapper.select(userQuery);
+        }
         if(!CollectionUtils.isEmpty(res)){
             User user = res.get(0);
             String[] focusUserList = user.getFocus().split(",");
@@ -112,7 +116,7 @@ public class UserServiceImpl implements UserService {
         if (!CollectionUtils.isEmpty(res)) {
             return ServerResponse.createBySuccess("success", res);
         } else {
-            return ServerResponse.createByErrorMessage("当前用户不存在");
+            return ServerResponse.createByErrorMessage("当前用户不存在",res);
         }
     }
 

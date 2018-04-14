@@ -36,7 +36,7 @@ public class ProductController {
             productActionResult = productService.fetchProductList(query);
         } catch (Exception e) {
             log.error("query the product list error", e);
-            return ServerResponse.createByErrorMessage("查询商品列表失败");
+            return ServerResponse.createByErrorMessage("查询商品列表失败",productActionResult);
         }
         return ServerResponse.createBySuccessMessage(productActionResult);
     }

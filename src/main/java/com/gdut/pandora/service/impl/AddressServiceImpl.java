@@ -1,6 +1,8 @@
 package com.gdut.pandora.service.impl;
 
 import com.gdut.pandora.anno.NeedLogin;
+import com.gdut.pandora.anno.ReturnType;
+import com.gdut.pandora.common.ReturnTypeEnum;
 import com.gdut.pandora.domain.Address;
 import com.gdut.pandora.domain.query.AddressQuery;
 import com.gdut.pandora.domain.query.UserQuery;
@@ -34,6 +36,7 @@ public class AddressServiceImpl implements AddressService {
 
     @Override
     @NeedLogin
+    @ReturnType(type = ReturnTypeEnum.DEFAULT)
     public List<AddressDTO> getAddressList(AddressQuery query) {
         List<AddressDTO> res = new ArrayList<>();
         if (query == null) {

@@ -2,8 +2,10 @@ package com.gdut.pandora.domain;
 
 import com.alibaba.fastjson.annotation.JSONType;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.FieldDefaults;
 
 import java.util.Date;
 
@@ -17,12 +19,11 @@ public class User {
 
     private String password;
 
-    private String address;
+    private String address="";
 
-    private String userDesc;
+    private String userDesc="";
 
     private String collection;
-
 
     private String phone;
 
@@ -30,8 +31,8 @@ public class User {
 
     private Long updateTime;
 
-    private String focus;
+    private String focus="";
 
-    private String image;
+    private String image="";
 
 }

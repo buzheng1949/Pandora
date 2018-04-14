@@ -43,7 +43,7 @@ public class BannerController {
             bannerList = bannerService.queryBannerList(bannerQuery);
         } catch (Exception e) {
             log.error("query the bannerList error", e);
-            return ServerResponse.createByErrorMessage("查询轮播列表异常");
+            return ServerResponse.createByErrorMessage("查询轮播列表异常",bannerList);
         }
         return ServerResponse.createBySuccess(ResponseCode.SUCCESS.getDesc(),bannerList);
     }

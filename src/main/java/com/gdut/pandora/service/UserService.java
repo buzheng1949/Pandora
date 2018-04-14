@@ -30,11 +30,11 @@ public interface UserService {
     ServerResponse<List<User>> updateUser(UserQuery userQuery);
 
     /**
-     * 查询用户信息接口
+     * 用户登陆状态查询用户信息接口
      *
      * @param userQuery
      * @return
      */
-    ServerResponse<List<User>> queryUserMessage(UserQuery userQuery);
+    ServerResponse<List<User>> queryUserMessage(UserQuery userQuery,boolean login);
 
 }

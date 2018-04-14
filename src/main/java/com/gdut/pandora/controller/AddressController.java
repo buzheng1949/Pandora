@@ -1,6 +1,7 @@
 package com.gdut.pandora.controller;
 
 import com.gdut.pandora.anno.NeedLogin;
+import com.gdut.pandora.anno.ReturnType;
 import com.gdut.pandora.common.ServerResponse;
 import com.gdut.pandora.domain.Address;
 import com.gdut.pandora.domain.Banner;
@@ -30,12 +31,13 @@ public class AddressController {
 
     @RequestMapping("/query")
     @NeedLogin
+    @ReturnType
     public ServerResponse<List<AddressDTO>> query(AddressQuery address) {
         List<AddressDTO> addressDTOs = new ArrayList<>();
         try {
             addressDTOs = addressService.getAddressList(address);
         } catch (Exception e) {
-            return ServerResponse.createByErrorMessage(e.getMessage());
+            return ServerResponse.createByErrorMessage(e.getMessage(),addressDTOs);
         }
         return ServerResponse.createBySuccess("查询成功", addressDTOs);
     }
@@ -44,12 +46,12 @@ public class AddressController {
     public ServerResponse<List<AddressDTO>> add(Address address) {
         List<AddressDTO> addressDTOs = new ArrayList<>();
         if(address.getUid() == null){
-            return ServerResponse.createByErrorMessage("请传入用户ID");
+            return ServerResponse.createByErrorMessage("请传入用户ID",addressDTOs);
         }
         try {
             addressDTOs = addressService.addAddress(address);
         } catch (Exception e) {
-            return ServerResponse.createByErrorMessage(e.getMessage());
+            return ServerResponse.createByErrorMessage(e.getMessage(),addressDTOs);
         }
         return ServerResponse.createBySuccess("新增用户地址成功", addressDTOs);
     }
@@ -59,11 +61,11 @@ public class AddressController {
         List<AddressDTO> addressDTOs = new ArrayList<>();
         try {
             if (address.getId() == null || address.getUid() == null) {
-                return ServerResponse.createByErrorMessage("必须传入地址ID以及用户ID");
+                return ServerResponse.createByErrorMessage("必须传入地址ID以及用户ID",addressDTOs);
             }
             addressDTOs = addressService.updateAddress(address);
         } catch (Exception e) {
-            return ServerResponse.createByErrorMessage(e.getMessage());
+            return ServerResponse.createByErrorMessage(e.getMessage(),addressDTOs);
         }
         return ServerResponse.createBySuccess("更新成功", addressDTOs);
     }
@@ -74,7 +76,7 @@ public class AddressController {
         try {
             addressDTOs = addressService.deleteAddress(address);
         } catch (Exception e) {
-            return ServerResponse.createByErrorMessage("更新用户信息失败，请排查");
+            return ServerResponse.createByErrorMessage("更新用户信息失败，请排查",addressDTOs);
         }
         return ServerResponse.createBySuccess("删除成功", addressDTOs);
     }
