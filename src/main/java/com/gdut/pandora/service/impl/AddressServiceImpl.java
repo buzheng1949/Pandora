@@ -35,20 +35,11 @@ public class AddressServiceImpl implements AddressService {
     private AddressMapper addressMapper;
 
     @Override
-    @NeedLogin
     @ReturnType(type = ReturnTypeEnum.DEFAULT)
     public List<AddressDTO> getAddressList(AddressQuery query) {
         List<AddressDTO> res = new ArrayList<>();
-        if (query == null) {
-            throw new RuntimeException("请登陆进行查询或者传入当前登陆用户手机号");
-        }
-        if (query.getUid() == null) {
-            UserDTO userDTO = getLoginUserMessage(String.valueOf(query.getPhone()));
-            if (userDTO != null) {
-                query.setUid(Long.valueOf(userDTO.getId()));
-            } else {
-                throw new RuntimeException("请用户进行登陆后查询");
-            }
+        if (query == null || query.getUid() == null) {
+            throw new RuntimeException("请传入用户的uid进行查询");
         }
         AddressQuery realQuery = new AddressQuery();
         realQuery.setUid(query.getUid());
@@ -83,14 +74,13 @@ public class AddressServiceImpl implements AddressService {
         }
         int res = addressMapper.insert(query);
         if (res <= 0) {
-            throw new RuntimeException("插入用户地址失败，请重试");
+            throw new RuntimeException("新增地址失败，请稍后再试");
         }
         AddressQuery addressQuery = new AddressQuery();
         addressQuery.setPhone(query.getPhone());
         addressQuery.setUid(query.getUid());
         addressQuery.setId(query.getId());
         List<AddressDTO> addressList = getAddressList(addressQuery);
-
         return addressList;
     }
 
