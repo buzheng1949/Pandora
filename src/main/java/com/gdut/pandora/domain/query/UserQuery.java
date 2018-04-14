@@ -29,4 +29,5 @@ public class UserQuery extends BaseQuery {
     private String image;
 
     private String focus;
+
 }
