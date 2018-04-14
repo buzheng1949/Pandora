@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.gdut.pandora.mapper.OrderMapper">
+    <resultMap id="BaseResultMap" type="com.gdut.pandora.domain.Order">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="price" jdbcType="BIGINT" property="price"/>
+        <result column="uid" jdbcType="BIGINT" property="uid"/>
+        <result column="createTime" jdbcType="BIGINT" property="createTime"/>
+        <result column="image" jdbcType="VARCHAR" property="image"/>
+        <result column="num" jdbcType="BIGINT" property="num"/>
+        <result column="tradeItems" jdbcType="VARCHAR" property="tradeItems"/>
+        <result column="nums" jdbcType="VARCHAR" property="nums"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, price, uid, createTime, image, num, tradeItems, nums
+  </sql>
+
+    <sql id="tableName">order</sql>
+    <!-- fetch查询 -->
+    <select id="select" parameterType="com.gdut.pandora.domain.query.OrderQuery"
+            resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM
+        <include refid="tableName"/>
+        <include refid="fetchWhereClause"/>
+        <include refid="fetchOrderByClause"/>
+    </select>
+
+
+    <!--insert/update/select -->
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id"
+            parameterType="com.gdut.pandora.domain.Order">
+        insert into
+        <include refid="tableName"/>
+        (price,uid,createTime,image,tradeItems,nums)
+        values(
+        #{price},
+        #{uid},
+        #{createTime},
+        #{image},
+        #{tradeItems},
+        #{nums}
+        )
+    </insert>
+
+    <!-- fetch where子句-->
+    <sql id="fetchWhereClause">
+        <where>
+            <if test="orderId != null">
+                AND id = #{orderId}
+            </if>
+            <if test="uid != null">
+                AND uid = #{uid}
+            </if>
+
+        </where>
+    </sql>
+
+    <!-- fetch order子句-->
+    <sql id="fetchOrderByClause">
+          order by cretateTime desc
+     </sql>
+
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from order
+    where id = #{id}
+  </delete>
+</mapper>
