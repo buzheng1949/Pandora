@@ -4,10 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.gdut.pandora.anno.NeedLogin;
 import com.gdut.pandora.anno.ReturnType;
-import com.gdut.pandora.common.Constant;
-import com.gdut.pandora.common.ResponseCode;
-import com.gdut.pandora.common.ReturnTypeEnum;
-import com.gdut.pandora.common.ServerResponse;
+import com.gdut.pandora.common.*;
 import com.gdut.pandora.domain.User;
 import com.gdut.pandora.domain.query.ProductQuery;
 import com.gdut.pandora.domain.query.UserQuery;
@@ -123,14 +120,26 @@ public class UserController {
 
 
     @RequestMapping("/update")
-    @NeedLogin
+//    @NeedLogin
     @ReturnType(type = ReturnTypeEnum.DEFAULT)
-    public ServerResponse<List<User>> update(UserQuery userQuery) {
+    public ServerResponse<List<User>> update(@RequestParam(value = "editType", required = true) Integer editType,
+                                             @RequestParam(value = "message", required = true) String message,
+                                             @RequestParam(value = "phone", required = true) String phone) {
         List<User> userList = new ArrayList<>();
-        if (userQuery == null) {
-            return ServerResponse.createByErrorMessage("未传入用户ID", userList);
-        }
+        UserQuery userQuery = new UserQuery();
         try {
+            if (editType == EditTypeConstant.IMAGE) {
+                userQuery.setImage(message);
+            } else if (editType == EditTypeConstant.PASSWORD) {
+                userQuery.setPassword(message);
+            } else if (editType == EditTypeConstant.USER_DESC) {
+                userQuery.setUserDesc(message);
+            } else if (editType == EditTypeConstant.USER_NAME) {
+                userQuery.setUserName(message);
+            } else {
+                return ServerResponse.createByErrorMessage("传入非法的修改类型", userList);
+            }
+            userQuery.setPhone(phone);
             ServerResponse<List<User>> res = userService.updateUser(userQuery);
             return res;
         } catch (Exception e) {
