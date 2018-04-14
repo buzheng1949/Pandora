@@ -1,5 +1,7 @@
 package com.gdut.pandora.common;
 
+import com.alibaba.fastjson.annotation.JSONField;
+
 import java.io.Serializable;
 
 /**
@@ -67,10 +69,15 @@ public class ServerResponse<T> implements Serializable {
         return new ServerResponse<T>(ResponseCode.ERROR.getCode(), ResponseCode.NEED_LOGIN.getDesc());
     }
 
+    public static <T> ServerResponse<T> createByErrorWithoutResponse() {
+        return new ServerResponse<T>(ResponseCode.ERROR.getCode(), "查询失败，服务端异常");
+    }
+
 
     public static <T> ServerResponse<T> createByErrorMessage(String errorMessage,T data) {
         return new ServerResponse<T>(ResponseCode.ERROR.getCode(), errorMessage,data);
     }
+
 
     public static <T> ServerResponse<T> createByErrorCodeMessage(int errorCode, String errorMessage) {
         return new ServerResponse<T>(errorCode, errorMessage);

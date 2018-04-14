@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -49,11 +50,11 @@ public class ProductController {
     }
 
     @RequestMapping("/detail")
-    public ServerResponse<ProductDetailResult> queryDetail(Integer tradeItemId) {
+    public ServerResponse queryDetail(Integer tradeItemId) {
         ProductDetailResult productDetailResult = new ProductDetailResult();
         try {
             if (tradeItemId == null || tradeItemId <= 0) {
-                return ServerResponse.createByErrorMessage("请传入具体的商品ID", productDetailResult);
+                return ServerResponse.createByErrorMessage("请传入具体的商品ID", null);
             }
             ProductQuery productQuery = new ProductQuery();
             productQuery.setId(tradeItemId);
@@ -77,8 +78,8 @@ public class ProductController {
                 return ServerResponse.createBySuccess("success", productDetailResult);
             }
         } catch (Exception e) {
-            return ServerResponse.createBySuccess("查询失败，请联系开发查询", productDetailResult);
+            return ServerResponse.createByErrorMessage("服务端异常", null);
         }
-        return ServerResponse.createBySuccess("查询成功", productDetailResult);
+        return ServerResponse.createByErrorMessage("查询失败，该商品的ID不正确", null);
     }
 }
