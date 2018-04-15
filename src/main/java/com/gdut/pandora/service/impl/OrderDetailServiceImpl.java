@@ -56,18 +56,21 @@ public class OrderDetailServiceImpl implements OrderDetailService {
                     continue;
                 }
                 ProductDTO productDTO = resultProduct.get(0);
+                good.setProductName(productDTO.getName());
                 good.setImage(productDTO.getImage());
                 good.setPrice(productDTO.getPrice());
                 Integer num = Integer.valueOf(orderDTO.getNums().split(",")[index]);
+                index++;
                 good.setNum(num);
-                Integer price = 1;
+                Integer price = Integer.valueOf(productDTO.getPrice());
                 price = price * num;
                 good.setPrice(String.valueOf(price));
                 goods.add(good);
             }
             orderDetailResult.setGoods(goods);
+            orderDetailResults.add(orderDetailResult);
         } catch (Exception e) {
-            log.error("query the order detail error {},the oerderId is{}", e, orderDTOs.get(0).getOrderId());
+            log.error("query the order detail error {},the orderId is{}", e, orderDTOs.get(0).getOrderId());
         }
         return orderDetailResults;
     }

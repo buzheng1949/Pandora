@@ -15,7 +15,7 @@
     id, price, uid, createTime, image, num, tradeItems, nums
   </sql>
 
-    <sql id="tableName">order</sql>
+    <sql id="tableName">pandoraorder</sql>
     <!-- fetch查询 -->
     <select id="select" parameterType="com.gdut.pandora.domain.query.OrderQuery"
             resultMap="BaseResultMap">
@@ -59,12 +59,12 @@
 
     <!-- fetch order子句-->
     <sql id="fetchOrderByClause">
-          order by cretateTime desc
+          order by createTime desc
      </sql>
 
 
-    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
-    delete from order
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from pandoraorder
     where id = #{id}
   </delete>
 </mapper>

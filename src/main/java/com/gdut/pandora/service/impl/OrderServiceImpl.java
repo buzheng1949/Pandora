@@ -89,10 +89,10 @@ public class OrderServiceImpl implements OrderService {
         order.setUid(uid);
         order.setPrice(price);
         order.setNums(stringNum.toString());
-        order.setTradeitems(stringOrder.toString());
+        order.setTradeItems(stringOrder.toString());
         order.setImage(stringImage.toString());
         order.setNum(totalItemNum);
-        order.setCreatetime(TimeUtils.getCurrentTime());
+        order.setCreateTime(TimeUtils.getCurrentTime());
         Integer res = orderMapper.insert(order);
         if (res <= 0) {
             log.error("订单创建失败，请联系开发查询");
