@@ -3,8 +3,10 @@ package com.gdut.pandora.service;
 import com.gdut.pandora.domain.Order;
 import com.gdut.pandora.domain.query.OrderQuery;
 import com.gdut.pandora.domain.result.OrderDTO;
+import com.gdut.pandora.domain.result.OrderListDataResult;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by buzheng on 18/4/14.
@@ -15,10 +17,10 @@ public interface OrderService {
     /**
      * 插入订单
      *
-     * @param order 订单
-     * @return 返回订单信息
+     * @param uid 用户ID
+     * @return 订单商品ID以及个数信息
      */
-    OrderDTO insertOrder(Order order);
+    List<OrderListDataResult> insertOrder(Long uid, Map<Integer, Integer> orderMap);
 
     /**
      * 查询订单
@@ -34,6 +36,6 @@ public interface OrderService {
      * @param orderId 需要删除的订单ID
      * @return
      */
-    List<OrderDTO> deleteOrder(Long orderId);
+    List<OrderDTO> deleteOrder(Long orderId, Long uid);
 
 }

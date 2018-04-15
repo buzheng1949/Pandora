@@ -1,8 +1,11 @@
 package com.gdut.pandora.domain.query;
 
+import lombok.Data;
+
 /**
  * Created by buzheng on 18/4/14.
  */
+@Data
 public class OrderQuery {
 
     /**
