@@ -89,10 +89,10 @@ public class OrderServiceImpl implements OrderService {
         order.setUid(uid);
         order.setPrice(price);
         order.setNums(stringNum.toString());
-        order.setTradeItems(stringOrder.toString());
+        order.setTradeitems(stringOrder.toString());
         order.setImage(stringImage.toString());
         order.setNum(totalItemNum);
-        order.setCreateTime(TimeUtils.getCurrentTime());
+        order.setCreatetime(TimeUtils.getCurrentTime());
         Integer res = orderMapper.insert(order);
         if (res <= 0) {
             log.error("订单创建失败，请联系开发查询");
@@ -111,13 +111,13 @@ public class OrderServiceImpl implements OrderService {
             log.error("请输入有效的订单查询请求");
             throw new RuntimeException("请输入有效的订单查询请求");
         }
-        if (orderQuery.getUid() == null || orderQuery.getOrderId() == null) {
+        if (orderQuery.getUid() == null && orderQuery.getOrderId() == null) {
             log.error("请输入合法的用户ID以及订单ID");
             throw new RuntimeException("请输入合法的用户ID以及订单ID");
         }
         List<Order> orderList = orderMapper.select(orderQuery);
         List<OrderDTO> orderDTOList = new ArrayList<>();
-        if (CollectionUtils.isEmpty(orderList)) {
+        if (!CollectionUtils.isEmpty(orderList)) {
             for (Order order : orderList) {
                 OrderDTO orderDTO = order.assembleOrderDTO(order);
                 orderDTOList.add(orderDTO);
