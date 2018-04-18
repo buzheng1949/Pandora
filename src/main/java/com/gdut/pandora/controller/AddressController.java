@@ -30,7 +30,6 @@ public class AddressController {
     private AddressService addressService;
 
     @RequestMapping("/query")
-    @NeedLogin
     @ReturnType
     public ServerResponse<List<AddressDTO>> query(AddressQuery address) {
         List<AddressDTO> addressDTOs = new ArrayList<>();

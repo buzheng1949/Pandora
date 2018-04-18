@@ -24,4 +24,6 @@ public class Address {
 
     private Integer hasCreated;
 
+    private Integer isDefault;
+
 }

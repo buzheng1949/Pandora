@@ -100,7 +100,7 @@
       <if test="defaultAddress != null">
         AND defaultAddress = #{defaultAddress}
       </if>
-      uid = #{uid}
+      and uid = #{uid}
     </where>
   </sql>
 
