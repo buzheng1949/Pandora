@@ -18,4 +18,6 @@ public class OrderListDataResult {
     private Long createTime;
 
     private String[] image;
+
+    private Long num;
 }
