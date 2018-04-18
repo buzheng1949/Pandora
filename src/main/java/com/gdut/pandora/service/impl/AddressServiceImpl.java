@@ -65,6 +65,9 @@ public class AddressServiceImpl implements AddressService {
         if (StringUtils.isEmpty(query.getAddress())) {
             throw new RuntimeException("用户的地址不能为空");
         }
+        if (StringUtils.isEmpty(query.getDetailAddress())) {
+            throw new RuntimeException("用户的地址详情不能为空");
+        }
         query.setCreateTime(TimeUtils.getCurrentTime());
         query.setUpdateTime(TimeUtils.getCurrentTime());
         if (query.getHasCreated() != null && query.getHasCreated() == 1) {

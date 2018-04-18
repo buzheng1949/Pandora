@@ -18,6 +18,8 @@ public class AddressQuery {
 
     private String address;
 
+    private String detailAddress;
+
     private Long createTime;
 
     private Long updateTime;
