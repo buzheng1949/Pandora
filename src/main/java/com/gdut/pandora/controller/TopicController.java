@@ -60,7 +60,7 @@ public class TopicController {
     public ServerResponse<Boolean> publicTopic(TopicQuery topicQuery) {
         boolean res = false;
         try {
-            if (topicQuery == null || topicQuery.getUserId() == null) {
+            if (topicQuery == null || topicQuery.getUserId() == null || topicQuery.getHeight() == null || topicQuery.getWidth() == null) {
                 return ServerResponse.createByErrorMessage("发布失败，请检查传入参数是否齐全", Boolean.FALSE);
             }
             UserQuery userQuery = new UserQuery();

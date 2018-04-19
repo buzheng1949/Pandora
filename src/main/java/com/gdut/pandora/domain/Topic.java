@@ -22,6 +22,10 @@ public class Topic {
 
     private String topicImage;
 
+    private Integer height;
+
+    private Integer width;
+
     private Boolean isAnonymous;
 
     private Long likeNum;

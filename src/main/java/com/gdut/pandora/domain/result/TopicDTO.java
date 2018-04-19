@@ -22,6 +22,10 @@ public class TopicDTO {
 
     private boolean isAnonymous;
 
+    private Integer width;
+
+    private Integer height;
+
     private Long likeNum;
 
     private Long createTime;
