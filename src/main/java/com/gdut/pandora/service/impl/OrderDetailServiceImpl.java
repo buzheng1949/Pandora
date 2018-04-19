@@ -29,17 +29,17 @@ public class OrderDetailServiceImpl implements OrderDetailService {
     private ProductService productService;
 
     @Override
-    public List<OrderDetailResult> getOrderDetail(List<OrderDTO> orderDTOs) {
-        List<OrderDetailResult> orderDetailResults = new ArrayList<>();
+    public OrderDetailResult getOrderDetail(List<OrderDTO> orderDTOs) {
+//        List<OrderDetailResult> orderDetailResults = new ArrayList<>();
+        OrderDetailResult orderDetailResult = new OrderDetailResult();
         try {
             if (CollectionUtils.isEmpty(orderDTOs)) {
-                return orderDetailResults;
+                return orderDetailResult;
             }
             OrderDTO orderDTO = orderDTOs.get(0);
             if (orderDTO == null) {
-                return orderDetailResults;
+                return orderDetailResult;
             }
-            OrderDetailResult orderDetailResult = new OrderDetailResult();
             orderDetailResult.setPrice(orderDTO.getPrice());
             orderDetailResult.setCreateTime(orderDTO.getCreateTime());
             orderDetailResult.setOrderId(orderDTO.getOrderId());
@@ -68,10 +68,10 @@ public class OrderDetailServiceImpl implements OrderDetailService {
                 goods.add(good);
             }
             orderDetailResult.setGoods(goods);
-            orderDetailResults.add(orderDetailResult);
+//            orderDetailResults.add(orderDetailResult);
         } catch (Exception e) {
             log.error("query the order detail error {},the orderId is{}", e, orderDTOs.get(0).getOrderId());
         }
-        return orderDetailResults;
+        return orderDetailResult;
     }
 }

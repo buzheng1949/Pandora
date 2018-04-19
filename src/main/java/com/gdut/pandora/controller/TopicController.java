@@ -5,15 +5,20 @@ import com.gdut.pandora.anno.ReturnType;
 import com.gdut.pandora.common.Constant;
 import com.gdut.pandora.common.ReturnTypeEnum;
 import com.gdut.pandora.common.ServerResponse;
+import com.gdut.pandora.domain.User;
 import com.gdut.pandora.domain.query.TopicQuery;
+import com.gdut.pandora.domain.query.UserQuery;
 import com.gdut.pandora.domain.result.TopicDTO;
 import com.gdut.pandora.domain.result.UserDTO;
+import com.gdut.pandora.mapper.UserMapper;
 import com.gdut.pandora.service.FileService;
 import com.gdut.pandora.service.TopicService;
+import com.gdut.pandora.service.UserService;
 import com.gdut.pandora.utils.PropertiesUtil;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -39,6 +44,9 @@ public class TopicController {
     @Autowired
     private FileService fileService;
 
+    @Autowired
+    private UserMapper userMapper;
+
     @ResponseBody
     @RequestMapping("/list")
     public ServerResponse<List<TopicDTO>> listTopics(TopicQuery topicQuery) {
@@ -48,15 +56,23 @@ public class TopicController {
 
     @ResponseBody
     @RequestMapping("/public")
-    @NeedLogin
     @ReturnType(type = ReturnTypeEnum.BOOLEAN_TYPE)
-    public ServerResponse<Boolean> publicTopic(HttpSession session, TopicQuery topicQuery) {
+    public ServerResponse<Boolean> publicTopic(TopicQuery topicQuery) {
         boolean res = false;
         try {
-            UserDTO userDTO = (UserDTO) session.getAttribute(Constant.SESSION.CURRENT_USER);
-            topicQuery.setUserId(userDTO.getId());
-            topicQuery.setUserImage(userDTO.getImage());
-            topicQuery.setUserName(userDTO.getUserName());
+            if (topicQuery == null || topicQuery.getUserId() == null) {
+                return ServerResponse.createByErrorMessage("发布失败，请检查传入参数是否齐全", Boolean.FALSE);
+            }
+            UserQuery userQuery = new UserQuery();
+            userQuery.setId(topicQuery.getUserId());
+            List<User> users = userMapper.selectWhthoutPassword(userQuery);
+            if (CollectionUtils.isEmpty(users)) {
+                return ServerResponse.createByErrorMessage("发布失败，请检查传入参数是否齐全", Boolean.FALSE);
+            }
+            User user = users.get(0);
+            topicQuery.setUserId(user.getId());
+            topicQuery.setUserImage(user.getImage());
+            topicQuery.setUserName(user.getUserName());
             res = topicService.publicTopic(topicQuery);
         } catch (Exception e) {
             log.error("public topic error", e);

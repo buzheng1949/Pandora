@@ -16,5 +16,5 @@ public interface OrderDetailService {
      * @param orderDTOs
      * @return
      */
-    List<OrderDetailResult> getOrderDetail(List<OrderDTO> orderDTOs);
+    OrderDetailResult getOrderDetail(List<OrderDTO> orderDTOs);
 }
