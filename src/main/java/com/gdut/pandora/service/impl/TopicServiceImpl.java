@@ -36,9 +36,6 @@ public class TopicServiceImpl implements TopicService {
                 BeanUtils.copyProperties(topic, topicDTO);
                 //伪随机生成0-200之间的点赞数
                 Random random = new Random();
-                Integer res = random.nextInt(200);
-                long likeNum = res.longValue();
-                topicDTO.setLikeNum(likeNum);
                 resultTopicList.add(topicDTO);
             }
         }

@@ -28,7 +28,7 @@ public class TopicDTO {
 
     private Integer height;
 
-    private Long likeNum;
+    private Integer likeNum;
 
     private Long createTime;
 

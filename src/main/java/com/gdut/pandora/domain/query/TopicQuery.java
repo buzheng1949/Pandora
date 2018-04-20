@@ -29,7 +29,7 @@ public class TopicQuery extends BaseQuery{
 
     private Boolean isAnonymous;
 
-    private Long likeNum;
+    private Integer likeNum;
 
     private Long createTime;
 

@@ -30,7 +30,7 @@ public class Topic {
 
     private Boolean isAnonymous;
 
-    private Long likeNum;
+    private Integer likeNum;
 
     private Long createTime;
 

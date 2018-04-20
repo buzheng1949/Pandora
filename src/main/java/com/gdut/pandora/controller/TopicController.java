@@ -63,6 +63,10 @@ public class TopicController {
             if (topicQuery == null || topicQuery.getUserId() == null || topicQuery.getHeight() == null || topicQuery.getWidth() == null || topicQuery.getShopName() == null) {
                 return ServerResponse.createByErrorMessage("发布失败，请检查传入参数是否齐全", Boolean.FALSE);
             }
+            if (topicQuery.getLikeNum() == null || topicQuery.getLikeNum() < 0 || topicQuery.getLikeNum() > 5) {
+                return ServerResponse.createByErrorMessage("请输入合法的评分", Boolean.FALSE);
+            }
+
             UserQuery userQuery = new UserQuery();
             userQuery.setId(topicQuery.getUserId());
             List<User> users = userMapper.selectWhthoutPassword(userQuery);
