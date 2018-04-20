@@ -20,6 +20,8 @@ public class TopicDTO {
 
     private String topicImage;
 
+    private String shopName;
+
     private boolean isAnonymous;
 
     private Integer width;

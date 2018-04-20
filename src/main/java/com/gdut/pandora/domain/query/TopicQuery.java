@@ -21,6 +21,8 @@ public class TopicQuery extends BaseQuery{
 
     private String topicImage;
 
+    private String shopName;
+
     private Integer height;
 
     private Integer width;

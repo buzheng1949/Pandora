@@ -22,6 +22,8 @@ public class Topic {
 
     private String topicImage;
 
+    private String shopName;
+
     private Integer height;
 
     private Integer width;
