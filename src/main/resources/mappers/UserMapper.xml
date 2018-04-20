@@ -8,13 +8,14 @@
         <result column="userDesc" jdbcType="VARCHAR" property="userDesc"/>
         <result column="phone" jdbcType="VARCHAR" property="phone"/>
         <result column="focus" jdbcType="VARCHAR" property="focus"/>
+        <result column="topics" jdbcType="VARCHAR" property="topics"/>
         <result column="image" jdbcType="VARCHAR" property="image"/>
         <result column="collection" jdbcType="VARCHAR" property="collection"/>
         <result column="createTime" jdbcType="BIGINT" property="createTime"/>
         <result column="updateTime" jdbcType="BIGINT" property="updateTime"/>
     </resultMap>
     <sql id="Base_Column_List">
-        id,userName,password,userDesc,phone,focus,image,collection,createTime,updateTime
+        id,userName,password,userDesc,phone,focus,topics,image,collection,createTime,updateTime
     </sql>
     <sql id="tableName">user</sql>
     <!--insert/update/select -->
@@ -22,12 +23,13 @@
             parameterType="com.gdut.pandora.domain.query.UserQuery">
         insert into
         <include refid="tableName"/>
-        (userName,password,userDesc,phone,focus,image,collection,createTime,updateTime)
+        (userName,password,userDesc,phone,focus,topics,image,collection,createTime,updateTime)
         values(
         #{userName},
         #{password},
         #{userDesc},
         #{phone},
+        #{topics},
         #{focus},
         #{image},
         #{collection},
@@ -135,6 +137,9 @@
             </if>
             <if test="focus != null">
                 focus = #{focus},
+            </if>
+            <if test="topics != null">
+                topics = #{topics},
             </if>
             <if test="image != null">
                 image = #{image},

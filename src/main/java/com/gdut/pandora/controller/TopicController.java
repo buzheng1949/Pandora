@@ -9,7 +9,6 @@ import com.gdut.pandora.domain.User;
 import com.gdut.pandora.domain.query.TopicQuery;
 import com.gdut.pandora.domain.query.UserQuery;
 import com.gdut.pandora.domain.result.TopicDTO;
-import com.gdut.pandora.domain.result.UserDTO;
 import com.gdut.pandora.mapper.UserMapper;
 import com.gdut.pandora.service.FileService;
 import com.gdut.pandora.service.TopicService;

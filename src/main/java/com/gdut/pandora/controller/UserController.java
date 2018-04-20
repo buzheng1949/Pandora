@@ -7,12 +7,16 @@ import com.gdut.pandora.anno.ReturnType;
 import com.gdut.pandora.common.*;
 import com.gdut.pandora.domain.User;
 import com.gdut.pandora.domain.query.ProductQuery;
+import com.gdut.pandora.domain.query.TopicQuery;
 import com.gdut.pandora.domain.query.UserQuery;
 import com.gdut.pandora.domain.result.ProductDTO;
+import com.gdut.pandora.domain.result.TopicDTO;
 import com.gdut.pandora.domain.result.UserDTO;
 import com.gdut.pandora.mapper.UserMapper;
 import com.gdut.pandora.service.ProductService;
+import com.gdut.pandora.service.TopicService;
 import com.gdut.pandora.service.UserService;
+import com.sun.org.apache.bcel.internal.generic.IF_ACMPEQ;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.CollectionUtils;
@@ -45,6 +49,115 @@ public class UserController {
 
     @Autowired
     private ProductService productService;
+
+    @Autowired
+    private TopicService topicService;
+
+
+    @RequestMapping("/collect")
+    public ServerResponse<Boolean> collect(@RequestParam(value = "type") Integer type,
+                                           @RequestParam(value = "id") Integer id,
+                                           @RequestParam(value = "uid") Integer uid,
+                                           @RequestParam(value = "collect") Integer collect) {
+        if (type == Constant.COLLECTED_TYPE.ITEM) {
+            UserQuery userQuery = new UserQuery();
+            userQuery.setId(uid);
+            List<User> list = userMapper.selectWhthoutPassword(userQuery);
+            if (CollectionUtils.isEmpty(list)) {
+                log.error("查询用户信息出错,用户is是{}", uid);
+                return ServerResponse.createByErrorMessage("用户信息查询出错", Boolean.FALSE);
+            }
+            User user = list.get(0);
+            String[] resultCollection = user.getCollection().split(",");
+            List<String> sourceList = new ArrayList<>();
+            for (String s : resultCollection) {
+                sourceList.add(s);
+            }
+            Iterator<String> iterator = sourceList.iterator();
+            if (collect == 0) {
+                while (iterator.hasNext()) {
+                    //减少
+                    if (id.toString().equals(iterator.next())) {
+                        iterator.remove();
+                        break;
+
+                    }
+                }
+            } else {
+                if (sourceList.contains(id.toString())) {
+                    return ServerResponse.createByErrorMessage("已经收藏该商品，请勿重复收藏", Boolean.FALSE);
+                } else {
+                    sourceList.add(0, id.toString());
+                }
+            }
+            StringBuilder sb = new StringBuilder();
+            if (!CollectionUtils.isEmpty(sourceList)) {
+                for (int i = 0; i < sourceList.size(); i++) {
+                    if (i != sourceList.size() - 1) {
+                        sb.append(sourceList.get(i)).append(",");
+                    } else {
+                        sb.append(sourceList.get(i));
+                    }
+                }
+            }
+
+            userQuery.setCollection(sb.toString());
+            int updateRes = userMapper.update(userQuery);
+            if (updateRes > 0) {
+                return ServerResponse.createBySuccess("success", Boolean.TRUE);
+            }
+        }
+        if (type == Constant.COLLECTED_TYPE.TOPIC) {
+            UserQuery userQuery = new UserQuery();
+            userQuery.setId(uid);
+            List<User> list = userMapper.selectWhthoutPassword(userQuery);
+            if (CollectionUtils.isEmpty(list)) {
+                log.error("查询用户信息出错,用户is是{}", uid);
+                return ServerResponse.createByErrorMessage("用户信息查询出错", Boolean.FALSE);
+            }
+            User user = list.get(0);
+            String[] topics = user.getTopics().split(",");
+            List<String> sourceList = new ArrayList<>();
+            for (String s : topics) {
+                sourceList.add(s);
+            }
+            Iterator<String> iterator = sourceList.iterator();
+            if (collect == 0) {
+                while (iterator.hasNext()) {
+                    //减少
+                    if (id.toString().equals(iterator.next())) {
+                        iterator.remove();
+                        break;
+
+                    }
+                }
+            } else {
+                if (sourceList.contains(id.toString())) {
+                    return ServerResponse.createByErrorMessage("已经收藏该主题，请勿重复收藏", Boolean.FALSE);
+                } else {
+                    sourceList.add(0, id.toString());
+                }
+            }
+            StringBuilder sb = new StringBuilder();
+            if (!CollectionUtils.isEmpty(sourceList)) {
+                for (int i = 0; i < sourceList.size(); i++) {
+                    if (i != sourceList.size() - 1) {
+                        sb.append(sourceList.get(i)).append(",");
+                    } else {
+                        sb.append(sourceList.get(i));
+                    }
+                }
+            }
+
+            userQuery.setTopics(sb.toString());
+            int updateRes = userMapper.update(userQuery);
+            if (updateRes > 0) {
+                return ServerResponse.createBySuccess("success", Boolean.TRUE);
+            }
+        }
+        return ServerResponse.createByErrorMessage("操作出错", Boolean.FALSE);
+
+    }
 
     @RequestMapping("/register")
     public ServerResponse<Boolean> register(UserQuery userQuery) {
@@ -272,6 +385,7 @@ public class UserController {
             String collections = user.getCollection();
             List<String> focusList = covertString2List(focus, ",");
             List<String> collectionList = covertString2List(collections, ",");
+            List<String> topics = covertString2List(user.getTopics(),",");
             List<Map> focusResult = new ArrayList<>();
             for (String fs : focusList) {
                 UserQuery uQ = new UserQuery();
@@ -304,6 +418,19 @@ public class UserController {
                 h.put("title", one.getTitle());
                 collectionResult.add(h);
             }
+            List<TopicDTO> topicMap= new ArrayList<>();
+            for (String c : topics) {
+                TopicQuery p = new TopicQuery();
+                p.setId(Integer.valueOf(c));
+                List<TopicDTO> topicDTOs = topicService.listTopic(p);
+                if (CollectionUtils.isEmpty(topicDTOs)) {
+                    continue;
+                }
+                HashMap h = new HashMap();
+                TopicDTO one = topicDTOs.get(0);
+                topicMap.add(one);
+            }
+            result.put("topics",topicMap);
             result.put("focus", focusResult);
             result.put("collection", collectionResult);
             result.remove("password");

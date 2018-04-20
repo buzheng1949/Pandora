@@ -29,6 +29,8 @@ public class User {
 
     private String collection;
 
+    private String topics;
+
     private String phone;
 
     private Long createTime;
