@@ -471,6 +471,8 @@ public class UserController {
             List<String> collectionList = covertString2List(collections, ",");
             List<String> topics = covertString2List(user.getTopics(), ",");
             List<Map> focusResult = new ArrayList<>();
+            User u = self.get(0);
+            List<String> selfFocus = covertString2List(u.getFocus(), ",");
             for (String fs : focusList) {
                 UserQuery uQ = new UserQuery();
                 uQ.setId(Integer.valueOf(fs));
@@ -480,6 +482,13 @@ public class UserController {
                 }
                 HashMap h = new HashMap();
                 User one = focusSingleUser.get(0);
+                if (one.getId() == u.getId()){
+                    h.put("isFocus",-1);
+                }else if (selfFocus.contains(String.valueOf(one.getId()))){
+                    h.put("isFocus",1);
+                }else{
+                    h.put("isFocus",-1);
+                }
                 h.put("id", one.getId());
                 h.put("image", one.getImage());
                 h.put("userName", one.getUserName());
@@ -522,8 +531,6 @@ public class UserController {
                 result.put("isFocus", -1);
             } else {
                 if (self != null && self.size() > 0) {
-                    User u = self.get(0);
-                    List<String> selfFocus = covertString2List(u.getFocus(), ",");
                     if (selfFocus.contains(String.valueOf(id))) {
                         result.put("isFocus", 1);
                     } else {
