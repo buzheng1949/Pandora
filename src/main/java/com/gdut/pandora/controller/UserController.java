@@ -487,7 +487,7 @@ public class UserController {
                 }else if (selfFocus.contains(String.valueOf(one.getId()))){
                     h.put("isFocus",1);
                 }else{
-                    h.put("isFocus",-1);
+                    h.put("isFocus",0);
                 }
                 h.put("id", one.getId());
                 h.put("image", one.getImage());
