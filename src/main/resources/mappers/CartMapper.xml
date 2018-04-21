@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.gdut.pandora.mapper.CartMapper">
+    <resultMap id="BaseResultMap" type="com.gdut.pandora.domain.Cart">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="shopId" jdbcType="BIGINT" property="shopId"/>
+        <result column="shopName" jdbcType="VARCHAR" property="shopName"/>
+        <result column="itemId" jdbcType="INTEGER" property="itemId"/>
+        <result column="image" jdbcType="VARCHAR" property="image"/>
+        <result column="title" jdbcType="VARCHAR" property="title"/>
+        <result column="num" jdbcType="INTEGER" property="num"/>
+        <result column="price" jdbcType="INTEGER" property="price"/>
+        <result column="uid" jdbcType="BIGINT" property="uid"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id, shopId, shopName, itemId, image, title, num, price, uid
+    </sql>
+
+    <sql id="tableName">cart</sql>
+    <!--insert/update/select -->
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id"
+            parameterType="com.gdut.pandora.domain.Cart">
+        insert into
+        <include refid="tableName"/>
+        (shopId,shopName,itemId,image,title,num,price,uid)
+        values(
+        #{shopId},
+        #{shopName},
+        #{itemId},
+        #{image},
+        #{title},
+        #{num},
+        #{price},
+        #{uid}
+        )
+    </insert>
+
+    <!-- fetch查询 -->
+    <select id="select" parameterType="com.gdut.pandora.domain.query.CartQuery" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM
+        <include refid="tableName"/>
+        <include refid="fetchWhereClause"/>
+        <include refid="fetchOrderByClause"/>
+        <include refid="fetchLimitClause"/>
+    </select>
+
+    <!-- 更新记录 -->
+    <update id="update" keyProperty="id" parameterType="com.gdut.pandora.domain.query.CartQuery">
+        UPDATE
+        <include refid="tableName"/>
+        <set>
+            <if test="num != null">
+                num = #{num},
+            </if>
+        </set>
+        <include refid="fetchWhereClause"/>
+        LIMIT 1
+    </update>
+    <!-- fetch where子句-->
+    <sql id="fetchWhereClause">
+        <where>
+            <if test="shopId != null">
+                AND shopId = #{shopId}
+            </if>
+            <if test="id != null">
+                AND id = #{id}
+            </if>
+            <if test="uid != null">
+                AND uid = #{uid}
+            </if>
+        </where>
+    </sql>
+
+    <!-- fetch order子句-->
+    <sql id="fetchOrderByClause">
+        <choose>
+            <when test="orderBy != null">
+                order by ${orderBy}
+            </when>
+            <otherwise>
+                order by createTime desc
+            </otherwise>
+        </choose>
+    </sql>
+
+    <!-- fetch limit子句-->
+    <sql id="fetchLimitClause">
+        <if test="start != null and start >= 0 and pageSize != null and pageSize > 0">
+            LIMIT #{start}, #{pageSize}
+        </if>
+    </sql>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from cart
+    where id = #{id}
+  </delete>
+</mapper>
