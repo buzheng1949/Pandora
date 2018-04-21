@@ -73,7 +73,7 @@ public class CartServiceImpl implements CartService {
         List<CartDTO> cartDTOs = list(cartQuery);
         if (!CollectionUtils.isEmpty(cartDTOs)) {
             CartDTO cartDTO = cartDTOs.get(0);
-            boolean result = update(cartDTO.getId(), 1);
+            boolean result = update(cartDTO.getId(), 1,cartDTO.getUid());
             return result;
         }
         Integer itemId = cart.getItemId();
@@ -89,17 +89,19 @@ public class CartServiceImpl implements CartService {
         cart.setShopId(productDTO.getShopId().longValue());
         cart.setTitle(productDTO.getTitle());
         cart.setShopName(productDTO.getShopName());
+        cart.setNum(1);
         int res = cartMapper.insert(cart);
         return res > 0;
     }
 
     @Override
-    public boolean update(Integer id, Integer isAdd) {
+    public boolean update(Integer id, Integer isAdd,Long uid) {
         if (id == null || isAdd == null) {
             throw new RuntimeException("请检查购物车ID以及是否进行加减操作");
         }
         CartQuery cartQuery = new CartQuery();
         cartQuery.setId(id);
+        cartQuery.setUid(uid);
         List<CartDTO> cartDTOs = list(cartQuery);
         if (CollectionUtils.isEmpty(cartDTOs)) {
             return false;

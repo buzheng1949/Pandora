@@ -36,6 +36,7 @@ public class CartController {
             return ServerResponse.createByErrorMessage("请输入合法的用户ID", res);
         }
         CartQuery cartQuery = new CartQuery();
+        cartQuery.setUid(uid);
         List<CartDTO> cartDTOs = cartService.list(cartQuery);
         if (CollectionUtils.isEmpty(cartDTOs)) {
             return ServerResponse.createBySuccessMessage(res);
@@ -56,7 +57,6 @@ public class CartController {
                 if (cartDTO.getShopName().equals(shopName)) {
                     dtos.add(cartDTO);
                 }
-                cartDTOIterator.remove();
             }
             cartActionResult.setCarts(dtos);
             res.add(cartActionResult);
@@ -80,12 +80,14 @@ public class CartController {
 
     @RequestMapping(value = "/update")
     public ServerResponse update(@RequestParam(value = "id") Integer id,
-                                 @RequestParam(value = "isAdd") Integer isAdd) {
+                                 @RequestParam(value = "isAdd") Integer isAdd,
+                                 @RequestParam(value = "uid") Long uid
+                                 ) {
 
         if (id == null || isAdd == null) {
             return ServerResponse.createByErrorMessage("请检查购物车ID以及是否进行加减操作", Boolean.FALSE);
         }
-        boolean res = cartService.update(id, isAdd);
+        boolean res = cartService.update(id, isAdd,uid);
         if (res) {
             return ServerResponse.createByErrorMessage("success", res);
         }

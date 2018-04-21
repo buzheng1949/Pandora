@@ -43,5 +43,5 @@ public interface CartService {
      * @param id
      * @return
      */
-    boolean update(Integer id,Integer update);
+    boolean update(Integer id,Integer update,Long uid);
 }

@@ -11,7 +11,8 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CartQuery {
+
+public class CartQuery extends BaseQuery{
     private Integer id;
 
     private Long shopId;
