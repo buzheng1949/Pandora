@@ -351,6 +351,90 @@ public class UserController {
     /**
      * 查看用户具体信息的接口 通过phone判断是否是当前用户
      *
+     * @param uid
+     * @return
+     */
+    @RequestMapping("/message/query/collect")
+    public ServerResponse queryCollect(@RequestParam(value = "uid", required = true) Integer uid) {
+        if (uid == null || uid <= 0) {
+            return ServerResponse.createByErrorMessage("请传入有效的用户ID", new ArrayList<>());
+        }
+        UserQuery userQuery = new UserQuery();
+        userQuery.setId(uid);
+        List<User> self = userMapper.selectWhthoutPassword(userQuery);
+        try {
+            User user = self.get(0);
+            String collections = user.getCollection();
+            List<String> collectionList = covertString2List(collections, ",");
+            List<Map> collectionResult = new ArrayList<>();
+            for (String c : collectionList) {
+                ProductQuery p = new ProductQuery();
+                p.setId(Integer.valueOf(c));
+                List<ProductDTO> productDtos = productService.selectProductList(p);
+                if (CollectionUtils.isEmpty(productDtos)) {
+                    continue;
+                }
+                HashMap h = new HashMap();
+                ProductDTO one = productDtos.get(0);
+                h.put("id", one.getId());
+                h.put("image", one.getImage());
+                h.put("name", one.getName());
+                h.put("title", one.getTitle());
+                collectionResult.add(h);
+            }
+            return ServerResponse.createBySuccess("success", collectionResult);
+        } catch (Exception e) {
+            log.error("query the user detail error", e);
+            return ServerResponse.createByErrorMessage("查询失败", new ArrayList<>());
+        }
+    }
+
+    /**
+     * 查看用户具体信息的接口 通过phone判断是否是当前用户
+     *
+     * @param uid
+     * @return
+     */
+    @RequestMapping("/message/query/focus")
+    public ServerResponse queryFocus(@RequestParam(value = "uid", required = true) Integer uid) {
+        if (uid == null || uid <= 0) {
+            return ServerResponse.createByErrorMessage("请传入有效的用户ID", new ArrayList<>());
+        }
+        UserQuery userQuery = new UserQuery();
+        userQuery.setId(uid);
+        List<User> self = userMapper.selectWhthoutPassword(userQuery);
+        try {
+            User user = self.get(0);
+            String focus = user.getFocus();
+            List<String> focusList = covertString2List(focus, ",");
+            List<Map> focusResult = new ArrayList<>();
+            for (String fs : focusList) {
+                UserQuery uQ = new UserQuery();
+                uQ.setId(Integer.valueOf(fs));
+                List<User> focusSingleUser = userMapper.selectWhthoutPassword(uQ);
+                if (CollectionUtils.isEmpty(focusSingleUser)) {
+                    continue;
+                }
+                HashMap h = new HashMap();
+                User one = focusSingleUser.get(0);
+                h.put("id", one.getId());
+                h.put("image", one.getImage());
+                h.put("userName", one.getUserName());
+                h.put("userDesc", one.getUserDesc());
+                focusResult.add(h);
+            }
+            return ServerResponse.createBySuccess("success", focusResult);
+        } catch (Exception e) {
+            log.error("query the user detail error", e);
+            return ServerResponse.createByErrorMessage("查询失败", new ArrayList<>());
+        }
+
+
+    }
+
+    /**
+     * 查看用户具体信息的接口 通过phone判断是否是当前用户
+     *
      * @param id
      * @param phone
      * @return
@@ -385,7 +469,7 @@ public class UserController {
             String collections = user.getCollection();
             List<String> focusList = covertString2List(focus, ",");
             List<String> collectionList = covertString2List(collections, ",");
-            List<String> topics = covertString2List(user.getTopics(),",");
+            List<String> topics = covertString2List(user.getTopics(), ",");
             List<Map> focusResult = new ArrayList<>();
             for (String fs : focusList) {
                 UserQuery uQ = new UserQuery();
@@ -418,7 +502,7 @@ public class UserController {
                 h.put("title", one.getTitle());
                 collectionResult.add(h);
             }
-            List<TopicDTO> topicMap= new ArrayList<>();
+            List<TopicDTO> topicMap = new ArrayList<>();
             for (String c : topics) {
                 TopicQuery p = new TopicQuery();
                 p.setId(Integer.valueOf(c));
@@ -430,7 +514,7 @@ public class UserController {
                 TopicDTO one = topicDTOs.get(0);
                 topicMap.add(one);
             }
-            result.put("topics",topicMap);
+            result.put("topics", topicMap);
             result.put("focus", focusResult);
             result.put("collection", collectionResult);
             result.remove("password");
