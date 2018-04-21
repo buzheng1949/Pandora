@@ -23,6 +23,6 @@ public class Cart {
 
     private Integer price;
 
-    private Integer uid;
+    private Long uid;
 
 }

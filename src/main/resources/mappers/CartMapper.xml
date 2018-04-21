@@ -71,6 +71,9 @@
             <if test="uid != null">
                 AND uid = #{uid}
             </if>
+            <if test="itemId != null">
+                AND itemId = #{itemId}
+            </if>
         </where>
     </sql>
 

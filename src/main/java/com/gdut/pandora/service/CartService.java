@@ -23,10 +23,11 @@ public interface CartService {
     /**
      * 删除列表服务类
      *
+     * @param uid 用户ID
      * @param id
      * @return
      */
-    List<CartDTO> delete(Long id);
+    boolean delete(Long uid,Integer id);
 
     /**
      * 加入购物车
@@ -39,8 +40,8 @@ public interface CartService {
     /**
      * 增加或者减少购物车数量
      *
-     * @param cartQuery
+     * @param id
      * @return
      */
-    boolean update(CartQuery cartQuery);
+    boolean update(Integer id,Integer update);
 }

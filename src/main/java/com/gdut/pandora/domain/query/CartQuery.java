@@ -28,5 +28,5 @@ public class CartQuery {
 
     private Integer price;
 
-    private Integer uid;
+    private Long uid;
 }

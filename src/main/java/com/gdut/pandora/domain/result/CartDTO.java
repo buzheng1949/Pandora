@@ -7,4 +7,6 @@ import com.gdut.pandora.domain.Cart;
  * 购物车web层实体类
  */
 public class CartDTO extends Cart {
+
+
 }
