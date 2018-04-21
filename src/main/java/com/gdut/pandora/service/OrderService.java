@@ -20,7 +20,7 @@ public interface OrderService {
      * @param uid 用户ID
      * @return 订单商品ID以及个数信息
      */
-    List<OrderListDataResult> insertOrder(Long uid, Map<Integer, Integer> orderMap);
+    List<OrderListDataResult> insertOrder(Long uid, Map<Integer, Integer> orderMap,Long createTime);
 
     /**
      * 查询订单

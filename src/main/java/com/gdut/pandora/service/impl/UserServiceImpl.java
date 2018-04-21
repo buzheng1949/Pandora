@@ -125,47 +125,6 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-    /**
-     * 查询用户关注的用户并进行返回
-     *
-     * @param sourceUserList
-     * @return
-     */
-    private List<UserDTO> assembleUserResult(List<User> sourceUserList) {
-        List<UserDTO> targetUserDTOList = new ArrayList<>();
-        if (!CollectionUtils.isEmpty(sourceUserList)) {
-            for (User user : sourceUserList) {
-                List<User> users = new ArrayList<>();
-                List<ProductDTO> products = new ArrayList<>();
-                UserDTO userDTO = new UserDTO();
-                BeanUtils.copyProperties(user, userDTO);
-                if (!StringUtils.isEmpty(user.getFocus())) {
-                    String[] focusUserList = user.getFocus().split(",");
-                    for (String id : focusUserList) {
-                        UserQuery query = new UserQuery();
-                        query.setId(Integer.valueOf(id));
-                        List<User> list = userMapper.selectWhthoutPassword(query);
-                        users.addAll(list);
-                    }
-                    userDTO.setFocus(users);
-                }
-                if (!StringUtils.isEmpty(user.getCollection())) {
-                    String[] collectionItems = user.getFocus().split(",");
-                    for (String id : collectionItems) {
-                        ProductQuery query = new ProductQuery();
-                        query.setId(Integer.valueOf(id));
-                        List<ProductDTO> list = productService.selectProductList(query);
-                        products.addAll(list);
-                    }
-                    userDTO.setCollection(products);
-                    userDTO.setFocus(users);
-                }
-
-                targetUserDTOList.add(userDTO);
-            }
-        }
-        return targetUserDTOList;
-    }
 
 
 

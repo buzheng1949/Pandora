@@ -18,6 +18,8 @@ public class AddressDTO {
 
     private String address;
 
+    private String detailAddress;
+
     private String uname;
 
     private Long createTime;

@@ -30,4 +30,6 @@ public class UserQuery extends BaseQuery {
 
     private String focus;
 
+    private String topics;
+
 }

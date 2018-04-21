@@ -32,6 +32,7 @@ public class OrderListServiceImpl implements OrderListService {
                 String sourceImages = orderDTO.getImage();
                 String[] resultImages = sourceImages.split(",");
                 orderListDataResult.setImage(resultImages);
+                orderListDataResult.setNum(orderDTO.getNum());
                 orderListDataResults.add(orderListDataResult);
             }
         } catch (Exception e) {

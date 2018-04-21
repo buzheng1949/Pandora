@@ -46,7 +46,7 @@ public class OrderServiceImpl implements OrderService {
     private OrderListService orderListService;
 
     @Override
-    public List<OrderListDataResult> insertOrder(Long uid, Map<Integer, Integer> orderMap) {
+    public List<OrderListDataResult> insertOrder(Long uid, Map<Integer, Integer> orderMap,Long createTime) {
         if (uid == null) {
             log.error("请传入合法的用户ID");
             throw new RuntimeException("请传入合法的用户ID");
@@ -54,6 +54,10 @@ public class OrderServiceImpl implements OrderService {
         if (orderMap == null && orderMap.values().size() <= 0) {
             log.error("订单创建失败，请勿传入空的订单信息");
             throw new RuntimeException("订单创建失败，请勿传入空的订单信息");
+        }
+        if (createTime == null || createTime <=0){
+            log.error("订单创建失败，请勿传入空的时间");
+            throw new RuntimeException("订单创建失败，请勿传入空的时间");
         }
         Set<Integer> keySet = orderMap.keySet();
         //分别对应个数 用,分隔
@@ -92,7 +96,7 @@ public class OrderServiceImpl implements OrderService {
         order.setTradeItems(stringOrder.toString());
         order.setImage(stringImage.toString());
         order.setNum(totalItemNum);
-        order.setCreateTime(TimeUtils.getCurrentTime());
+        order.setCreateTime(createTime);
         Integer res = orderMapper.insert(order);
         if (res <= 0) {
             log.error("订单创建失败，请联系开发查询");

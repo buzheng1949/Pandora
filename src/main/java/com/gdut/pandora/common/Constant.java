@@ -11,8 +11,14 @@ public interface Constant {
         Integer PAGE_SIZE = 5;
     }
 
-    interface SESSION{
+    interface SESSION {
         String CURRENT_USER = "current_user";
+    }
+
+    interface COLLECTED_TYPE {
+        Integer ITEM = 1;
+        Integer USER = 2;
+        Integer TOPIC = 3;
     }
 
 

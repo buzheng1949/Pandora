@@ -57,7 +57,7 @@ public class OrderController {
 
     @RequestMapping(value = "/detail")
     public ServerResponse detail(@RequestParam(value = "orderId", required = true) Long orderId) {
-        List<OrderDetailResult> orderDetailResults = new ArrayList<>();
+        OrderDetailResult orderDetailResults = new OrderDetailResult();
         try {
             OrderQuery orderQuery = new OrderQuery();
             orderQuery.setOrderId(orderId);
@@ -82,10 +82,12 @@ public class OrderController {
     }
 
     @RequestMapping("/buy")
-    public ServerResponse order(@RequestParam(value = "orderMap", required = true) Map<Integer, Integer> orderMap, @RequestParam(required = true, value = "uid") Long uid) {
+    public ServerResponse order(@RequestParam(value = "orderMap", required = true) Map<Integer, Integer> orderMap,
+                                @RequestParam(required = true, value = "uid") Long uid,
+                                @RequestParam(required = true,value = "createTime") Long createTime) {
         List<OrderListDataResult> orderListDataResults = new ArrayList<>();
         try {
-            orderListDataResults = orderService.insertOrder(uid, orderMap);
+            orderListDataResults = orderService.insertOrder(uid, orderMap,createTime);
         } catch (Exception e) {
             log.error("insert the orderList error", e);
         }

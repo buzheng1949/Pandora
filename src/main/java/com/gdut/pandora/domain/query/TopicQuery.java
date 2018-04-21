@@ -21,9 +21,15 @@ public class TopicQuery extends BaseQuery{
 
     private String topicImage;
 
+    private String shopName;
+
+    private Integer height;
+
+    private Integer width;
+
     private Boolean isAnonymous;
 
-    private Long likeNum;
+    private Integer likeNum;
 
     private Long createTime;
 

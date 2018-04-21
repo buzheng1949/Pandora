@@ -5,6 +5,7 @@ import com.gdut.pandora.domain.query.TopicQuery;
 import com.gdut.pandora.domain.result.TopicDTO;
 import com.gdut.pandora.mapper.TopicMapper;
 import com.gdut.pandora.service.TopicService;
+import com.gdut.pandora.utils.TimeUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -35,9 +36,6 @@ public class TopicServiceImpl implements TopicService {
                 BeanUtils.copyProperties(topic, topicDTO);
                 //伪随机生成0-200之间的点赞数
                 Random random = new Random();
-                Integer res = random.nextInt(200);
-                long likeNum = res.longValue();
-                topicDTO.setLikeNum(likeNum);
                 resultTopicList.add(topicDTO);
             }
         }
@@ -51,6 +49,11 @@ public class TopicServiceImpl implements TopicService {
         if (!isValidQuery) {
             throw new RuntimeException("不能传入非法的秀秀专题");
         }
+        if (topicQuery.getIsAnonymous()){
+            topicQuery.setUserName("匿名用户");
+        }
+        topicQuery.setCreateTime(TimeUtils.getCurrentTime());
+        topicQuery.setUpdateTime(TimeUtils.getCurrentTime());
         int res = topicMapper.insert(topicQuery);
         if (res >= 1) {
             success = Boolean.TRUE;
@@ -67,7 +70,7 @@ public class TopicServiceImpl implements TopicService {
     private boolean isValidPublicQuery(TopicQuery topicQuery) {
         boolean result = Boolean.FALSE;
         if (topicQuery != null
-                && topicQuery.getUserId() == null
+                && topicQuery.getUserId() != null
                 && !StringUtils.isEmpty(topicQuery.getContent())
                 && !StringUtils.isEmpty(topicQuery.getTopicImage())
                 ) {
