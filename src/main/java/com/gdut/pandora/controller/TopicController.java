@@ -1,5 +1,6 @@
 package com.gdut.pandora.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.gdut.pandora.anno.NeedLogin;
 import com.gdut.pandora.anno.ReturnType;
 import com.gdut.pandora.common.Constant;
@@ -60,9 +61,11 @@ public class TopicController {
         boolean res = false;
         try {
             if (topicQuery == null || topicQuery.getUserId() == null || topicQuery.getHeight() == null || topicQuery.getWidth() == null || topicQuery.getShopName() == null) {
+                log.error("专题发布失败请求参数是{}", JSON.toJSONString(topicQuery));
                 return ServerResponse.createByErrorMessage("发布失败，请检查传入参数是否齐全", Boolean.FALSE);
             }
             if (topicQuery.getLikeNum() == null || topicQuery.getLikeNum() < 0 || topicQuery.getLikeNum() > 5) {
+                log.error("专题发布失败请求参数是{}", JSON.toJSONString(topicQuery));
                 return ServerResponse.createByErrorMessage("请输入合法的评分", Boolean.FALSE);
             }
 
@@ -70,6 +73,7 @@ public class TopicController {
             userQuery.setId(topicQuery.getUserId());
             List<User> users = userMapper.selectWhthoutPassword(userQuery);
             if (CollectionUtils.isEmpty(users)) {
+                log.error("专题发布失败，不存在该用户,请求参数是{}", JSON.toJSONString(topicQuery));
                 return ServerResponse.createByErrorMessage("发布失败，请检查传入参数是否齐全", Boolean.FALSE);
             }
             User user = users.get(0);
