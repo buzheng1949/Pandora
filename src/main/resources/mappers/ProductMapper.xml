@@ -6,14 +6,14 @@
         <result column="name" jdbcType="VARCHAR" property="name"/>
         <result column="title" jdbcType="VARCHAR" property="title"/>
         <result column="category" jdbcType="VARCHAR" property="category"/>
-        <result column="status" jdbcType="VARCHAR" property="status"/>
-        <result column="sale" jdbcType="VARCHAR" property="sale"/>
-        <result column="stock" jdbcType="VARCHAR" property="stock"/>
+        <result column="status" jdbcType="INTEGER" property="status"/>
+        <result column="sale" jdbcType="INTEGER" property="sale"/>
+        <result column="stock" jdbcType="INTEGER" property="stock"/>
         <result column="image" jdbcType="VARCHAR" property="image"/>
         <result column="images" jdbcType="VARCHAR" property="images"/>
         <result column="shopName" jdbcType="VARCHAR" property="shopName"/>
-        <result column="price" jdbcType="VARCHAR" property="price"/>
-        <result column="shopId" jdbcType="BIGINT" property="shopId"/>
+        <result column="price" jdbcType="INTEGER" property="price"/>
+        <result column="shopId" jdbcType="INTEGER" property="shopId"/>
         <result column="createTime" jdbcType="BIGINT" property="createTime"/>
         <result column="updateTime" jdbcType="BIGINT" property="updateTime"/>
     </resultMap>

@@ -18,11 +18,11 @@ public class ProductDTO {
 
     private String category;
 
-    private String status;
+    private Integer status;
 
-    private String sale;
+    private Integer sale;
 
-    private String stock;
+    private Integer stock;
 
     private Integer shopId;
 
@@ -30,7 +30,7 @@ public class ProductDTO {
 
     private String mainImage;
 
-    private String price;
+    private Integer price;
 
     private String[] subImages = new String[]{};
 }

@@ -27,13 +27,13 @@ public class ProductDetailResult {
 
     private String title;
 
-    private String price;
+    private Integer price;
 
-    private String status;
+    private Integer status;
 
-    private String sale;
+    private Integer sale;
 
-    private String stock;
+    private Integer stock;
 
     private Integer shopId;
 

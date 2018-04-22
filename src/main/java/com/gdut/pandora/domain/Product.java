@@ -15,11 +15,11 @@ public class Product {
 
     private String category;
 
-    private String status;
+    private Integer status;
 
-    private String sale;
+    private Integer sale;
 
-    private String stock;
+    private Integer stock;
 
     private String shopName;
 
@@ -27,7 +27,7 @@ public class Product {
 
     private String image;
 
-    private String price;
+    private Integer price;
 
     private Long createTime;
 

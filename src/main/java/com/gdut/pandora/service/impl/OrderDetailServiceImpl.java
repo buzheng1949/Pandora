@@ -64,7 +64,7 @@ public class OrderDetailServiceImpl implements OrderDetailService {
                 good.setNum(num);
                 Integer price = Integer.valueOf(productDTO.getPrice());
                 price = price * num;
-                good.setPrice(String.valueOf(price));
+                good.setPrice(price);
                 goods.add(good);
             }
             orderDetailResult.setGoods(goods);

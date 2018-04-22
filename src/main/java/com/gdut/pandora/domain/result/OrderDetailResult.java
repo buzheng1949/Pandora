@@ -36,7 +36,7 @@ public class OrderDetailResult {
     public static class Good {
         private String productName;
 
-        private String price;
+        private Integer price;
 
         private String image;
 
