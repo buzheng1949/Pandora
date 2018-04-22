@@ -376,8 +376,8 @@ public class UserController {
                 }
                 HashMap h = new HashMap();
                 ProductDTO one = productDtos.get(0);
-                h.put("id", one.getId());
-                h.put("image", one.getImage());
+                h.put("id", one.getTradeItemId());
+                h.put("image", one.getMainImage());
                 h.put("name", one.getName());
                 h.put("title", one.getTitle());
                 collectionResult.add(h);
@@ -505,8 +505,8 @@ public class UserController {
                 }
                 HashMap h = new HashMap();
                 ProductDTO one = productDtos.get(0);
-                h.put("id", one.getId());
-                h.put("image", one.getImage());
+                h.put("id", one.getTradeItemId());
+                h.put("image", one.getMainImage());
                 h.put("name", one.getName());
                 h.put("title", one.getTitle());
                 collectionResult.add(h);

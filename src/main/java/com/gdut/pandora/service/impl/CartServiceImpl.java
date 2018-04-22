@@ -84,7 +84,7 @@ public class CartServiceImpl implements CartService {
             return false;
         }
         ProductDTO productDTO = productDTOList.get(0);
-        cart.setImage(productDTO.getImage());
+        cart.setImage(productDTO.getMainImage());
         cart.setPrice(Integer.valueOf(productDTO.getPrice()));
         cart.setShopId(productDTO.getShopId().longValue());
         cart.setTitle(productDTO.getTitle());

@@ -78,6 +78,8 @@ public class ProductServiceImpl implements ProductService {
             for (Product product : productList) {
                 ProductDTO productDTO = new ProductDTO();
                 BeanUtils.copyProperties(product, productDTO);
+                productDTO.setTradeItemId(product.getId());
+                productDTO.setMainImage(product.getImage());
                 if (!StringUtils.isEmpty(product.getImages())){
                     String[] subImages = product.getImages().split("&");
                     productDTO.setSubImages(subImages);

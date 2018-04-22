@@ -79,7 +79,7 @@ public class OrderServiceImpl implements OrderService {
             }
             totalItemNum += 1;
             ProductDTO productDTO = resultProduct.get(0);
-            String image = productDTO.getImage();
+            String image = productDTO.getMainImage();
             totalItemNum += num;
             price += Long.valueOf(productDTO.getPrice());
             stringImage.append(image).append(",");

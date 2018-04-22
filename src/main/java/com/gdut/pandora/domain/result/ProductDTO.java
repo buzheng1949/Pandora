@@ -10,7 +10,7 @@ import java.util.List;
 @Data
 public class ProductDTO {
 
-    private Integer id;
+    private Integer tradeItemId;
 
     private String name;
 
@@ -28,13 +28,9 @@ public class ProductDTO {
 
     private String shopName;
 
-    private String image;
+    private String mainImage;
 
     private String price;
-
-    private Long createTime;
-
-    private Long updateTime;
 
     private String[] subImages = new String[]{};
 }

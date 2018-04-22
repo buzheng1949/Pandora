@@ -57,7 +57,7 @@ public class OrderDetailServiceImpl implements OrderDetailService {
                 }
                 ProductDTO productDTO = resultProduct.get(0);
                 good.setProductName(productDTO.getName());
-                good.setImage(productDTO.getImage());
+                good.setImage(productDTO.getMainImage());
                 good.setPrice(productDTO.getPrice());
                 Integer num = Integer.valueOf(orderDTO.getNums().split(",")[index]);
                 index++;

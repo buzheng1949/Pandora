@@ -61,21 +61,21 @@ public class ProductController {
             List<ProductDTO> productList = productService.selectProductList(productQuery);
             if (!CollectionUtils.isEmpty(productList)) {
                 ProductDTO product = productList.get(0);
-                if (product != null) {
-                    productDetailResult.setCategory(product.getCategory());
-                    productDetailResult.setMainImage(product.getImage());
-                    productDetailResult.setName(product.getName());
-                    productDetailResult.setPrice(product.getPrice());
-                    productDetailResult.setSale(product.getSale());
-                    productDetailResult.setShopId(product.getShopId());
-                    productDetailResult.setStock(product.getStock());
-                    productDetailResult.setStatus(product.getStatus());
-                    productDetailResult.setTradeItemId(product.getId());
-                    productDetailResult.setTitle(product.getTitle());
-                    productDetailResult.setSubImages(product.getSubImages());
-                    productDetailResult.setShopNmae(product.getShopName());
-                }
-                return ServerResponse.createBySuccess("success", productDetailResult);
+//                if (product != null) {
+//                    productDetailResult.setCategory(product.getCategory());
+//                    productDetailResult.setMainImage(product.getImage());
+//                    productDetailResult.setName(product.getName());
+//                    productDetailResult.setPrice(product.getPrice());
+//                    productDetailResult.setSale(product.getSale());
+//                    productDetailResult.setShopId(product.getShopId());
+//                    productDetailResult.setStock(product.getStock());
+//                    productDetailResult.setStatus(product.getStatus());
+//                    productDetailResult.setTradeItemId(product.getId());
+//                    productDetailResult.setTitle(product.getTitle());
+//                    productDetailResult.setSubImages(product.getSubImages());
+//                    productDetailResult.setShopNmae(product.getShopName());
+//                }
+                return ServerResponse.createBySuccess("success", product);
             }
         } catch (Exception e) {
             return ServerResponse.createByErrorMessage("服务端异常", null);
