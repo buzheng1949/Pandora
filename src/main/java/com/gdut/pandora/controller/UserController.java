@@ -270,9 +270,9 @@ public class UserController {
      * @return
      */
     @RequestMapping("/message/update")
-    public ServerResponse focus(@RequestParam(value = "uid", required = true) Integer id,
+    public ServerResponse focus(@RequestParam(value = "id", required = true) Integer id,
                                 @RequestParam(value = "isFocus", required = true) Integer isFocus,
-                                @RequestParam(value = "id", required = true) Integer uid) {
+                                @RequestParam(value = "uid", required = true) Integer uid) {
         if (id == null) {
             return ServerResponse.createByErrorMessage("请传入需要移除用户的ID", new ArrayList<>());
         }
