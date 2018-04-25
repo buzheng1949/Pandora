@@ -266,13 +266,13 @@ public class UserController {
      *
      * @param id
      * @param isFocus
-     * @param phone
+     * @param uid
      * @return
      */
     @RequestMapping("/message/update")
     public ServerResponse focus(@RequestParam(value = "uid", required = true) Integer id,
                                 @RequestParam(value = "isFocus", required = true) Integer isFocus,
-                                @RequestParam(value = "phone", required = true) String phone) {
+                                @RequestParam(value = "id", required = true) Integer uid) {
         if (id == null) {
             return ServerResponse.createByErrorMessage("请传入需要移除用户的ID", new ArrayList<>());
         }
@@ -283,11 +283,11 @@ public class UserController {
         if (isFocus != 1 && isFocus != 0) {
             return ServerResponse.createByErrorMessage("请传入关注或者取消关注的正确信息", new ArrayList<>());
         }
-        if (phone == null) {
+        if (uid == null) {
             return ServerResponse.createByErrorMessage("请传入当前登录用户的手机号", new ArrayList<>());
         }
         UserQuery userQuery = new UserQuery();
-        userQuery.setPhone(phone);
+        userQuery.setId(uid);
         List<User> res = userMapper.selectWhthoutPassword(userQuery);
         if (CollectionUtils.isEmpty(res) || res.get(0) == null) {
             //当前查询用户不存在
