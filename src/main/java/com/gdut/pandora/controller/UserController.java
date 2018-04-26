@@ -182,7 +182,6 @@ public class UserController {
 
 
     @RequestMapping("/query")
-    @NeedLogin
     @ReturnType(type = ReturnTypeEnum.DEFAULT)
     public ServerResponse<List<User>> queryUser(UserQuery userQuery) {
         List<User> users = new ArrayList<>();
