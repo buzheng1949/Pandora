@@ -38,7 +38,7 @@ public class ProductController {
         try {
             if (query.getPage() == null || query.getPageSize() == null) {
                 query.setPage(1);
-                query.setPageSize(10);
+                query.setPageSize(100);
             }
             query.setStart((query.getPage() - 1) * (query.getPageSize()));
             productActionResult = productService.fetchProductList(query);
