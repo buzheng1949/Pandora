@@ -15,6 +15,8 @@ import com.gdut.pandora.utils.TimeUtils;
 import com.gdut.pandora.utils.UserUtils;
 import org.apache.tomcat.jni.Local;
 import org.apache.tomcat.jni.Time;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,6 +27,8 @@ import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+
+import com.alibaba.fastjson.JSON;
 
 /**
  * Created by buzheng on 18/3/31.
@@ -41,6 +45,8 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserUtils userUtils;
+
+    private Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
 
     public static final String DEFAULT_AVATAR = "https://s3.mogucdn.com/mlcdn/c024f5/180413_8a59h26ka3dkfdbi6698cg8j409kd_651x656.png";
 
@@ -62,6 +68,7 @@ public class UserServiceImpl implements UserService {
         userQuery.setUpdateTime(TimeUtils.getCurrentTime());
         ServerResponse<List<User>> userList = queryUserMessage(userQuery,false);
         if (userList.getData() != null && userList.getData().size() > 0) {
+            logger.error("重复用户 the usermessage is "+JSON.toJSONString(userQuery));
             return ServerResponse.createByErrorMessage("用户已经存在，请直接登陆",false);
         }
         Integer res = userMapper.insert(userQuery);
